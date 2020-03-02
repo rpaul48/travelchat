@@ -89,18 +89,18 @@ Welcome to Podcool. We’ve always been interested in listening to more podcasts
   * Challenge: how do we scalably host podcasts? Isn’t that a lot of data?
   
 * Provide actionable data
- * Offer a portal to detailed/actionable data on a podcast's audience demographics, traffic sources, minutes watched, etc.
- * Allows creators to build an audience and increase engagement
- * Challenge: what data is valuable? How is it collected and managed?
+  * Offer a portal to detailed/actionable data on a podcast's audience demographics, traffic sources, minutes watched, etc.
+  * Allows creators to build an audience and increase engagement
+  * Challenge: what data is valuable? How is it collected and managed?
  
 * Good content discovery system
- * Easy to share podcasts - like YouTube videos, they should be easily embedded and intuitive to navigate
- * Show recommendations for similar content (implement a collaborative filtering recommendation system)
- * Challenge: how should the recommendation system function? What determines if podcasts are “similar,” and therefore should be recommended?
+  * Easy to share podcasts - like YouTube videos, they should be easily embedded and intuitive to navigate
+  * Show recommendations for similar content (implement a collaborative filtering recommendation system)
+  * Challenge: how should the recommendation system function? What determines if podcasts are “similar,” and therefore should be recommended?
  
 * Ease of audience engagement
- * Comment section! It allows for a community to form, for experiences to be shared, and for creators to get feedback on their work.
- * Challenge: again, that's a lot of data! How do we implement this system? How do we keep track of user information?
+  * Comment section! It allows for a community to form, for experiences to be shared, and for creators to get feedback on their work.
+  * Challenge: again, that's a lot of data! How do we implement this system? How do we keep track of user information?
 
 
 
