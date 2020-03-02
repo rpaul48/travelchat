@@ -1,6 +1,6 @@
 # cs0320 Term Project 2020
 
-**Team Members:** _Fill this in!_
+**Team Members:** _Colton Rusch, Raj Paul, Suhye Park, Nathaniel Nguyen_
 
 **Team Strengths and Weaknesses:** 
 * Colton:
