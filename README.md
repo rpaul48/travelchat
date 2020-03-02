@@ -3,15 +3,10 @@
 **Team Members:** _Fill this in!_
 
 **Team Strengths and Weaknesses:** 
-* Colton
-  * Strengths
-        * Testing
-        * Style
-        * Algorithms
-        * Hardworking
-  * Weakness
-        * Getting started
-        * Finishing
+ Markup : * Bullet list
+              * Nested bullet
+                  * Sub-nested bullet etc
+          * Bullet list item 2
 
 **Project Idea(s):** _Fill this in with three unique ideas! (Due by March 2)_
 ### Idea 1
