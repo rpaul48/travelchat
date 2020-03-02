@@ -3,10 +3,44 @@
 **Team Members:** _Fill this in!_
 
 **Team Strengths and Weaknesses:** 
-* Bullet list
-  * Nested bullet
-    * Sub-nested bullet etc
-
+* Colton:
+  * Strengths:
+    * Testing
+    * Style
+    * Algorithms
+    * Hardworking
+  * Weaknesses:
+    * Getting started
+    * Finishing
+    
+* Raj:
+  * Strengths:
+    * Testing (especially system tests)
+    * Recursion
+    * Javadocs comments
+    * Adding fields to classes
+    * Making interfaces
+  * Weaknesses:
+    * Generics
+    * GUI
+    * inline commenting
+    
+* Suhye:
+  * Strengths:
+    * Building structures
+    * Error checking
+  * Weaknesses:
+    * GUI
+    * Generics
+    
+* Nathaniel:
+  * Strengths:
+    * Refactoring + reorganizing
+    * Error checking
+  * Weaknesses:
+    * Front-end
+    * Pacing
+    
 **Project Idea(s):** _Fill this in with three unique ideas! (Due by March 2)_
 ### Idea 1
 
