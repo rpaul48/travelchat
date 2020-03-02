@@ -3,10 +3,9 @@
 **Team Members:** _Fill this in!_
 
 **Team Strengths and Weaknesses:** 
- Markup : * Bullet list
-              * Nested bullet
-                  * Sub-nested bullet etc
-          * Bullet list item 2
+* Bullet list
+  * Nested bullet
+    * Sub-nested bullet etc
 
 **Project Idea(s):** _Fill this in with three unique ideas! (Due by March 2)_
 ### Idea 1
