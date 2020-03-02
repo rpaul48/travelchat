@@ -5,10 +5,10 @@
 **Team Strengths and Weaknesses:** 
 * Colton
   * Strengths
-   * Testing
-   * Style
-   * Algorithms
-   * Hardworking
+        * Testing
+        * Style
+        * Algorithms
+        * Hardworking
   * Weakness
         * Getting started
         * Finishing
