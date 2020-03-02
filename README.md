@@ -53,14 +53,14 @@
        * Transportation (Plane tickets, bus tickets, uber/lyft, etc)
          * Why from a user perspective?: Difficult to coordinate different types of travel
          * Challenges: 
-                  * Web scraping for all possible options, generate a ranking w/o overlap
-                  * Lots of repeated data
-                  * Real-time changes in options can cause issues
+            * Web scraping for all possible options, generate a ranking w/o overlap
+            * Lots of repeated data
+            * Real-time changes in options can cause issues
        * Housing
          * Why from a user perspective?: Need a place to stay
          * Challenges:
-         * Comparing airbnb vs hotel vs motel etc…
-         * Real-time changes in options can cause issues
+            * Comparing airbnb vs hotel vs motel etc…
+            * Real-time changes in options can cause issues
        * Necessary documents
          * Why from a user perspective?: Easy to forget, don’t want to be stranded
          * Challenges:
@@ -69,14 +69,14 @@
        * Travel agencies
          * Why from a user perspective?: Not many users are confident in what to do once they get to the travel destination. 
          * Challenges:
-         * Which ones are trustworthy
-         * Aligning within schedule
+            * Which ones are trustworthy
+            * Aligning within schedule
        * Leisure/Attractions
          * Why from a user perspective?: Traveling implies fun things 
          * Challenges:
-         * How do we know what type of activities the user prefers? 
-         * Aligning with schedule
-         * Real-time updates
+            * How do we know what type of activities the user prefers? 
+            * Aligning with schedule
+            * Real-time updates
 
 
 ### Idea 2
