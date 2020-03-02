@@ -58,25 +58,25 @@
                   * Real-time changes in options can cause issues
        * Housing
          * Why from a user perspective?: Need a place to stay
-         *Challenges:
-       Comparing airbnb vs hotel vs motel etc…
-       Real-time changes in options can cause issues
-       Necessary documents
-       Why from a user perspective?: Easy to forget, don’t want to be stranded
-       Challenges:
-       How do I know what I need? What are official sources
-       Check expiration dates
-       Travel agencies
-       Why from a user perspective?: Not many users are confident in what to do once they get to the travel destination. 
-       Challenges:
-       Which ones are trustworthy
-       Aligning within schedule
-       Leisure/Attractions
-       Why from a user perspective?: Traveling implies fun things 
-       Challenges:
-       How do we know what type of activities the user prefers? 
-       Aligning with schedule
-       Real-time updates
+         * Challenges:
+         * Comparing airbnb vs hotel vs motel etc…
+         * Real-time changes in options can cause issues
+       * Necessary documents
+         * Why from a user perspective?: Easy to forget, don’t want to be stranded
+         * Challenges:
+            * How do I know what I need? What are official sources
+            * Check expiration dates
+       * Travel agencies
+         * Why from a user perspective?: Not many users are confident in what to do once they get to the travel destination. 
+         * Challenges:
+         * Which ones are trustworthy
+         * Aligning within schedule
+       * Leisure/Attractions
+         * Why from a user perspective?: Traveling implies fun things 
+         * Challenges:
+         * How do we know what type of activities the user prefers? 
+         * Aligning with schedule
+         * Real-time updates
 
 
 ### Idea 2
