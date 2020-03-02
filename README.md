@@ -77,11 +77,34 @@
             * How do we know what type of activities the user prefers? 
             * Aligning with schedule
             * Real-time updates
-
-
 ### Idea 2
 
-### Idea 3
+We need a good platform for podcasts!
+ 
+Welcome to Podcool. We’ve always been interested in listening to more podcasts, but we've never found a particularly great platform to conveniently listen to them. Additionally, we feel as though the existing platforms are not great for content creators, either. Our idea is to make a podcast platform that's more like YouTube rather than Spotify, iTunes, or Overcast. Some features that would be interesting (and necessary) to implement:
+
+* Monetization for content creators
+  * Podcast creators have a lot to deal with when deciding on a business model: sponsors, donations, advertisements, merchandise, etc. Often there is a barrier to entry of a certain high number of downloads per episode to be able to monetize in these ways.
+  * Proposal: host podcasts for free, and allow monetization with the click of a button (like how YouTube works with videos!), or maybe Patreon style monthly donation
+  * Challenge: how do we scalably host podcasts? Isn’t that a lot of data?
+  
+* Provide actionable data
+ * Offer a portal to detailed/actionable data on a podcast's audience demographics, traffic sources, minutes watched, etc.
+ * Allows creators to build an audience and increase engagement
+ * Challenge: what data is valuable? How is it collected and managed?
+ 
+* Good content discovery system
+ * Easy to share podcasts - like YouTube videos, they should be easily embedded and intuitive to navigate
+ * Show recommendations for similar content (implement a collaborative filtering recommendation system)
+ * Challenge: how should the recommendation system function? What determines if podcasts are “similar,” and therefore should be recommended?
+ 
+* Ease of audience engagement
+ * Comment section! It allows for a community to form, for experiences to be shared, and for creators to get feedback on their work.
+ * Challenge: again, that's a lot of data! How do we implement this system? How do we keep track of user information?
+
+
+
+
 
 **Mentor TA:** _Put your mentor TA's name and email here once you're assigned one!_
 
