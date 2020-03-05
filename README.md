@@ -43,6 +43,7 @@
     
 **Project Idea(s):** _Fill this in with three unique ideas! (Due by March 2)_
 ### Idea 1
+_Unsure - likely, but this could either be WAY too much or not enough. I like the idea, but pick a core algorithm and center your platform around it_
 
 * TravelGuide:
     * Problem to solve: When traveling, it can be hard to keep track of everything you need. We’d like to create an all-inclusive streamlined process for traveling.
@@ -78,6 +79,7 @@
             * Aligning with schedule
             * Real-time updates
 ### Idea 2
+_Rejected - too ambitious for a 32 project (monetization, actionable data, CDN)_
 
 We need a good platform for podcasts!
  
