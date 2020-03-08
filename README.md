@@ -52,7 +52,7 @@
     
 **Project Idea(s):** _Fill this in with three unique ideas! (Due by March 2)_
 ### Idea 1
-_Unsure - likely, but this could either be WAY too much or not enough. I like the idea, but pick a core algorithm and center your platform around it_
+_Resubmission approved_
 
 ### Idea 1 (RESUBMITTAL)
 Welcome to TravelGuide. When traveling with a group, it can be hard to keep track of everything you need, and everything you need to keep in mind. We’d like to create an all-inclusive, streamlined process for traveling that accommodates group travel on a budget. In summary, we’re envisioning a group chat especially designed for travel which takes into account group budget and calendar availability, and makes food, lodging, and transportation recommendations accordingly.
