@@ -41,6 +41,15 @@
     * Front-end
     * Pacing
     
+* Nathan:
+  * Strengths
+    * Machine learning
+    * Class-Level Design
+  * Weaknesses
+    * Front-End
+    * How to best utilize generics
+
+    
 **Project Idea(s):** _Fill this in with three unique ideas! (Due by March 2)_
 ### Idea 1
 _Unsure - likely, but this could either be WAY too much or not enough. I like the idea, but pick a core algorithm and center your platform around it_
