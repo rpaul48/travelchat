@@ -66,10 +66,7 @@ public class Main {
     FreeMarkerEngine freeMarker = createEngine();
 
     // Setup Spark Routes
-    System.out.println("HEREEEEEEEEEEELKJADSFLKAJDSFLASDJFKL");
     Spark.get("/login", new LoginFrontHandler(), freeMarker);
-    //Spark.get("/stars", new StarsFrontHandler(), freeMarker);
-    //Spark.post("/command", new StarsSubmitHandler(universe), freeMarker);
   }
 
   /**
