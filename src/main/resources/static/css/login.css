@@ -6,6 +6,12 @@ body {
     font-size: 16px;
 }
 
+img {
+    width: 200px;
+    height: auto;
+    margin: 20px;
+}
+
 h2 {
     color: black;
     font-weight: 100;
@@ -21,9 +27,9 @@ input, button {
 .main-div, .loggedin-div{
     background: white;
     width: 40%;
-    height: 40%;
-    margin: 150px auto 0px;
-    padding: 20px;
+    height: 50%;
+    margin: 30px auto 0px;
+    padding: 40px;
     display: none;
     border-radius: 50px;
 }
@@ -47,22 +53,34 @@ input, button {
 }
 
 .main-div button, .loggedin-div button {
-    background: #5d8ffc;
+    background: #3D85C6;
     color: #fff;
-    border: 1px solid #5d8ffc;
+    border: 1px solid #3D85C6;
     border-radius: 5px;
     padding: 15px;
     display: block;
     width: 60%;
-    margin: 0 auto 40px;
+    margin: 0 auto 20px;
     transition: 0.3s;
     -webkit-transition: 0.3s;
     -moz-transition: 0.3s;
 }
 
+#createAccount {
+    background: #6AA84E;
+    border: 1px solid #6AA84E;
+}
+
 .main-div button:hover, .loggedin-div button:hover {
     background: #fff;
-    color: #5d8ffc;
-    border: 1px solid #5d8ffc;
+    color: #3D85C6;
+    border: 1px solid #3D85C6;
+    cursor: pointer;
+}
+
+#createAccount:hover {
+    background: #fff;
+    color: #6AA84E;
+    border: 1px solid #6AA84E;
     cursor: pointer;
 }
