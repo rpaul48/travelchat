@@ -1,4 +1,4 @@
-package edu.brown.cs.crusch.chat;
+package edu.brown.cs.student.chat;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

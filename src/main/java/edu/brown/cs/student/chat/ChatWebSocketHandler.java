@@ -1,4 +1,4 @@
-package edu.brown.cs.crusch.chat;
+package edu.brown.cs.student.chat;
 
 import org.eclipse.jetty.websocket.api.*;
 import org.eclipse.jetty.websocket.api.annotations.*;
