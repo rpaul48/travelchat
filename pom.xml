@@ -20,6 +20,18 @@
     <!-- Dependencies section for libraries put all of your libraries in here -->
     <dependencies>
 
+        <dependency>
+            <groupId>com.konghq</groupId>
+            <artifactId>unirest-java</artifactId>
+            <version>3.7.02</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mashape.unirest</groupId>
+            <artifactId>unirest-java</artifactId>
+            <version>1.4.9</version>
+        </dependency>
+
         <!--
             jopt-simple is a command line parser.
             https://pholser.github.io/jopt-simple/.
