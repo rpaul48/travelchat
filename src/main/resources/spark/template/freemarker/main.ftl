@@ -21,8 +21,18 @@
 <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
 
+<!-- jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+
+<!-- Firechat -->
+<link rel="stylesheet" href="https://cdn.firebase.com/libs/firechat/3.0.1/firechat.min.css" />
+<script src="https://cdn.firebase.com/libs/firechat/3.0.1/firechat.min.js"></script>
+
 <script>
-    // Your web app's Firebase configuration
+	// Your web app's Firebase configuration
     var firebaseConfig = {
         apiKey: "AIzaSyBKJa_Wm0x40UsemNVuvTCx7-C_uwND1yo",
         authDomain: "travelchat-3120c.firebaseapp.com",
@@ -35,12 +45,6 @@
     };
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
-
-    admin.initializeApp({
-        credential: admin.credential.applicationDefault(),
-        databaseURL: "https://travelchat-3120c.firebaseio.com"
-    });
 </script>
 
 <!-- Firechat -->

@@ -6,17 +6,24 @@
         <h2>Manage Chats</h2>
 
         <button onclick="openCreateChat()" class="large-green-button">Create new chat</button>
+        <button onclick="openJoinChat()" class="large-green-button">Join existing chat</button>
         <button onclick="logout()" class="large-black-button">Back</button>
     </div>
 
     <div id="create-chat-div" class="popup-div">
         <h2>Create New Chat</h2>
         <input type="text" placeholder="Group Name" id="group-name-field"/>
-        <input placeholder="User email" id="add-user-field"/>
-        <button onclick="addUser()">Add</button>
-        <p id="added-users"> The people you add will appear here.</p>
+        <p id="room-id">Your unique room ID will appear below. Your friends can use this to
+        join your group!</p>
         <button onclick="createChat()" class="large-green-button">Create</button>
         <button onclick="closeCreateChat()" class="large-black-button">Back</button>
+    </div>
+
+    <div id="join-chat-div" class="popup-div">
+        <h2>Join Existing Chat</h2>
+        <input type="text" placeholder="Group Id" id="group-id-field"/>
+        <button onclick="joinChat()" class="large-green-button">Join</button>
+        <button onclick="closeJoinChat()" class="large-black-button">Back</button>
     </div>
 
 

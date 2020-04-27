@@ -1,29 +1,40 @@
-function initChat(user) {
+function createChat() {
     // Get a Firebase Database ref
     var chatRef = firebase.database().ref("chat");
-
     // Create a Firechat instance
-    var chat = new FirechatUI(chatRef, document.getElementById("firechat-wrapper"));
+    var chat = new Firechat(chatRef);
+    var currentUser = firebase.auth().currentUser;
+    chat.setUser(currentUser.uid, currentUser.uid);
 
-    // Set the Firechat user
-    chat.setUser(user.uid, user.displayName);
-}
+    var groupName = document.getElementById("group-name-field").value;
 
-function addUser() {
-    var email = document.getElementById("add-user-field").value;
-    admin.auth().getUserByEmail(email).then(function(userRecord) {
-        // See the UserRecord reference doc for the contents of userRecord.
-        //console.log('Successfully fetched user data:', userRecord.toJSON());
-        document.getElementById("added-users").innerHTML += userRecord.email + "<br/>";
+    chat.createRoom(groupName, "public", function(roomId) {
+        document.getElementById("room-id").innerHTML +=
+            "<br><b> " + groupName + " group ID: </b> " + roomId;
     })
-        .catch(function(error) {
-            document.getElementById("add-user-field").innerHTML = "";
-            console.log('Error fetching user data:', error);
-        });
 }
 
-function createChat() {
+function joinChat() {
+    // Get a Firebase Database ref
+    var chatRef = firebase.database().ref("chat");
+    // Create a Firechat instance
+    var chat = new Firechat(chatRef);
+    var currentUser = firebase.auth().currentUser;
 
+    var groupId = document.getElementById("group-id-field").value;
+    chat.enterRoom(groupId);
+
+    // both userid and display name set to uid
+    chat.setUser(currentUser.uid, currentUser.uid, function() {
+        chat.resumeSession();
+    });
+
+
+
+    // this send message call doesn't seem to be working - it doesn't update in firebase?
+    chat.sendMessage(groupId, "ENTERED ROOM", 'default', function(){
+        console.log("sent");
+    });
 }
 
 function openCreateChat() {
@@ -32,4 +43,12 @@ function openCreateChat() {
 
 function closeCreateChat() {
     document.getElementById("create-chat-div").style.display = "none";
+}
+
+function openJoinChat() {
+    document.getElementById("join-chat-div").style.display = "block";
+}
+
+function closeJoinChat() {
+    document.getElementById("join-chat-div").style.display = "none";
 }

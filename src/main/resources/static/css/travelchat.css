@@ -24,6 +24,10 @@ input, button {
     font-weight: 700;
 }
 
+#room-id {
+    text-align: center;
+}
+
 .main-div {
     background: white;
     width: 40%;

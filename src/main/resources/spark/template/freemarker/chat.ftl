@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html>
+<#assign content>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>WebSockets</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Chat</title>
+    <link rel="stylesheet" href="css/chat.css">
 </head>
 <body>
     <div id="chatControls">
@@ -12,6 +11,7 @@
     </div>
     <ul id="userlist"> <!-- Built by JS --> </ul>
     <div id="chat">    <!-- Built by JS --> </div>
-    <script src="websocketDemo.js"></script>
+    <script src="js/chat.js"></script>
 </body>
-</html>
+</#assign>
+<#include "main.ftl">

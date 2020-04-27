@@ -1,3 +1,4 @@
+var chat;
 
 firebase.auth().onAuthStateChanged(function(user) {
     if (window.location.pathname === "/login") {
@@ -15,7 +16,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     }
 });
 
-function login(){
+function login() {
     var userEmail = document.getElementById("email-field").value;
     var userPass = document.getElementById("password-field").value;
 
@@ -28,7 +29,7 @@ function login(){
     });
 }
 
-function createAccount(){
+function createAccount() {
     var userEmail = document.getElementById("email-field").value;
     var userPass = document.getElementById("password-field").value;
 
