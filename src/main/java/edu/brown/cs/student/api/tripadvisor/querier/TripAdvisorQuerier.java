@@ -1,9 +1,8 @@
-package api.tripadvisor.querier;
+package edu.brown.cs.student.api.tripadvisor.querier;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 // For handling responses.
-import api.tripadvisor.request.*;
 import com.google.common.collect.ImmutableMap;
 import com.mashape.unirest.http.HttpResponse;
 // For assigning JSON type
@@ -16,11 +15,15 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
-import api.tripadvisor.objects.Attraction;
-import api.tripadvisor.objects.Flight;
-import api.tripadvisor.objects.Hotel;
-import api.tripadvisor.objects.Restaurant;
+
 import com.mashape.unirest.http.exceptions.UnirestException;
+import edu.brown.cs.student.api.tripadvisor.objects.Attraction;
+import edu.brown.cs.student.api.tripadvisor.objects.Flight;
+import edu.brown.cs.student.api.tripadvisor.objects.Hotel;
+import edu.brown.cs.student.api.tripadvisor.objects.Restaurant;
+import edu.brown.cs.student.api.tripadvisor.request.*;
+import edu.brown.cs.student.api.tripadvisor.response.AttractionResponse;
+import edu.brown.cs.student.api.tripadvisor.response.HotelResponse;
 
 import java.net.URLEncoder;
 import java.util.Collections;
@@ -48,7 +51,9 @@ public class TripAdvisorQuerier extends Querier {
     public List<Restaurant> getRestaurants(RestaurantRequest request) {
         LOGGER.log(Level.INFO, loggerPrefix + "Querying restaurants.");
         String hostURL = "https://tripadvisor1.p.rapidapi.com/restaurants/list-by-latlng";
-        this.runQuery(hostURL, request);
+        HttpResponse<JsonNode> response = this.runQuery(hostURL, request);
+        AttractionResponse attractionResponse = new AttractionResponse(response);
+//        return attractionResponse.getAttractions();
         LOGGER.log(Level.INFO, loggerPrefix + "Done querying restaurants.");
         // Placeholder to remove errors
         return Collections.emptyList();
@@ -57,7 +62,9 @@ public class TripAdvisorQuerier extends Querier {
     public List<Attraction> getAttractions(AttractionRequest request) {
         LOGGER.log(Level.INFO, loggerPrefix + "Querying attractions.");
         String hostURL = "https://tripadvisor1.p.rapidapi.com/attractions/list-by-latlng";
-        this.runQuery(hostURL, request);
+        HttpResponse<JsonNode> response = this.runQuery(hostURL, request);
+        AttractionResponse attractionResponse = new AttractionResponse(response);
+//        return attractionResponse.getAttractions();
         LOGGER.log(Level.INFO, loggerPrefix + "Done querying attractions.");
         return Collections.emptyList();
     }
@@ -68,9 +75,9 @@ public class TripAdvisorQuerier extends Querier {
         LOGGER.log(Level.INFO, loggerPrefix + "Querying flights.");
         // Create Session -> Poll
         String sessionHostURL = "https://tripadvisor1.p.rapidapi.com/flights/create-session";
-        this.runQuery(sessionHostURL, sessionRequest);
+        HttpResponse<JsonNode> sessionResponse = this.runQuery(sessionHostURL, sessionRequest);
         String pollHostURL =  "https://tripadvisor1.p.rapidapi.com/flights/poll";
-        this.runQuery(pollHostURL, pollRequest);
+        HttpResponse<JsonNode> pollResponse = this.runQuery(pollHostURL, pollRequest);
         LOGGER.log(Level.INFO, loggerPrefix + "Done querying flights.");
         return Collections.emptyList();
     }
@@ -78,7 +85,9 @@ public class TripAdvisorQuerier extends Querier {
     public List<Hotel> getHotels(HotelRequest request) {
         LOGGER.log(Level.INFO, loggerPrefix + "Querying hotels.");
         String hostURL = "https://tripadvisor1.p.rapidapi.com/hotels/list-by-latlng";
-        this.runQuery(hostURL, request);
+        HttpResponse<JsonNode> response = this.runQuery(hostURL, request);
+        HotelResponse hotelResponse = new HotelResponse(response);
+//        return hotelResponse.getHotels();
         LOGGER.log(Level.INFO, loggerPrefix + "Done querying hotels.");
         return Collections.emptyList();
     }
@@ -88,18 +97,19 @@ public class TripAdvisorQuerier extends Querier {
      *
      * Still need to figure out a universal request parsing routine -- probably going to use SPRING/URI packages.
      */
-    public void runQuery(String hostURL, Request request) {
+    public HttpResponse<JsonNode> runQuery(String hostURL, Request request) {
         // Request headers
         String x_rapidapi_host = this.getAPIHost();
         String x_rapidapi_key = this.getAPIKey();
         /**
          * 1. Parse query parameters from request object for use below.
          * 2. Send a request and handle response (i.e. convert to JSON).
-         * 3. TODO: parse out the fields we need.
+         * 3. TODO: parse out the fields we need -- do this through each Response object.
          */
         ImmutableMap<String, Object> params = ImmutableMap.copyOf(request.getParams());
+        HttpResponse<JsonNode> response = null;
         try {
-            HttpResponse <JsonNode> response = Unirest.get(hostURL)
+            response = Unirest.get(hostURL)
                     .queryString(params)
                     .header("x-rapidapi-host", x_rapidapi_host)
                     .header("x-rapidapi-key", x_rapidapi_key)
@@ -107,5 +117,6 @@ public class TripAdvisorQuerier extends Querier {
         } catch (UnirestException e) {
             e.printStackTrace();
         }
+        return response;
     }
 }

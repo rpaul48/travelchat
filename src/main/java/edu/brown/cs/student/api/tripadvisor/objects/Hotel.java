@@ -1,6 +1,6 @@
-package api.tripadvisor.objects;
+package edu.brown.cs.student.api.tripadvisor.objects;
 
-import api.tripadvisor.util.GeoLocation;
+import edu.brown.cs.student.api.tripadvisor.util.GeoLocation;
 
 /**
  * A hotel, as defined by the TripAdvisor API.

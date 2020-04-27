@@ -1,4 +1,4 @@
-package api.tripadvisor.preference;
+package edu.brown.cs.student.api.tripadvisor.preference;
 
 import java.util.Map;
 

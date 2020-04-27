@@ -1,4 +1,4 @@
-package api.tripadvisor.querier;
+package edu.brown.cs.student.api.tripadvisor.querier;
 
 /**
  * An API querier.

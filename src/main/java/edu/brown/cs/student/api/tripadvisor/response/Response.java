@@ -1,11 +1,14 @@
-package api.tripadvisor.response;
+package edu.brown.cs.student.api.tripadvisor.response;
+
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
 
 /**
  * A response from an API.
  * @author Joshua Nathan Mugerwa
  * @version 1.0
  */
-public class Response {
+public abstract class Response {
     private String rawResponse;
 
     /**
@@ -19,4 +22,6 @@ public class Response {
     public void setRawResponse(String rawResponse) {
         this.rawResponse = rawResponse;
     }
+
+    public abstract void parseResponse(HttpResponse<JsonNode> response);
 }
