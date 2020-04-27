@@ -1,24 +1,23 @@
-<link rel="stylesheet" href="css/login.css">
+<link rel="stylesheet" href="css/travelchat.css">
 
 <#assign content>
 
-    <img onclick="home()" src="images/TravelChat-Banner.png" alt="TravelChat">
+    <img onclick="logout()" src="images/TravelChat-Banner.png" alt="TravelChat">
 
-    <div id="login_div" class="main-div">
+    <div id="login-div" class="main-div">
         <h2>Welcome to TravelChat</h2>
-        <input type="email" placeholder="Email..." id="email_field"/>
-        <input type="password" placeholder="Password..." id="password_field"/>
+        <input type="email" placeholder="Email" id="email-field"/>
+        <input type="password" placeholder="Password" id="password-field"/>
 
-        <button onclick="login()">Login</button>
-        <button id="createAccount" onclick="createAccount()">Create Account</button>
+        <button onclick="login()" class="large-blue-button">
+            Login
+        </button>
+        <button onclick="createAccount()" class="large-green-button">
+            Create Account
+        </button>
     </div>
 
-    <div id="user_div" class="loggedin-div">
-        <h2 id="user_para">Welcome User</h2>
-        <button onclick="logout()">Log Out</button>
-    </div>
-
-
+    <script src="js/login.js"></script>
 
 </#assign>
 <#include "main.ftl">

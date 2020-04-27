@@ -8,7 +8,6 @@
          avoid minification for clarity. -->
 </head>
 <body>
-${content}
 <!-- Again, we're serving up the unminified source for clarity. -->
 <script src="js/jquery-2.1.1.js"></script>
 <!-- The core Firebase JS SDK is always required and must be listed first -->
@@ -37,8 +36,21 @@ ${content}
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
+
+    var admin = require("firebase-admin");
+    var serviceAccount = require("path/to/serviceAccountKey.json");
+
+    admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+        databaseURL: "https://travelchat-3120c.firebaseio.com"
+    });
 </script>
-<script src="js/login-index.js"></script>
+
+<!-- Firechat -->
+<link rel="stylesheet" href="https://cdn.firebase.com/libs/firechat/3.0.1/firechat.min.css" />
+<script src="https://cdn.firebase.com/libs/firechat/3.0.1/firechat.min.js"></script>
+
+${content}
 </body>
 <!-- See http://html5boilerplate.com/ for a good place to start
      dealing with real world issues like old browsers.  -->

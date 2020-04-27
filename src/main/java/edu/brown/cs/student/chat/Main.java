@@ -1,6 +1,7 @@
 package edu.brown.cs.student.chat;
 
 import edu.brown.cs.student.chat.gui.LoginFrontHandler;
+import edu.brown.cs.student.chat.gui.ManageChatsFrontHandler;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -67,6 +68,7 @@ public class Main {
 
     // Setup Spark Routes
     Spark.get("/login", new LoginFrontHandler(), freeMarker);
+    Spark.get("/manage-chats", new ManageChatsFrontHandler(), freeMarker);
   }
 
   /**

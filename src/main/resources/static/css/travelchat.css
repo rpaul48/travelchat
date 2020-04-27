@@ -1,0 +1,133 @@
+body {
+    background: #2F5860;
+    padding: 0px;
+    margin: 0px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 16px;
+}
+
+img {
+    width: 200px;
+    height: auto;
+    margin: 20px;
+}
+
+h2 {
+    color: black;
+    font-weight: 100;
+    text-align: center;
+    margin-top: 30px;
+}
+
+input, button {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 700;
+}
+
+.main-div {
+    background: white;
+    width: 40%;
+    height: 50%;
+    margin: 30px auto 0px;
+    padding: 40px;
+    display: none;
+    border-radius: 50px;
+}
+
+.popup-div {
+    position: fixed;
+    left: 34.38%;
+    right: 34.38%;
+    top: 12.96%;
+    bottom: 12.96%;
+    padding: 40px;
+    display: none;
+    border-radius: 50px;
+    background: white;
+    box-shadow: 0px 4px 50px rgba(0, 0, 0, 0.25);
+}
+
+.main-div input, .popup-div input{
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #fff;
+    padding: 15px;
+    outline: none;
+    width: 60%;
+    margin: 0 auto 20px;
+    transition: 0.3s;
+    -webkit-transition: 0.3s;
+    -moz-transition: 0.3s;
+}
+
+.main-div input:focus {
+    border: 1px solid #777;
+}
+
+.large-blue-button {
+    background: #3D85C6;
+    border: 1px solid #3D85C6;
+    color: #fff;
+    border-radius: 5px;
+    padding: 15px;
+    display: block;
+    width: 60%;
+    margin: 0 auto 20px;
+    transition: 0.3s;
+    -webkit-transition: 0.3s;
+    -moz-transition: 0.3s;
+}
+
+.large-green-button {
+    background: #6AA84E;
+    border: 1px solid #6AA84E;
+    color: #fff;
+    border-radius: 5px;
+    padding: 15px;
+    display: block;
+    width: 60%;
+    margin: 0 auto 20px;
+    transition: 0.3s;
+    -webkit-transition: 0.3s;
+    -moz-transition: 0.3s;
+}
+
+.large-black-button {
+    background: #000000;
+    border: 1px solid #000000;
+    color: #fff;
+    border-radius: 5px;
+    padding: 15px;
+    display: block;
+    width: 60%;
+    margin: 0 auto 20px;
+    transition: 0.3s;
+    -webkit-transition: 0.3s;
+    -moz-transition: 0.3s;
+}
+
+.large-blue-button:hover {
+    background: #fff;
+    color: #3D85C6;
+    border: 1px solid #3D85C6;
+    cursor: pointer;
+}
+
+.large-green-button:hover {
+    background: #fff;
+    color: #6AA84E;
+    border: 1px solid #6AA84E;
+    cursor: pointer;
+}
+
+.large-black-button:hover {
+    background: #fff;
+    color: #000000;
+    border: 1px solid #000000;
+    cursor: pointer;
+}
+
+.added-users {
+    font-weight: 100;
+}
