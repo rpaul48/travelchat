@@ -3,9 +3,6 @@
     <meta charset="utf-8">
     <title>${title}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- In real-world webapps, css is usually minified and
-         concatenated. Here, separate normalize from our code, and
-         avoid minification for clarity. -->
 </head>
 <body>
 ${content}
@@ -22,6 +19,16 @@ ${content}
 <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
 
+<!-- jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+
+<!-- Firechat -->
+<link rel="stylesheet" href="https://cdn.firebase.com/libs/firechat/3.0.1/firechat.min.css" />
+<script src="https://cdn.firebase.com/libs/firechat/3.0.1/firechat.min.js"></script>
+
 <script>
     // Your web app's Firebase configuration
     var firebaseConfig = {
@@ -36,7 +43,6 @@ ${content}
     };
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
 </script>
 <script src="js/login-index.js"></script>
 </body>

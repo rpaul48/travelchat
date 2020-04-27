@@ -1,5 +1,6 @@
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
+        initChat(user);
         // User is signed in.
         document.getElementById("user_div").style.display = "block";
         document.getElementById("login_div").style.display = "none";
@@ -8,7 +9,6 @@ firebase.auth().onAuthStateChanged(function(user) {
 
         if(user != null) {
             var email_id = user.email;
-
             document.getElementById("user_para").innerHTML = "Welcome " + email_id;
         }
     } else {
@@ -28,6 +28,18 @@ function login(){
 
         window.alert("Error: " + errorMessage);
     });
+}
+
+function initChat(user) {
+    // Get a Firebase Database ref
+    var chatRef = firebase.database().ref("chat");
+
+    // Create a Firechat instance
+    var chat = new FirechatUI(chatRef, document.getElementById("firechat-wrapper"));
+
+    // Set the Firechat user
+    chat.setUser(user.uid, user.uid);
+    console.log(user.displayName);
 }
 
 function createAccount(){

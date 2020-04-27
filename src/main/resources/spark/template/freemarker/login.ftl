@@ -16,6 +16,7 @@
     <div id="user_div" class="loggedin-div">
         <h2 id="user_para">Welcome User</h2>
         <button onclick="logout()">Log Out</button>
+        <div id="firechat-wrapper"></div>
     </div>
 
 
