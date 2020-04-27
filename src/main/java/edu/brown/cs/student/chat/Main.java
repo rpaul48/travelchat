@@ -1,5 +1,6 @@
 package edu.brown.cs.student.chat;
 
+import edu.brown.cs.student.chat.gui.CalendarHandler;
 import edu.brown.cs.student.chat.gui.LoginFrontHandler;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
@@ -67,6 +68,7 @@ public class Main {
 
     // Setup Spark Routes
     Spark.get("/login", new LoginFrontHandler(), freeMarker);
+    Spark.get("/calendar", new CalendarHandler(), freeMarker);
   }
 
   /**
