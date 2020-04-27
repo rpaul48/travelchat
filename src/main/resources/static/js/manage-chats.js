@@ -14,41 +14,41 @@ function createChat() {
     })
 }
 
-function joinChat() {
+function addChat() {
     // Get a Firebase Database ref
     var chatRef = firebase.database().ref("chat");
     // Create a Firechat instance
     var chat = new Firechat(chatRef);
     var currentUser = firebase.auth().currentUser;
 
-    var groupId = document.getElementById("group-id-field").value;
-    chat.enterRoom(groupId);
-
     // both userid and display name set to uid
     chat.setUser(currentUser.uid, currentUser.uid, function() {
         chat.resumeSession();
     });
 
-
+    var groupId = document.getElementById("group-id-field").value;
+    chat.enterRoom(groupId);
 
     // this send message call doesn't seem to be working - it doesn't update in firebase?
     chat.sendMessage(groupId, "ENTERED ROOM", 'default', function(){
         console.log("sent");
     });
+
+    window.location.pathname = "/chat/" + groupId;
 }
 
 function openCreateChat() {
-    document.getElementById("create-chat-div").style.display = "block";
+    $("#create-chat-div").fadeIn();
 }
 
 function closeCreateChat() {
     document.getElementById("create-chat-div").style.display = "none";
 }
 
-function openJoinChat() {
-    document.getElementById("join-chat-div").style.display = "block";
+function openAddChat() {
+    $("#add-chat-div").fadeIn();
 }
 
-function closeJoinChat() {
-    document.getElementById("join-chat-div").style.display = "none";
+function closeAddChat() {
+    document.getElementById("add-chat-div").style.display = "none";
 }

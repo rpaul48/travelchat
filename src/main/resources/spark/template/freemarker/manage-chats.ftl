@@ -1,12 +1,12 @@
-<link rel="stylesheet" href="css/travelchat.css">
+<link rel="stylesheet" href="/css/travelchat.css">
 <#assign content>
-    <img onclick="logout()" src="images/TravelChat-Banner.png" alt="TravelChat">
+    <img onclick="logout()" src="/images/TravelChat-Banner.png" alt="TravelChat">
 
     <div id="chats-div" class="main-div">
-        <h2>Manage Chats</h2>
+        <h2><b>Manage Chats</b></h2>
 
         <button onclick="openCreateChat()" class="large-green-button">Create new chat</button>
-        <button onclick="openJoinChat()" class="large-green-button">Join existing chat</button>
+        <button onclick="openAddChat()" class="large-green-button">Add existing chat</button>
         <button onclick="logout()" class="large-black-button">Back</button>
     </div>
 
@@ -19,15 +19,15 @@
         <button onclick="closeCreateChat()" class="large-black-button">Back</button>
     </div>
 
-    <div id="join-chat-div" class="popup-div">
-        <h2>Join Existing Chat</h2>
+    <div id="add-chat-div" class="popup-div">
+        <h2>Add Existing Chat</h2>
         <input type="text" placeholder="Group Id" id="group-id-field"/>
-        <button onclick="joinChat()" class="large-green-button">Join</button>
-        <button onclick="closeJoinChat()" class="large-black-button">Back</button>
+        <button onclick="addChat()" class="large-green-button">Add</button>
+        <button onclick="closeAddChat()" class="large-black-button">Back</button>
     </div>
 
 
-    <script src="js/login.js"></script>
-    <script src="js/manage-chats.js"></script>
+    <script src="/js/login.js"></script>
+    <script src="/js/manage-chats.js"></script>
 </#assign>
 <#include "main.ftl">

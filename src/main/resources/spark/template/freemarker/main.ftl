@@ -9,7 +9,7 @@
 </head>
 <body>
 <!-- Again, we're serving up the unminified source for clarity. -->
-<script src="js/jquery-2.1.1.js"></script>
+<script src="/js/jquery-2.1.1.js"></script>
 <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
 

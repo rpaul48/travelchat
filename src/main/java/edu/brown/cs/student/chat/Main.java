@@ -70,7 +70,7 @@ public class Main {
     // Setup Spark Routes
     Spark.get("/login", new LoginFrontHandler(), freeMarker);
     Spark.get("/manage-chats", new ManageChatsFrontHandler(), freeMarker);
-    Spark.get("/chat", new ChatFrontHandler(), freeMarker);
+    Spark.get("/chat/:roomId", new ChatFrontHandler(), freeMarker);
   }
 
   /**

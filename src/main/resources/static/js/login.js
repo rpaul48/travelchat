@@ -1,5 +1,3 @@
-var chat;
-
 firebase.auth().onAuthStateChanged(function(user) {
     if (window.location.pathname === "/login") {
         if (user) {
@@ -12,6 +10,12 @@ firebase.auth().onAuthStateChanged(function(user) {
             window.location.href = "/login"
         } else {
             document.getElementById("chats-div").style.display = "block";
+        }
+    } else if (window.location.pathname.startsWith("/chat")) {
+        if (!user) {
+            window.location.href = "/login"
+        } else {
+            document.getElementById("chat-div").style.display = "block";
         }
     }
 });

@@ -1,7 +1,14 @@
-// establish WebSocket connection & event listeners
-// const webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/chat");
-// webSocket.onmessage = function (msg) { updateChat(msg); };
-// webSocket.onclose = function () { alert("WebSocket connection closed") };
+// Get a Firebase Database ref
+var chatRef = firebase.database().ref("chat");
+
+// Create a Firechat instance
+var chat = new Firechat(chatRef);
+
+var currentUser = firebase.auth().currentUser;
+chat.setUser(currentUser.uid, currentUser.uid);
+
+var roomId = window.location.pathname.substring(url.lastIndexOf('/') + 1);
+chat.enterRoom(roomId);
 
 chat.on("message-add", function (msg) { updateChat(msg); });
 
@@ -18,7 +25,7 @@ id("message").addEventListener("keypress", function (e) {
 // sends the message if not empty, clears input field
 function sendMessage(message) {
     if (message !== "") {
-        webSocket.send(message);
+        chat.sendMessage(roomId, message);
         id("message").value = "";
     }
 }

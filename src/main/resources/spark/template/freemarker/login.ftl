@@ -1,11 +1,9 @@
-<link rel="stylesheet" href="css/travelchat.css">
-
+<link rel="stylesheet" href="/css/travelchat.css">
 <#assign content>
-
     <img onclick="logout()" src="images/TravelChat-Banner.png" alt="TravelChat">
 
     <div id="login-div" class="main-div">
-        <h2>Welcome to TravelChat</h2>
+        <h2><b>Welcome to TravelChat!</b></h2>
         <input type="email" placeholder="Email" id="email-field"/>
         <input type="password" placeholder="Password" id="password-field"/>
 
@@ -17,7 +15,6 @@
         </button>
     </div>
 
-    <script src="js/login.js"></script>
-
+    <script src="/js/login.js"></script>
 </#assign>
 <#include "main.ftl">
