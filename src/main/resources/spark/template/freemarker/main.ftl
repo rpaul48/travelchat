@@ -37,11 +37,8 @@
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
 
-    var admin = require("firebase-admin");
-    var serviceAccount = require("path/to/serviceAccountKey.json");
-
     admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
+        credential: admin.credential.applicationDefault(),
         databaseURL: "https://travelchat-3120c.firebaseio.com"
     });
 </script>
