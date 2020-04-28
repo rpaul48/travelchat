@@ -1,57 +1,67 @@
 function createChat() {
-    // Get a Firebase Database ref
+    // get a Firebase Database ref
     var chatRef = firebase.database().ref("chat");
-    // Create a Firechat instance
+    // create a Firechat instance
     var chat = new Firechat(chatRef);
+
+    // get current authenticated user, set the chat's user.
     var currentUser = firebase.auth().currentUser;
     chat.setUser(currentUser.uid, currentUser.uid);
 
+    // get desired name for the group
     var groupName = document.getElementById("group-name-field").value;
 
+    // get all emails of desired invitees
     var emails = document.getElementById("add-user-field").value;
     var allEmails = emails.split(",");
     var uids = [];
 
     for (const email of allEmails) {
+        // for every invitee, make a GET request to our Spark server to get their UID
         $.ajax({
             url: "/getUID",
             type: "get",
+            // authenticated with the current user's UID
             data: {"auth": currentUser.uid, "email": email},
+            // MUST be a synchronous request, or else uids will not update correctly
             async: false,
             success: function (data) {
                 uids.push(data);
             }});
         }
 
-    chat.createRoom(groupName, "public", function(roomId) {
+    // create a private room, invite all invitees who have an account
+    chat.createRoom(groupName, "private", function(roomId) {
         for (const uid of uids) {
-            chat.inviteUser(uid, roomId);
+            if (uid !== "") {
+                chat.inviteUser(uid, roomId);
+            }
         }
 
         document.getElementById("room-id").innerHTML =
             "<br><b> " + groupName + " group ID: </b> " + roomId;
+
+        closeCreateChat();
+        window.location.href = "/chat/" + roomId;
     })
 }
 
 function addChat() {
-    // Get a Firebase Database ref
+    // get a Firebase Database ref
     var chatRef = firebase.database().ref("chat");
-    // Create a Firechat instance
+    // create a Firechat instance
     var chat = new Firechat(chatRef);
-    var currentUser = firebase.auth().currentUser;
 
+    // get current authenticated user, set the chat's user.
+    var currentUser = firebase.auth().currentUser;
     // both userid and display name set to uid
     chat.setUser(currentUser.uid, currentUser.uid, function() {
         chat.resumeSession();
     });
 
+    // enter the desired room
     var groupId = document.getElementById("group-id-field").value;
     chat.enterRoom(groupId);
-
-    // this send message call doesn't seem to be working - it doesn't update in firebase?
-    chat.sendMessage(groupId, "ENTERED ROOM", 'default', function(){
-        console.log("sent");
-    });
 
     window.location.pathname = "/chat/" + groupId;
 }
