@@ -10,9 +10,17 @@
         <button onclick="login()" class="large-blue-button">
             Login
         </button>
-        <button onclick="createAccount()" class="large-green-button">
+        <button onclick="openCreateAccount()" class="large-green-button">
             Create Account
         </button>
+        <div id="create-account-div" class="popup-div">
+            <h2>Create Account</h2>
+            <input type="text" placeholder="Display Name" id="display-name-field"/>
+            <input type="email" placeholder="Email" id="create-email-field"/>
+            <input type="password" placeholder="Password" id="create-password-field"/>
+            <button onclick="createAccount()" class="large-green-button">Create</button>
+            <button onclick="closeCreateAccount()" class="large-black-button">Back</button>
+        </div>
     </div>
 
     <script src="/js/login.js"></script>
