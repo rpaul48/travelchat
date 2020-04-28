@@ -29,7 +29,7 @@
 
 <!-- Firechat -->
 <link rel="stylesheet" href="https://cdn.firebase.com/libs/firechat/3.0.1/firechat.min.css" />
-<script src="https://cdn.firebase.com/libs/firechat/3.0.1/firechat.min.js"></script>
+<script src="/js/firechat.js"></script>
 
 <script>
 	// Your web app's Firebase configuration
