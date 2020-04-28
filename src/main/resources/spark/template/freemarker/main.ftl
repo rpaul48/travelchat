@@ -47,10 +47,6 @@
     firebase.initializeApp(firebaseConfig);
 </script>
 
-<!-- Firechat -->
-<link rel="stylesheet" href="https://cdn.firebase.com/libs/firechat/3.0.1/firechat.min.css" />
-<script src="https://cdn.firebase.com/libs/firechat/3.0.1/firechat.min.js"></script>
-
 ${content}
 </body>
 <!-- See http://html5boilerplate.com/ for a good place to start

@@ -2,14 +2,16 @@
 var chatRef = firebase.database().ref("chat");
 
 // Create a Firechat instance
-var chat = new Firechat(chatRef);
+var chatUI = new FirechatUI(chatRef, document.getElementById("firechat-wrapper"));
+var chat = chatUI._chat;
 
 var currentUser = firebase.auth().currentUser;
-chat.setUser(currentUser.uid, currentUser.uid);
+chat.setUser(currentUser.uid, currentUser.displayName);
 
-var roomId = window.location.pathname.substring(url.lastIndexOf('/') + 1);
+var roomId = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
 chat.enterRoom(roomId);
 
+/*
 chat.on("message-add", function (msg) { updateChat(msg); });
 
 // click "send" --> send message
@@ -49,3 +51,4 @@ function insert(targetId, message) {
 function id(id) {
     return document.getElementById(id);
 }
+*/

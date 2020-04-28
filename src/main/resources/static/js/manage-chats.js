@@ -8,8 +8,27 @@ function createChat() {
 
     var groupName = document.getElementById("group-name-field").value;
 
+    var emails = document.getElementById("add-user-field").value;
+    var allEmails = emails.split(",");
+    var uids = [];
+
+    for (const email of allEmails) {
+        $.ajax({
+            url: "/getUID",
+            type: "get",
+            data: {"auth": currentUser.uid, "email": email},
+            async: false,
+            success: function (data) {
+                uids.push(data);
+            }});
+        }
+
     chat.createRoom(groupName, "public", function(roomId) {
-        document.getElementById("room-id").innerHTML +=
+        for (const uid of uids) {
+            chat.inviteUser(uid, roomId);
+        }
+
+        document.getElementById("room-id").innerHTML =
             "<br><b> " + groupName + " group ID: </b> " + roomId;
     })
 }

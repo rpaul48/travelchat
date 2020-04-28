@@ -2,7 +2,8 @@
   "name": "term-project-crusch-nnguye20-rpaul5-spark108-jmugerwa-1",
   "version": "1.0.0",
   "dependencies": {
-    "firebase": "^7.14.2"
+    "firebase": "^7.14.2",
+    "firechat": "^3.0.1"
   },
   "devDependencies": {
     "firebase-admin": "^8.11.0",

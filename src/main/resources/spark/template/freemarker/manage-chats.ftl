@@ -13,6 +13,7 @@
     <div id="create-chat-div" class="popup-div">
         <h2>Create New Chat</h2>
         <input type="text" placeholder="Group Name" id="group-name-field"/>
+        <input placeholder="User email" id="add-user-field"/>
         <p id="room-id">Your unique room ID will appear below. Your friends can use this to
         join your group!</p>
         <button onclick="createChat()" class="large-green-button">Create</button>

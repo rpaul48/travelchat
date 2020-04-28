@@ -3,6 +3,7 @@ package edu.brown.cs.student.chat;
 import edu.brown.cs.student.chat.gui.ChatFrontHandler;
 import edu.brown.cs.student.chat.gui.LoginFrontHandler;
 import edu.brown.cs.student.chat.gui.ManageChatsFrontHandler;
+import edu.brown.cs.student.chat.gui.uidHandler;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -24,7 +25,12 @@ public class Main {
   public static void main(String[] args) {
 
     // Test above this line --------------------------
-    new Main(args).run();
+    try {
+      new Main(args).run();
+    } catch (Exception ex) {
+      System.err.println("ERROR: An exception has occurred. Printing stack trace:\n");
+      ex.printStackTrace();
+    }
   }
 
   private String[] args;
@@ -41,8 +47,12 @@ public class Main {
             .defaultsTo(DEFAULT_PORT);
     OptionSet options = parser.parse(args);
 
-    runSparkServer((int) options.valueOf("port"));
-
+    try {
+      runSparkServer((int) options.valueOf("port"));
+    } catch (Exception ex) {
+      System.out.println("ERROR: An exception occurred. Printing stack trace:\n");
+      ex.printStackTrace();
+    }
     //Chat chat = new Chat();
     //Chat.main(new String[]{});
   }
@@ -60,7 +70,7 @@ public class Main {
     return new FreeMarkerEngine(config);
   }
 
-  private void runSparkServer(int port) {
+  private void runSparkServer(int port) throws IOException {
     Spark.port(getHerokuAssignedPort());
     Spark.externalStaticFileLocation("src/main/resources/static");
     Spark.exception(Exception.class, new ExceptionPrinter());
@@ -71,6 +81,7 @@ public class Main {
     Spark.get("/login", new LoginFrontHandler(), freeMarker);
     Spark.get("/manage-chats", new ManageChatsFrontHandler(), freeMarker);
     Spark.get("/chat/:roomId", new ChatFrontHandler(), freeMarker);
+    Spark.get("/getUID", new uidHandler());
   }
 
   /**

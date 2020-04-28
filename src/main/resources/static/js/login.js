@@ -11,7 +11,7 @@ firebase.auth().onAuthStateChanged(function(user) {
         } else {
             document.getElementById("chats-div").style.display = "block";
         }
-    } else if (window.location.pathname.startsWith("/chat")) {
+    } else if (window.location.pathname.startsWith("/chat/")) {
         if (!user) {
             window.location.href = "/login"
         } else {

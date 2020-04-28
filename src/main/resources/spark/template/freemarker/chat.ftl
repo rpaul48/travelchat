@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="/css/chat.css">
 <#assign content>
+    <div id="firechat-wrapper">
     <div id="chat-div">
     <div id="chatControls">
         <input id="message" placeholder="Type your message">
@@ -7,6 +8,7 @@
     </div>
     <ul id="userlist"> <!-- Built by JS --> </ul>
     <div id="chat">    <!-- Built by JS --> </div>
+    </div>
     </div>
 
     <script src="/js/login.js"></script>
