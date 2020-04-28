@@ -1,0 +1,6 @@
+to make changes to the UI:
+
+1. make updates in firechat-master/templates/
+2. make updates in firechat-master/src/less/styles.less
+3. run grunt from firechat-master/
+4. pull css/js files from firechat-master/dist/
