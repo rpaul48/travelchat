@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="/css/chat.css">
+
 <#assign content>
     <div id="firechat-wrapper">
     <div id="chat-div">

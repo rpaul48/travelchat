@@ -4,7 +4,7 @@
 
     <div id="chats-div" class="main-div">
         <h2><b>Manage Chats</b></h2>
-
+        <ul id="chats"></ul>
         <button onclick="openCreateChat()" class="large-green-button">Create new chat</button>
         <button onclick="openAddChat()" class="large-green-button">Add existing chat</button>
         <button onclick="logout()" class="large-black-button">Back</button>
