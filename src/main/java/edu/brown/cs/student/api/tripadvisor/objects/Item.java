@@ -2,35 +2,35 @@ package edu.brown.cs.student.api.tripadvisor.objects;
 
 public interface Item {
 
-  public String getName();
+  String getName();
 
-  public double getLatitude();
+  double getLatitude();
 
-  public double getLongitude();
+  double getLongitude();
 
-  public double getDistance();
+  double getDistance();
 
-  public int getNumReviews();
+  int getNumReviews();
 
-  public String getLocationString();
+  String getLocationString();
 
-  public String getPhotoUrl();
+  String getPhotoUrl();
 
-  public boolean isClosed();
+  boolean isClosed();
 
-  public void setName(String name);
+  void setName(String name);
 
-  public void setLatitude(double latitude);
+  void setLatitude(double latitude);
 
-  public void setLongitude(double longitude);
+  void setLongitude(double longitude);
 
-  public void setDistance(double distance);
+  void setDistance(double distance);
 
-  public void setNumReviews(int numReviews);
+  void setNumReviews(int numReviews);
 
-  public void setLocationString(String locationString);
+  void setLocationString(String locationString);
 
-  public void setPhotoUrl(String photoUrl);
+  void setPhotoUrl(String photoUrl);
 
-  public void setClosed(boolean isClosed);
+  void setClosed(boolean isClosed);
 }

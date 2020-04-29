@@ -76,12 +76,10 @@ public class Hotel implements Item {
     return photoUrl;
   }
 
-  @Override
   public double getRating() {
     return rating;
   }
 
-  @Override
   public String getPriceLevel() {
     return priceLevel;
   }
@@ -90,7 +88,6 @@ public class Hotel implements Item {
     return price;
   }
 
-  @Override
   public int getRanking() {
     return ranking;
   }
@@ -105,12 +102,10 @@ public class Hotel implements Item {
     this.name = name;
   }
 
-  @Override
   public String getRankingString() {
     return rankingString;
   }
 
-  @Override
   public void setRankingString(String rankingString) {
     this.rankingString = rankingString;
   }
@@ -145,12 +140,10 @@ public class Hotel implements Item {
     this.photoUrl = photoUrl;
   }
 
-  @Override
   public void setRating(double rating) {
     this.rating = rating;
   }
 
-  @Override
   public void setPriceLevel(String priceLevel) {
     this.priceLevel = priceLevel;
   }
@@ -159,7 +152,6 @@ public class Hotel implements Item {
     this.price = price;
   }
 
-  @Override
   public void setRanking(int ranking) {
     this.ranking = ranking;
   }
