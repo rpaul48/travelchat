@@ -35,3 +35,24 @@ function leaveChat() {
     chat.leaveRoom(roomId);
     window.location.href = "/manage-chats";
 }
+
+function openEditProfile() {
+    document.getElementById("firechat-wrapper").style.display = "none";
+    $("#edit-profile-div").fadeIn();
+
+}
+
+function closeEditProfile() {
+    document.getElementById("edit-profile-div").style.display = "none";
+    document.getElementById("firechat-wrapper").style.display = "block";
+}
+
+function editProfile() {
+    var name = document.getElementById("update-display-name-field").value;
+
+
+    firebase.auth().currentUser.updateProfile({displayName: name}).then(function () {
+        console.log("set displayName to: " + firebase.auth().currentUser.displayName);
+        closeEditProfile();
+    });
+}
