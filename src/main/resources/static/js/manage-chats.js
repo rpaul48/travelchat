@@ -6,7 +6,12 @@ function createChat() {
 
     // get current authenticated user, set the chat's user.
     var currentUser = firebase.auth().currentUser;
-    chat.setUser(currentUser.uid, currentUser.uid);
+    if (currentUser.displayName != null) {
+        chat.setUser(currentUser.uid, currentUser.displayName);
+    } else {
+        console.log("User displayName is null: using uid instead.");
+        chat.setUser(currentUser.uid, currentUser.uid);
+    }
 
     // get desired name for the group
     var groupName = document.getElementById("group-name-field").value;
@@ -55,9 +60,12 @@ function addChat() {
     // get current authenticated user, set the chat's user.
     var currentUser = firebase.auth().currentUser;
     // both userid and display name set to uid
-    chat.setUser(currentUser.uid, currentUser.uid, function() {
-        chat.resumeSession();
-    });
+    if (currentUser.displayName != null) {
+        chat.setUser(currentUser.uid, currentUser.displayName);
+    } else {
+        console.log("User displayName is null: using uid instead.");
+        chat.setUser(currentUser.uid, currentUser.uid);
+    }
 
     // enter the desired room
     var groupId = document.getElementById("group-id-field").value;
@@ -81,3 +89,42 @@ function openAddChat() {
 function closeAddChat() {
     document.getElementById("add-chat-div").style.display = "none";
 }
+
+function showUserChats() {
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            // get a Firebase Database ref
+            var chatRef = firebase.database().ref("chat");
+            // create a Firechat instance
+            var chat = new Firechat(chatRef);
+
+            if (user.displayName != null) {
+                chat.setUser(user.uid, user.displayName);
+            } else {
+                chat.setUser(user.uid, user.uid);
+            }
+
+            var userRooms = {};
+
+            $.ajax({
+                url: "/getUserRooms",
+                type: "get",
+                data: {"uid": user.uid},
+                async: false,
+                success: function (data) {
+                    userRooms = JSON.parse(data);
+                    for (let id of Object.keys(userRooms)) {
+                        var groupName = userRooms[id];
+                        var idString = "\'" + String(id) + "\'";
+                        $("#user-rooms").append("<button onclick=\"goToRoom(" + idString + ")\" class=\"large-green-button\">" + groupName + "</button>");
+                    }
+                }});
+        }
+    })
+}
+
+function goToRoom(groupId) {
+    window.location.pathname = "/chat/" + groupId;
+}
+
+showUserChats();

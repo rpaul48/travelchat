@@ -33,9 +33,18 @@ function login() {
     });
 }
 
+function openCreateAccount() {
+    $("#create-account-div").fadeIn();
+}
+
+function closeCreateAccount() {
+    document.getElementById("create-account-div").style.display = "none";
+}
+
 function createAccount() {
-    var userEmail = document.getElementById("email-field").value;
-    var userPass = document.getElementById("password-field").value;
+    var name = document.getElementById("display-name-field").value;
+    var userEmail = document.getElementById("create-email-field").value;
+    var userPass = document.getElementById("create-password-field").value;
 
     firebase.auth().createUserWithEmailAndPassword(userEmail, userPass).catch(function(error) {
         // Handle Errors here.
@@ -44,9 +53,19 @@ function createAccount() {
 
         window.alert("Error: " + errorMessage);
     });
+
+
+    // bug: i can't get this to execute? no console.log result and displayName stays null.
+    firebase.auth().currentUser.updateProfile({displayName: name}).then(function () {
+        console.log("set displayName to: " + firebase.auth().currentUser.displayName);
+        closeCreateAccount();
+    });
 }
 
 function logout() {
-    firebase.auth().signOut();
-    window.location.href = "/login"
+    firebase.auth().signOut().then(r =>
+        window.location.href = "/login")
+        .catch(function(error) {
+            window.location.href = "/login"
+    });
 }

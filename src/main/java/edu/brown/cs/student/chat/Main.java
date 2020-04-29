@@ -1,9 +1,9 @@
 package edu.brown.cs.student.chat;
 
-import edu.brown.cs.student.chat.gui.ChatFrontHandler;
-import edu.brown.cs.student.chat.gui.LoginFrontHandler;
-import edu.brown.cs.student.chat.gui.ManageChatsFrontHandler;
-import edu.brown.cs.student.chat.gui.uidHandler;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import edu.brown.cs.student.chat.gui.*;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -13,10 +13,7 @@ import spark.Response;
 import spark.Spark;
 import spark.template.freemarker.FreeMarkerEngine;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 
 public class Main {
 
@@ -77,11 +74,24 @@ public class Main {
 
     FreeMarkerEngine freeMarker = createEngine();
 
+    // setup connection to Firebase
+    FileInputStream serviceAccount =
+          new FileInputStream("travelchat-3120c-firebase-adminsdk-rar2p-3d1e24dc48.json");
+    FirebaseOptions options = new FirebaseOptions.Builder()
+          .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+          .setDatabaseUrl("https://travelchat-3120c.firebaseio.com")
+          .build();
+    FirebaseApp.initializeApp(options);
+
     // Setup Spark Routes
     Spark.get("/login", new LoginFrontHandler(), freeMarker);
     Spark.get("/manage-chats", new ManageChatsFrontHandler(), freeMarker);
     Spark.get("/chat/:roomId", new ChatFrontHandler(), freeMarker);
     Spark.get("/getUID", new uidHandler());
+    Spark.get("/getUserRooms", new getUserRoomsHandler());
+
+    Spark.get("/calendar", new CalendarHandler(), freeMarker);
+
   }
 
   /**

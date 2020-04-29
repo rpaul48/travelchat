@@ -8,7 +8,12 @@ firebase.auth().onAuthStateChanged(function(user) {
         var chat = chatUI._chat;
 
         // set the current chat user
-        chat.setUser(user.uid, user.uid);
+        if (user.displayName != null) {
+            chat.setUser(user.uid, user.displayName);
+        } else {
+            console.log("User displayName is null: using uid instead.");
+            chat.setUser(user.uid, user.uid);
+        }
 
         // enter the desired room, specified by the url's path
         var path = window.location.pathname;

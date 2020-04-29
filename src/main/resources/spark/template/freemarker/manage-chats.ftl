@@ -4,18 +4,16 @@
 
     <div id="chats-div" class="main-div">
         <h2><b>Manage Chats</b></h2>
-        <ul id="chats"></ul>
-        <button onclick="openCreateChat()" class="large-green-button">Create new chat</button>
-        <button onclick="openAddChat()" class="large-green-button">Add existing chat</button>
+        <div id="user-rooms"></div>
+        <button onclick="openCreateChat()" class="large-green-button">+ Create new chat</button>
         <button onclick="logout()" class="large-black-button">Back</button>
     </div>
 
     <div id="create-chat-div" class="popup-div">
         <h2>Create New Chat</h2>
         <input type="text" placeholder="Group Name" id="group-name-field"/>
-        <input placeholder="User email" id="add-user-field"/>
-        <p id="room-id">Your unique room ID will appear below. Your friends can use this to
-        join your group!</p>
+        <input placeholder="Comma-separated invitee emails" id="add-user-field"/>
+        <p id="room-id"></p>
         <button onclick="createChat()" class="large-green-button">Create</button>
         <button onclick="closeCreateChat()" class="large-black-button">Back</button>
     </div>
