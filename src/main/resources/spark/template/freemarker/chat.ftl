@@ -1,5 +1,4 @@
 <link rel="stylesheet" href="/css/chat.css">
-<link rel="stylesheet" href="/css/travelchat.css">
 
 <#assign content>
     <div class="sidenav">
