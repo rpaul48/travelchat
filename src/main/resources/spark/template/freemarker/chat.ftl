@@ -3,7 +3,7 @@
 
 <#assign content>
 
-    <img src="images/TravelChat-Banner.png" alt="TravelChat">
+    <img src="/images/TravelChat-Banner.png" alt="TravelChat">
 
     <div class="sidewrapper">
         <div class="sidenav">
