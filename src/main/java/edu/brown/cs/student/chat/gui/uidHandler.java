@@ -14,9 +14,7 @@ public class uidHandler implements Route {
     String ret = "";
     QueryParamsMap qm = request.queryMap();
 
-    System.out.println("Printing request: " + qm.toString());
     String auth = qm.value("auth");
-    System.out.println("Printing auth: " + auth);
 
     try {
       // look up the provided uid. if it exists, we carry on and perform the lookup, since
@@ -24,8 +22,10 @@ public class uidHandler implements Route {
       FirebaseAuth.getInstance().getUser(auth);
 
       String email = qm.value("email");
-      UserRecord userRecord = FirebaseAuth.getInstance().getUserByEmail(email);
-      ret = userRecord.getUid();
+      if (email != null && !email.equals("")) {
+        UserRecord userRecord = FirebaseAuth.getInstance().getUserByEmail(email);
+        ret = userRecord.getUid();
+      }
     } catch (Exception ex) {
       System.err.println("ERROR: An exception occurred. Printing stack trace:\n");
       ex.printStackTrace();

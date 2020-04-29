@@ -18,7 +18,6 @@ public class getUserRoomsHandler implements Route {
   @Override
   public JSONObject handle(Request request, Response response) throws InterruptedException {
     final boolean[] done = {false};
-    JSONObject ret = new JSONObject();
     Map<String, String> jsonMap = new HashMap<>();
     QueryParamsMap qm = request.queryMap();
 
@@ -60,7 +59,7 @@ public class getUserRoomsHandler implements Route {
       ex.printStackTrace();
       Thread.currentThread().interrupt();
     }
-    ret = new JSONObject(jsonMap);
+    JSONObject ret = new JSONObject(jsonMap);
     return ret;
   }
 }

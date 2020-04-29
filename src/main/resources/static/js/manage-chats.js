@@ -49,6 +49,7 @@ function createChat() {
         document.getElementById("room-id").innerHTML =
             "<br><b> " + groupName + " group ID: </b> " + roomId;
 
+        chat.enterRoom(roomId);
         closeCreateChat();
         window.location.href = "/chat/" + roomId;
     })
