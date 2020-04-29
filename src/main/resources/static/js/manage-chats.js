@@ -8,8 +8,11 @@ function createChat() {
     var currentUser = firebase.auth().currentUser;
     if (currentUser.displayName != null) {
         chat.setUser(currentUser.uid, currentUser.displayName);
+    } else if (currentUser.emailVerified != null) {
+        console.log("User displayName is null: using emailVerified instead.");
+        chat.setUser(currentUser.uid, currentUser.emailVerified);
     } else {
-        console.log("User displayName is null: using uid instead.");
+        console.log("User displayName and emailVerified are null: using uid instead.");
         chat.setUser(currentUser.uid, currentUser.uid);
     }
 
@@ -63,8 +66,11 @@ function addChat() {
     // both userid and display name set to uid
     if (currentUser.displayName != null) {
         chat.setUser(currentUser.uid, currentUser.displayName);
+    } else if (currentUser.emailVerified != null) {
+        console.log("User displayName is null: using emailVerified instead.");
+        chat.setUser(currentUser.uid, currentUser.emailVerified);
     } else {
-        console.log("User displayName is null: using uid instead.");
+        console.log("User displayName and emailVerified are null: using uid instead.");
         chat.setUser(currentUser.uid, currentUser.uid);
     }
 

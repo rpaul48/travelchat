@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="/css/chat.css">
+<link rel="stylesheet" href="/css/travelchat.css">
 
 <#assign content>
     <div class="sidenav">
@@ -16,6 +17,8 @@
         <div id="firechat-wrapper">
         </div>
     </div>
+
+    <button onclick="leaveChat()" id="leave-chat" class="large-red-button">Leave Chat</button>
 
     <script src="/js/login.js"></script>
     <script src="/js/chat.js"></script>
