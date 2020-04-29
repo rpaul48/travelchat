@@ -1,15 +1,20 @@
 <link rel="stylesheet" href="/css/chat.css">
 
 <#assign content>
-    <div id="firechat-wrapper">
-    <div id="chat-div">
-    <div id="chatControls">
-        <input id="message" placeholder="Type your message">
-        <button id="send">Send</button>
+    <div class="sidenav">
+        <a id="manage-chats" href="/manage-chats">< Go Home</a>
+        <a href="#">Chat</a>
+        <a href="/calendar">Calendar</a>
+        <a href="#">Specify Time/Budget</a>
+        <a href="#">Choose Location</a>
+        <a href="#">Choose Flights</a>
+        <a href="#">Choose Housing</a>
+        <a href="#">Choose Activities</a>
     </div>
-    <ul id="userlist"> <!-- Built by JS --> </ul>
-    <div id="chat">    <!-- Built by JS --> </div>
-    </div>
+
+    <div class="main">
+        <div id="firechat-wrapper">
+        </div>
     </div>
 
     <script src="/js/login.js"></script>
