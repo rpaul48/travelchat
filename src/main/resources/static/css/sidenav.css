@@ -30,6 +30,11 @@
     text-align: center;
     margin-bottom: 30px;
 }
+.sidewrapper .sidenav #back{
+    color: #fff;
+    text-align: center;
+    margin-bottom: 30px;
+}
 
 .sidewrapper .sidenav ul li{
     padding: 15px;
