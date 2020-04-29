@@ -3,42 +3,34 @@ package edu.brown.cs.student.api.tripadvisor.objects;
 //public class Attraction {
 //  private GeoLocation geoLocation;
 //}
-
+/**
+ * This is a class for Attraction.
+ *
+ */
 public class Attraction implements Item {
   private String name; // field "name"
   private double latitude; // field "latitude"
   private double longitude; // field "longitude"
   private double distance; // field "distance"
-  private String distanceString; // field "distance_string"
   private int numReviews; // field "num_reviews"
   private String locationString; // field "location_string"
   private String photoUrl; // field "photo"-"images"-"small"-"url"
-  private double rating; // field "rating" (out of 5.0)
-  private String priceLevel; // field "price_level" (ex. $$)
-  private String priceRange; // field "price" (ex. $141 - $533)
-  private int ranking; // field "ranking_position"
-  private String rankingString; // field "ranking"
+  private String price; // field "lowest_price" (ex. "$20.00")
   private boolean isClosed; // field "is_closed"
 
   public Attraction() {
   }
 
-  public Attraction(String name, double latitude, double longitude, double distance,
-      String distanceString, int numReviews, String locationString, String photoUrl, double rating,
-      String priceLevel, String priceRange, int ranking, String rankingString, boolean isClosed) {
+  public Attraction(String name, double latitude, double longitude, double distance, int numReviews,
+      String locationString, String photoUrl, String price, String priceRange, boolean isClosed) {
     this.name = name;
     this.latitude = latitude;
     this.longitude = longitude;
     this.distance = distance;
-    this.distanceString = distanceString;
     this.numReviews = numReviews;
     this.locationString = locationString;
     this.photoUrl = photoUrl;
-    this.rating = rating;
-    this.priceLevel = priceLevel;
-    this.priceRange = priceRange;
-    this.ranking = ranking;
-    this.rankingString = rankingString;
+    this.price = price;
     this.isClosed = isClosed;
   }
 
@@ -77,44 +69,13 @@ public class Attraction implements Item {
     return photoUrl;
   }
 
-  @Override
-  public double getRating() {
-    return rating;
-  }
-
-  @Override
-  public String getPriceLevel() {
-    return priceLevel;
-  }
-
-  @Override
-  public String getPriceRange() {
-    return priceRange;
-  }
-
-  @Override
-  public int getRanking() {
-    return ranking;
-  }
-
-  @Override
-  public String getRankingString() {
-    return rankingString;
-  }
-
-  @Override
-  public String getDistanceString() {
-    return distanceString;
+  public String getPrice() {
+    return price;
   }
 
   @Override
   public boolean isClosed() {
     return isClosed;
-  }
-
-  @Override
-  public void setDistanceString(String distanceString) {
-    this.distanceString = distanceString;
   }
 
   @Override
@@ -152,29 +113,8 @@ public class Attraction implements Item {
     this.photoUrl = photoUrl;
   }
 
-  @Override
-  public void setRating(double rating) {
-    this.rating = rating;
-  }
-
-  @Override
-  public void setPriceLevel(String priceLevel) {
-    this.priceLevel = priceLevel;
-  }
-
-  @Override
-  public void setPriceRange(String priceRange) {
-    this.priceRange = priceRange;
-  }
-
-  @Override
-  public void setRanking(int ranking) {
-    this.ranking = ranking;
-  }
-
-  @Override
-  public void setRankingString(String rankingString) {
-    this.rankingString = rankingString;
+  public void setPrice(String price) {
+    this.price = price;
   }
 
   @Override

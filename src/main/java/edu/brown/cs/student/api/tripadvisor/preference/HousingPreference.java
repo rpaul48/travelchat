@@ -28,6 +28,14 @@ public class HousingPreference implements Preference {
   // can add more fields if needed
   private Map<String, Object> fields;
 
+  public HousingPreference() {
+    fields = new HashMap<>();
+  }
+
+  public HousingPreference(Map<String, Object> fields) {
+    this.fields = fields;
+  }
+
   public HousingPreference(double latitude, double longitude, double rating, double pricesmax,
       int rooms, List<String> amenities, String checkin, int nights) {
     this.latitude = latitude;
@@ -44,11 +52,13 @@ public class HousingPreference implements Preference {
   @Override
   public void buildFields() {
     String strAmenities = "";
-    for (int i = 0; i < this.amenities.size() - 1; i++) {
-      strAmenities += this.amenities.get(i);
-      strAmenities += ",";
+    if (this.amenities != null) {
+      for (int i = 0; i < this.amenities.size() - 1; i++) {
+        strAmenities += this.amenities.get(i);
+        strAmenities += ",";
+      }
+      strAmenities += this.amenities.get(this.amenities.size() - 1);
     }
-    strAmenities += this.amenities.get(this.amenities.size() - 1);
 
     fields = new HashMap<>();
     fields.put("limit", 10); // adjust
@@ -65,7 +75,19 @@ public class HousingPreference implements Preference {
 
   @Override
   public String getQueryString() throws UnirestException {
-    if (latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180) {
+    // Latitude and longitude are required parameters. Query cannot be run without
+    // them.
+    if (!fields.containsKey("latitude") || !fields.containsKey("longitude")) {
+      System.err.println("ERROR: Latitude or longitude missing.");
+      return null;
+    }
+
+    // If fields is passed directly into constructor, latitude and longitude might
+    // not have been assigned.
+    latitude = (double) fields.get("latitude");
+    longitude = (double) fields.get("longitude");
+
+    if (!(latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180)) {
       System.err.println("ERROR: Latitude or longitude invalid");
       return null;
     }
@@ -80,38 +102,38 @@ public class HousingPreference implements Preference {
 
   @Override
   public List<Item> parseResult() throws JSONException, UnirestException {
-    JSONObject obj = new JSONObject(this.getQueryString());
-    if (obj.get("error") != null) {
-      System.err.println("ERROR: Error in query");
-      return null;
-    }
-
     List<Item> hotelsList = new ArrayList<Item>();
-    JSONArray hotelsArr = (JSONArray) obj.get("data");
-    // goes through all of the hotels recommended
-    for (int i = 0; i < hotelsArr.length(); i++) {
-      Hotel hotel = new Hotel();
-      JSONObject hotelObj = (JSONObject) hotelsArr.get(i);
 
-      JSONObject photoObj = (JSONObject) hotelObj.get("photo");
-      JSONObject imagesObj = (JSONObject) photoObj.get("images");
-      JSONObject smallObj = (JSONObject) imagesObj.get("small");
+    try {
+      JSONObject obj = new JSONObject(this.getQueryString());
+      JSONArray hotelsArr = (JSONArray) obj.get("data");
+      // goes through all of the hotels recommended
+      for (int i = 0; i < hotelsArr.length(); i++) {
+        Hotel hotel = new Hotel();
+        JSONObject hotelObj = (JSONObject) hotelsArr.get(i);
 
-      hotel.setPhotoUrl(smallObj.getString("url"));
-      hotel.setName(hotelObj.getString("name"));
-      hotel.setLatitude(hotelObj.getDouble("latitude"));
-      hotel.setLongitude(hotelObj.getDouble("longitude"));
-      hotel.setDistance(hotelObj.getDouble("distance"));
-      hotel.setNumReviews(hotelObj.getInt("num_reviews"));
-      hotel.setLocationString(hotelObj.getString("location_string"));
-      hotel.setRating(hotelObj.getDouble("rating"));
-      hotel.setPriceLevel(hotelObj.getString("price_level"));
-      hotel.setPriceRange(hotelObj.getString("price"));
-      hotel.setRanking(hotelObj.getInt("ranking_position"));
-      hotel.setRankingString(hotelObj.getString("ranking"));
-      hotel.setClosed(hotelObj.getBoolean("is_closed"));
+        JSONObject photoObj = (JSONObject) hotelObj.get("photo");
+        JSONObject imagesObj = (JSONObject) photoObj.get("images");
+        JSONObject smallObj = (JSONObject) imagesObj.get("small");
 
-      hotelsList.add(hotel);
+        hotel.setPhotoUrl(smallObj.getString("url"));
+        hotel.setName(hotelObj.getString("name"));
+        hotel.setLatitude(hotelObj.getDouble("latitude"));
+        hotel.setLongitude(hotelObj.getDouble("longitude"));
+        hotel.setDistance(hotelObj.getDouble("distance"));
+        hotel.setNumReviews(hotelObj.getInt("num_reviews"));
+        hotel.setLocationString(hotelObj.getString("location_string"));
+        hotel.setRating(hotelObj.getDouble("rating"));
+        hotel.setPriceLevel(hotelObj.getString("price_level"));
+        hotel.setPrice(hotelObj.getString("price"));
+        hotel.setRanking(hotelObj.getInt("ranking_position"));
+        hotel.setRankingString(hotelObj.getString("ranking"));
+        hotel.setClosed(hotelObj.getBoolean("is_closed"));
+
+        hotelsList.add(hotel);
+      }
+    } catch (org.json.JSONException exception) {
+      System.err.println("ERROR: Missing element in API result causing error in parsing.");
     }
 
     return hotelsList;
@@ -171,23 +193,36 @@ public class HousingPreference implements Preference {
   @Override
   public void setLatitude(double latitude) {
     this.latitude = latitude;
+    fields.put("latitude", latitude);
   }
 
   @Override
   public void setLongitude(double longitude) {
     this.longitude = longitude;
+    fields.put("longitude", longitude);
   }
 
   public void setRooms(int rooms) {
     this.rooms = rooms;
+    fields.put("rooms", rooms);
   }
 
   public void setAmenities(List<String> amenities) {
     this.amenities = amenities;
+    String strAmenities = "";
+    if (this.amenities != null) {
+      for (int i = 0; i < this.amenities.size() - 1; i++) {
+        strAmenities += this.amenities.get(i);
+        strAmenities += ",";
+      }
+      strAmenities += this.amenities.get(this.amenities.size() - 1);
+    }
+    fields.put("amenities", strAmenities);
   }
 
   public void setCheckin(String checkin) {
     this.checkin = checkin;
+    fields.put("checkin", checkin);
   }
 
   @Override
@@ -197,5 +232,6 @@ public class HousingPreference implements Preference {
 
   public void setNights(int nights) {
     this.nights = nights;
+    fields.put("nights", nights);
   }
 }

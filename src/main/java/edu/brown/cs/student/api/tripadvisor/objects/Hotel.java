@@ -9,13 +9,12 @@ public class Hotel implements Item {
   private double latitude; // field "latitude"
   private double longitude; // field "longitude"
   private double distance; // field "distance"
-  private String distanceString; // field "distance_string"
   private int numReviews; // field "num_reviews"
   private String locationString; // field "location_string"
   private String photoUrl; // field "photo"-"images"-"small"-"url"
   private double rating; // field "rating" (out of 5.0)
   private String priceLevel; // field "price_level" (ex. $$)
-  private String priceRange; // field "price" (ex. $141 - $533)
+  private String price; // field "price" (ex. $141 - $533)
   private int ranking; // field "ranking_position"
   private String rankingString; // field "ranking"
   private boolean isClosed; // field "is_closed"
@@ -23,32 +22,23 @@ public class Hotel implements Item {
   public Hotel() {
   }
 
-  public Hotel(String name, double latitude, double longitude, double distance,
-      String distanceString, int numReviews, String locationString, String photoUrl, double rating,
-      String priceLevel, String priceRange, int ranking, boolean isClosed) {
+  public Hotel(String name, double latitude, double longitude, double distance, int numReviews,
+      String locationString, String photoUrl, double rating, String priceLevel, String price,
+      int ranking, String rankingString, boolean isClosed) {
+    super();
     this.name = name;
     this.latitude = latitude;
     this.longitude = longitude;
     this.distance = distance;
-    this.distanceString = distanceString;
     this.numReviews = numReviews;
     this.locationString = locationString;
     this.photoUrl = photoUrl;
     this.rating = rating;
     this.priceLevel = priceLevel;
-    this.priceRange = priceRange;
+    this.price = price;
     this.ranking = ranking;
+    this.rankingString = rankingString;
     this.isClosed = isClosed;
-  }
-
-  @Override
-  public String getDistanceString() {
-    return distanceString;
-  }
-
-  @Override
-  public void setDistanceString(String distanceString) {
-    this.distanceString = distanceString;
   }
 
   @Override
@@ -96,9 +86,8 @@ public class Hotel implements Item {
     return priceLevel;
   }
 
-  @Override
-  public String getPriceRange() {
-    return priceRange;
+  public String getPrice() {
+    return price;
   }
 
   @Override
@@ -166,9 +155,8 @@ public class Hotel implements Item {
     this.priceLevel = priceLevel;
   }
 
-  @Override
-  public void setPriceRange(String priceRange) {
-    this.priceRange = priceRange;
+  public void setPrice(String price) {
+    this.price = price;
   }
 
   @Override
