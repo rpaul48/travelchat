@@ -337,7 +337,7 @@
 #firechat .nav-tabs > li {
   float: left;
   margin-bottom: -1px;
-  max-width: 45%;
+  max-width: 70%;
 }
 #firechat .nav-tabs > li > a {
   -webkit-border-top-right-radius: 4px;

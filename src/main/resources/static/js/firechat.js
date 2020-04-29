@@ -12,7 +12,7 @@ this["FirechatDefaultTemplates"]["templates/layout-popout.html"] = function(obj)
 
 this["FirechatDefaultTemplates"]["templates/message-context-menu.html"] = function(obj) {obj || (obj = {});var __t, __p = '', __e = _.escape, __j = Array.prototype.join;function print() { __p += __j.call(arguments, '') }with (obj) {__p += '<div data-toggle=\'firechat-contextmenu\' class=\'contextmenu\' data-message-id=\'' +__e( id ) +'\'>\n<ul>\n<li><a href=\'#!\' data-event=\'firechat-user-warn\'>Warn User</a></li>\n'; if (allowKick) { ;__p += '\n<li><a href=\'#!\' data-event=\'firechat-user-kick\'>Kick User</a></li>\n'; } ;__p += '\n<li><a href=\'#!\' data-event=\'firechat-user-suspend-hour\'>Suspend User (1 Hour)</a></li>\n<li><a href=\'#!\' data-event=\'firechat-user-suspend-day\'>Suspend User (1 Day)</a></li>\n<li><a href=\'#!\' data-event=\'firechat-message-delete\'>Delete Message</a></li>\n</ul>\n</div>';}return __p};
 
-this["FirechatDefaultTemplates"]["templates/message.html"] = function(obj) {obj || (obj = {});var __t, __p = '', __e = _.escape, __j = Array.prototype.join;function print() { __p += __j.call(arguments, '') }with (obj) {__p += '<div class=\'message message-' +__e( type ) +' '; if (isSelfMessage) { ;__p += ' message-self '; } ;__p += '\' data-message-id=\'' +__e( id ) +'\' data-user-id=\'' +__e( userId ) +'\' data-user-name=\'' +__e( name ) +'\' data-class="firechat-message">\n<div class=\'clearfix\'>\n<label class=\'fourfifth\'>\n<strong class=\'name\' title=\'' +__e( name ) +'\'>' +__e( name ) +'</strong>\n<em>(' +__e( localtime ) +')</em>:\n</label>'; if (!disableActions) { ;__p += '\n<label class=\'fifth alignright\'>\n<a href=\'#!\' data-event=\'firechat-user-chat\' class=\'icon user-chat\' title=\'Invite to Private Chat\'>&nbsp;</a>\n<a href=\'#!\' data-event=\'firechat-user-mute-toggle\' class=\'icon user-mute\' title=\'Mute User\'>&nbsp;</a>\n</label>\n'; } ;__p += '</div>\n<div class=\'clearfix message-content\'>\n' +((__t = ( message )) == null ? '' : __t) +'\n</div>\n</div>';}return __p};
+this["FirechatDefaultTemplates"]["templates/message.html"] = function(obj) {obj || (obj = {});var __t, __p = '', __e = _.escape, __j = Array.prototype.join;function print() { __p += __j.call(arguments, '') }with (obj) {__p += '<div class=\'message message-' +__e( type ) +' '; if (isSelfMessage) { ;__p += ' message-self '; } ;__p += '\'\ndata-message-id=\'' +__e( id ) +'\' data-user-id=\'' +__e( userId ) +'\' data-user-name=\'' +__e( name ) +'\' data-class="firechat-message">\n<div class=\'clearfix\'>\n<label class=\'fourfifth\'>\n<strong class=\'name\' title=\'' +__e( name ) +'\'>' +__e( name ) +'</strong>\n<em>(' +__e( localtime ) +')</em>:\n</label>'; if (!disableActions) { ;__p += '\n<label class=\'fifth alignright\'>\n<a href=\'#!\' data-event=\'firechat-user-chat\' class=\'icon user-chat\' title=\'Invite to Private Chat\'>&nbsp;</a>\n<a href=\'#!\' data-event=\'firechat-user-mute-toggle\' class=\'icon user-mute\' title=\'Mute User\'>&nbsp;</a>\n</label>\n'; } ;__p += '</div>\n<div class=\'clearfix message-content\'>\n' +((__t = ( message )) == null ? '' : __t) +'\n</div>\n</div>';}return __p};
 
 this["FirechatDefaultTemplates"]["templates/prompt-alert.html"] = function(obj) {obj || (obj = {});var __t, __p = '', __e = _.escape;with (obj) {__p += '<div class=\'aligncenter clearfix\'>\n<h6>' +__e( message ) +'</h6>\n<p class=\'clearfix\'>\n<button type=\'button\' class=\'btn quarter right close\'>Close</button>\n</p>\n</div>';}return __p};
 
@@ -47,15 +47,15 @@ this["FirechatDefaultTemplates"]["templates/user-search-list-item.html"] = funct
       if (typeof this !== "function") {
         throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
       }
-  
-      var aArgs = Array.prototype.slice.call(arguments, 1), 
-          fToBind = this, 
+
+      var aArgs = Array.prototype.slice.call(arguments, 1),
+          fToBind = this,
           fNOP = function() {},
           fBound = function() {
             return fToBind.apply(this instanceof fNOP && oThis ? this : oThis,
-                                 aArgs.concat(Array.prototype.slice.call(arguments)));
+                aArgs.concat(Array.prototype.slice.call(arguments)));
           };
-   
+
       fNOP.prototype = this.prototype;
       fBound.prototype = new fNOP();
       return fBound;
@@ -63,14 +63,14 @@ this["FirechatDefaultTemplates"]["templates/user-search-list-item.html"] = funct
   }
 
   // Shim for Object.keys(...) - (Required by IE < 9, FF < 4)
-  Object.keys = Object.keys || function(oObj) {  
-    var result = [];  
-    for (var name in oObj) {  
+  Object.keys = Object.keys || function(oObj) {
+    var result = [];
+    for (var name in oObj) {
       if (oObj.hasOwnProperty(name)) {
-        result.push(name);  
+        result.push(name);
       }
-    }  
-    return result;  
+    }
+    return result;
   };
 
 })();
@@ -83,7 +83,7 @@ this["FirechatDefaultTemplates"]["templates/user-search-list-item.html"] = funct
 // entering, or leaving chat rooms, initiating chats, sending messages,
 // and moderator actions such as warning, kicking, or suspending users.
 //
-//     firechat.js 3.0.1
+//     firechat.js 0.0.0
 //     https://firebase.google.com
 //     (c) 2016 Firebase
 //     License: MIT
@@ -985,9 +985,9 @@ this["FirechatDefaultTemplates"]["templates/user-search-list-item.html"] = funct
     var self = this,
         parseMessageVars = function(event) {
           var $this = $(this),
-          messageId = $this.closest('[data-message-id]').data('message-id'),
-          userId = $('[data-message-id="' + messageId + '"]').closest('[data-user-id]').data('user-id'),
-          roomId = $('[data-message-id="' + messageId + '"]').closest('[data-room-id]').data('room-id');
+              messageId = $this.closest('[data-message-id]').data('message-id'),
+              userId = $('[data-message-id="' + messageId + '"]').closest('[data-user-id]').data('user-id'),
+              roomId = $('[data-message-id="' + messageId + '"]').closest('[data-room-id]').data('room-id');
 
           return { messageId: messageId, userId: userId, roomId: roomId };
         },
@@ -1020,7 +1020,8 @@ this["FirechatDefaultTemplates"]["templates/user-search-list-item.html"] = funct
           self._chat.getRoom(messageVars.roomId, function(room) {
             // Show the context menu.
             $template = $(template({
-              id: $message.data('message-id')
+              id: $message.data('message-id'),
+              allowKick: false
             }));
             $template.css({
               left: event.clientX,
@@ -1224,16 +1225,16 @@ this["FirechatDefaultTemplates"]["templates/user-search-list-item.html"] = funct
               // Sort out configuration for the 'next' button
               if (lastResult) {
                 $nextBtn
-                  .data('event', 'firechat-user-search')
-                  .data('startAt', lastResult)
-                  .data('prefix', prefix)
-                  .removeClass('disabled').removeAttr('disabled');
+                    .data('event', 'firechat-user-search')
+                    .data('startAt', lastResult)
+                    .data('prefix', prefix)
+                    .removeClass('disabled').removeAttr('disabled');
               } else {
                 $nextBtn
-                  .data('event', null)
-                  .data('startAt', null)
-                  .data('prefix', null)
-                  .addClass('disabled').attr('disabled', 'disabled');
+                    .data('event', null)
+                    .data('startAt', null)
+                    .data('prefix', null)
+                    .addClass('disabled').attr('disabled', 'disabled');
               }
             }
           });
@@ -1447,9 +1448,9 @@ this["FirechatDefaultTemplates"]["templates/user-search-list-item.html"] = funct
 
           function next() {
             $active
-              .removeClass('active')
-              .find('> .firechat-dropdown-menu > .active')
-              .removeClass('active');
+                .removeClass('active')
+                .find('> .firechat-dropdown-menu > .active')
+                .removeClass('active');
 
             element.addClass('active');
 
@@ -1475,7 +1476,7 @@ this["FirechatDefaultTemplates"]["templates/user-search-list-item.html"] = funct
           }
 
           $active.removeClass('in');
-      };
+        };
 
     $(document).delegate('[data-toggle="firechat-tab"]', 'click', function(event) {
       event.preventDefault();
@@ -1529,7 +1530,7 @@ this["FirechatDefaultTemplates"]["templates/user-search-list-item.html"] = funct
           return $parent;
         };
 
-      $(document)
+    $(document)
         .bind('click', clearMenus)
         .delegate('.firechat-dropdown-menu', 'click', function(event) { event.stopPropagation(); })
         .delegate('[data-toggle=firechat-dropdown]', 'click', toggleDropdown);
@@ -1562,11 +1563,11 @@ this["FirechatDefaultTemplates"]["templates/user-search-list-item.html"] = funct
     var template = FirechatDefaultTemplates["templates/prompt-alert.html"],
         $prompt = this.prompt(title, template({ message: message }));
 
-      $prompt.find('.close').click(function() {
-        $prompt.remove();
-        return false;
-      });
-      return;
+    $prompt.find('.close').click(function() {
+      $prompt.remove();
+      return false;
+    });
+    return;
   };
 
   /**
@@ -1767,9 +1768,9 @@ this["FirechatDefaultTemplates"]["templates/user-search-list-item.html"] = funct
    */
   FirechatUI.prototype.sortListLexicographically = function(selector) {
     $(selector).children("li").sort(function(a, b) {
-        var upA = $(a).text().toUpperCase();
-        var upB = $(b).text().toUpperCase();
-        return (upA < upB) ? -1 : (upA > upB) ? 1 : 0;
+      var upA = $(a).text().toUpperCase();
+      var upB = $(b).text().toUpperCase();
+      return (upA < upB) ? -1 : (upA > upB) ? 1 : 0;
     }).appendTo(selector);
   };
 
@@ -1868,8 +1869,8 @@ this["FirechatDefaultTemplates"]["templates/user-search-list-item.html"] = funct
   FirechatUI.prototype.linkify = function(str) {
     var self = this;
     return str
-      .replace(self.urlPattern, '<a target="_blank" href="$&">$&</a>')
-      .replace(self.pseudoUrlPattern, '$1<a target="_blank" href="http://$2">$2</a>');
+        .replace(self.urlPattern, '<a target="_blank" href="$&">$&</a>')
+        .replace(self.pseudoUrlPattern, '$1<a target="_blank" href="http://$2">$2</a>');
   };
 
 })(jQuery);

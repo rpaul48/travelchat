@@ -6,6 +6,8 @@
     <!-- In real-world webapps, css is usually minified and
          concatenated. Here, separate normalize from our code, and
          avoid minification for clarity. -->
+    <!-- Place your kit's code here -->
+    <script src="https://kit.fontawesome.com/b6b689005b.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <!-- Again, we're serving up the unminified source for clarity. -->

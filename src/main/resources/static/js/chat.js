@@ -36,14 +36,13 @@ function leaveChat() {
     window.location.href = "/manage-chats";
 }
 
-function openEditProfile() {
+function openSettings() {
     document.getElementById("firechat-wrapper").style.display = "none";
-    $("#edit-profile-div").fadeIn();
-
+    $("#settings-div").fadeIn();
 }
 
 function closeEditProfile() {
-    document.getElementById("edit-profile-div").style.display = "none";
+    document.getElementById("settings-div").style.display = "none";
     document.getElementById("firechat-wrapper").style.display = "block";
 }
 
