@@ -10,8 +10,11 @@ firebase.auth().onAuthStateChanged(function(user) {
         // set the current chat user
         if (user.displayName != null) {
             chat.setUser(user.uid, user.displayName);
+        } else if (user.emailVerified != null) {
+            console.log("User displayName is null: using email instead.");
+            chat.setUser(user.uid, user.email);
         } else {
-            console.log("User displayName is null: using uid instead.");
+            console.log("User displayName and emailVerified are null: using uid instead.");
             chat.setUser(user.uid, user.uid);
         }
 
