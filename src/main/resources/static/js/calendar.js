@@ -53,10 +53,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     resetModal();
                     modal.style.display = "block";
                 }
+            },
+            goBack: {
+                text: 'Go Back',
+                click: function() {
+                    window.history.back();
+                }
             }
         },
         header: {
-            left:   'title',
+            left:   'goBack,title',
             center: 'addEvent',
             right:  'prev,next'
         },
