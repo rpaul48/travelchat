@@ -54,5 +54,6 @@ function editProfile() {
     firebase.auth().currentUser.updateProfile({displayName: name}).then(function () {
         console.log("set displayName to: " + firebase.auth().currentUser.displayName);
         closeEditProfile();
+        location.reload();
     });
 }
