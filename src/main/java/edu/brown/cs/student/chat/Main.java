@@ -89,6 +89,9 @@ public class Main {
     Spark.get("/chat/:roomId", new ChatFrontHandler(), freeMarker);
     Spark.get("/getUID", new uidHandler());
     Spark.get("/getUserRooms", new getUserRoomsHandler());
+
+    Spark.get("/calendar", new CalendarHandler(), freeMarker);
+
   }
 
   /**
