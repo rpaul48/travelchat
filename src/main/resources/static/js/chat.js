@@ -1,3 +1,6 @@
+let chat;
+let roomId;
+
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
         // get a Firebase Database ref
@@ -5,7 +8,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 
         // create a FirechatUI instance, get the corresponding Firechat instance
         var chatUI = new FirechatUI(chatRef, document.getElementById("firechat-wrapper"));
-        var chat = chatUI._chat;
+        chat = chatUI._chat;
 
         // set the current chat user
         if (user.displayName != null) {
@@ -20,10 +23,15 @@ firebase.auth().onAuthStateChanged(function(user) {
 
         // enter the desired room, specified by the url's path
         var path = window.location.pathname;
-        var roomId = path.substring(path.lastIndexOf('/') + 1);
+        roomId = path.substring(path.lastIndexOf('/') + 1);
         chat.enterRoom(roomId);
     } else {
         // user is not logged in, redirect to login
-        this.window.href = "/login";
+        window.location.href = "/login";
     }
 });
+
+function leaveChat() {
+    chat.leaveRoom(roomId);
+    window.location.href = "/manage-chats";
+}
