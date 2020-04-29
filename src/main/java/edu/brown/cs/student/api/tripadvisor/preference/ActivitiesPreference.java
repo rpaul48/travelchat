@@ -17,15 +17,22 @@ import edu.brown.cs.student.api.tripadvisor.objects.Attraction;
 import edu.brown.cs.student.api.tripadvisor.objects.Item;
 
 public class ActivitiesPreference implements Preference {
-  private double longitude;
   private double latitude;
+  private double longitude;
   private double distance;
   private Map<String, Object> fields;
 
-  public ActivitiesPreference(double longitude, double latitude, double distance) {
-    super();
-    this.longitude = longitude;
+  public ActivitiesPreference() {
+    fields = new HashMap<>();
+  }
+
+  public ActivitiesPreference(Map<String, Object> fields) {
+    this.fields = fields;
+  }
+
+  public ActivitiesPreference(double latitude, double longitude, double distance) {
     this.latitude = latitude;
+    this.longitude = longitude;
     this.distance = distance;
     this.buildFields();
   }
@@ -44,7 +51,19 @@ public class ActivitiesPreference implements Preference {
 
   @Override
   public String getQueryString() throws UnirestException {
-    if (latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180) {
+    // Latitude and longitude are required parameters. Query cannot be run without
+    // them.
+    if (!fields.containsKey("latitude") || !fields.containsKey("longitude")) {
+      System.err.println("ERROR: Latitude or longitude missing.");
+      return null;
+    }
+
+    // If fields is passed directly into constructor, latitude and longitude might
+    // not have been assigned.
+    latitude = (double) fields.get("latitude");
+    longitude = (double) fields.get("longitude");
+
+    if (!(latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180)) {
       System.err.println("ERROR: Latitude or longitude invalid");
       return null;
     }
@@ -59,41 +78,40 @@ public class ActivitiesPreference implements Preference {
 
   @Override
   public List<Item> parseResult() throws JSONException, UnirestException {
-    JSONObject obj = new JSONObject(this.getQueryString());
-    if (obj.get("error") != null) {
-      System.err.println("ERROR: Error in query");
-      return null;
-    }
-
     List<Item> attractionsList = new ArrayList<Item>();
-    JSONArray attractionsArr = (JSONArray) obj.get("data");
-    // goes through all of the attractions recommended
-    for (int i = 0; i < attractionsArr.length(); i++) {
-      Attraction attraction = new Attraction();
-      JSONObject attractionObj = (JSONObject) attractionsArr.get(i);
 
-      JSONObject photoObj = (JSONObject) attractionObj.get("photo");
-      JSONObject imagesObj = (JSONObject) photoObj.get("images");
-      JSONObject smallObj = (JSONObject) imagesObj.get("small");
+    try {
+      JSONObject obj = new JSONObject(this.getQueryString());
+      JSONArray attractionsArr = (JSONArray) obj.get("data");
+      // goes through all of the attractions recommended
+      for (int i = 0; i < attractionsArr.length(); i++) {
+        Attraction attraction = new Attraction();
+        JSONObject attractionObj = (JSONObject) attractionsArr.get(i);
 
-      attraction.setPhotoUrl(smallObj.getString("url")); // "https://media-cdn.tripadvisor.com/media/photo-l/15/19/d6/c1/the-jouney-begins-kaan.jpg"
-      attraction.setName(attractionObj.getString("name")); // "Performances"
-      attraction.setLatitude(attractionObj.getDouble("latitude")); // 12.906674
-      attraction.setLongitude(attractionObj.getDouble("longitude")); // 100.87785
-      attraction.setDistance(attractionObj.getDouble("distance")); // 1.0886330230315118
-      attraction.setDistanceString(attractionObj.getString("distance_string")); // "1.1 km"
-      attraction.setNumReviews(attractionObj.getInt("num_reviews")); // 120
-      attraction.setLocationString(attractionObj.getString("location_string")); // "Pattaya,
-                                                                                // Chonburi
-      // Province"
-      attraction.setRating(attractionObj.getDouble("rating")); // 4.0
-      attraction.setPriceRange(attractionObj.getString("price")); // "$16.23"
-      attraction.setRanking(attractionObj.getInt("ranking_position")); // 7
-      attraction.setRankingString(attractionObj.getString("ranking")); // "#7 of 108 things to do in
-                                                                       // Pattaya"
-      attraction.setClosed(attractionObj.getBoolean("is_closed")); // false
+        JSONObject photoObj = (JSONObject) attractionObj.get("photo");
+        JSONObject imagesObj = (JSONObject) photoObj.get("images");
+        JSONObject smallObj = (JSONObject) imagesObj.get("small");
+        attraction.setPhotoUrl(smallObj.getString("url")); // "https://media-cdn.tripadvisor.com/media/photo-l/15/19/d6/c1/the-jouney-begins-kaan.jpg"
 
-      attractionsList.add(attraction);
+        attraction.setName(attractionObj.getString("name")); // "Performances"
+        attraction.setLatitude(attractionObj.getDouble("latitude")); // 12.906674
+        attraction.setLongitude(attractionObj.getDouble("longitude")); // 100.87785
+        attraction.setDistance(attractionObj.getDouble("distance")); // 1.0886330230315118
+        attraction.setNumReviews(attractionObj.getInt("num_reviews")); // 120
+        attraction.setLocationString(attractionObj.getString("location_string")); // "Pattaya,
+                                                                                  // Chonburi
+        // Province"
+//
+//      JSONObject offerGroupObj = (JSONObject) attractionObj.get("offer_group");
+//      attraction.setPrice(offerGroupObj.getString("lowest_price")); // "$16.23"
+
+        attraction.setClosed(attractionObj.getBoolean("is_closed")); // false
+
+        attractionsList.add(attraction);
+      }
+    } catch (org.json.JSONException exception) {
+      System.err.println("ERROR: Missing element in API result causing error in parsing.");
+      return null;
     }
 
     return attractionsList;
@@ -116,15 +134,18 @@ public class ActivitiesPreference implements Preference {
   @Override
   public void setLongitude(double longitude) {
     this.longitude = longitude;
+    fields.put("longitude", longitude);
   }
 
   @Override
   public void setLatitude(double latitude) {
     this.latitude = latitude;
+    fields.put("latitude", latitude);
   }
 
   public void setDistance(double distance) {
     this.distance = distance;
+    fields.put("distance", distance);
   }
 
   @Override

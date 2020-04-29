@@ -1,59 +1,36 @@
 package edu.brown.cs.student.api.tripadvisor.objects;
 
 public interface Item {
-  public String getDistanceString();
 
-  public void setDistanceString(String distanceString);
+  String getName();
 
-  public String getName();
+  double getLatitude();
 
-  public double getLatitude();
+  double getLongitude();
 
-  public double getLongitude();
+  double getDistance();
 
-  public double getDistance();
+  int getNumReviews();
 
-  public int getNumReviews();
+  String getLocationString();
 
-  public String getLocationString();
+  String getPhotoUrl();
 
-  public String getPhotoUrl();
+  boolean isClosed();
 
-  public double getRating();
+  void setName(String name);
 
-  public String getPriceLevel();
+  void setLatitude(double latitude);
 
-  public String getPriceRange();
+  void setLongitude(double longitude);
 
-  public int getRanking();
+  void setDistance(double distance);
 
-  public boolean isClosed();
+  void setNumReviews(int numReviews);
 
-  public void setName(String name);
+  void setLocationString(String locationString);
 
-  public String getRankingString();
+  void setPhotoUrl(String photoUrl);
 
-  public void setRankingString(String rankingString);
-
-  public void setLatitude(double latitude);
-
-  public void setLongitude(double longitude);
-
-  public void setDistance(double distance);
-
-  public void setNumReviews(int numReviews);
-
-  public void setLocationString(String locationString);
-
-  public void setPhotoUrl(String photoUrl);
-
-  public void setRating(double rating);
-
-  public void setPriceLevel(String priceLevel);
-
-  public void setPriceRange(String priceRange);
-
-  public void setRanking(int ranking);
-
-  public void setClosed(boolean isClosed);
+  void setClosed(boolean isClosed);
 }
