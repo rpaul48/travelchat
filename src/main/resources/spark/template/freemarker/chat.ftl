@@ -2,6 +2,8 @@
 <link rel="stylesheet" href="/css/travelchat.css">
 
 <#assign content>
+    <img onclick="logout()" src="/images/TravelChat-Banner.png" alt="TravelChat">
+
     <div id="firechat-wrapper">
     <div id="chat-div">
     <div id="chatControls">
