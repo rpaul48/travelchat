@@ -1,7 +1,6 @@
 <link rel="stylesheet" href="/css/chat.css">
 
 <#assign content>
-<img onclick="logout()" src="/images/TravelChat-Banner.png" alt="TravelChat">
 
     <div class="sidenav">
         <a id="manage-chats" href="/manage-chats">< Go Home</a>
