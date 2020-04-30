@@ -1,4 +1,4 @@
-package edu.brown.cs.crusch.kdtree;
+package edu.brown.cs.student.api.kdtree;
 
 /**
  * Interface representing nodes of a k-d tree.

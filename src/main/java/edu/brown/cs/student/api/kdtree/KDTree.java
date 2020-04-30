@@ -1,6 +1,4 @@
-package edu.brown.cs.crusch.kdtree;
-
-import edu.brown.cs.crusch.stars.DistanceSorter;
+package edu.brown.cs.student.api.kdtree;
 
 import java.util.ArrayList;
 import java.util.Comparator;

@@ -1,4 +1,4 @@
-package edu.brown.cs.crusch.kdtree;
+package edu.brown.cs.student.api.kdtree;
 
 import java.util.Comparator;
 
