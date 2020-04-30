@@ -3,19 +3,25 @@
 
 <#assign content>
 
-    <div class="sidewrapper">
-        <div class="sidenav">
-            <!-- <h2><a id="back" href="/manage-chats">TravelChat</a></h2> -->
-            <a id="back" href="/manage-chats"> <img src="/images/TravelChat-Banner.png" alt="TravelChat"> </a>
-            <ul>
-                <li><a onclick="openSettings()"><i class="fas fa-cog"></i>Settings</a></li>
-                <li><a href="/calendar"><i class="fas fa-calendar-alt"></i>Calendar</a></li>
-                <li><a href="#"><i class="fas fa-route"></i>Trip Details</a></li>
-                <li><a href="#"><i class="fas fa-globe-americas"></i>Choose Location</a></li>
-                <li><a href="#"><i class="fas fa-plane"></i>Choose Flights</a></li>
-                <li><a href="#"><i class="fas fa-hotel"></i>Choose Housing</a></li>
-                <li><a href="#"><i class="fas fa-hiking"></i>Choose Activities</a></li>
-            </ul>
+    <div class="container">
+        <div class="sidewrapper">
+            <div class="sidenav">
+                <!-- <h2><a id="back" href="/manage-chats">TravelChat</a></h2> -->
+                <a id="back" href="/manage-chats"> <img src="/images/TravelChat-Banner.png" alt="TravelChat"> </a>
+                <ul>
+                    <li><a onclick="openSettings()"><i class="fas fa-cog"></i>Settings</a></li>
+                    <li><a href="/calendar"><i class="fas fa-calendar-alt"></i>Calendar</a></li>
+                    <li><a href="#"><i class="fas fa-route"></i>Trip Details</a></li>
+                    <!-- <li><a href="#"><i class="fas fa-globe-americas"></i>Choose Location</a></li> -->
+                    <li><a href="#"><i class="fas fa-plane"></i>Browse Flights</a></li>
+                    <li><a href="#"><i class="fas fa-hotel"></i>Browse Housing</a></li>
+                    <li><a href="#"><i class="fas fa-hiking"></i>Browse Activities</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="main">
+            <div id="firechat-wrapper">
+            </div>
         </div>
     </div>
 
@@ -29,11 +35,6 @@
 
     <div id="settings-div" class="popup-div">
         <h2>Settings</h2>
-    </div>
-
-    <div class="main">
-        <div id="firechat-wrapper">
-        </div>
     </div>
 
 

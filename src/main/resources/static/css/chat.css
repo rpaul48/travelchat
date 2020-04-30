@@ -73,6 +73,15 @@ li {
     to   { transform: none;        }
 }
 
+.main {
+    display:inline-block;
+    position: absolute;
+    left: 270px;
+    right: 20px;
+    width: auto;
+
+}
+
 /* The sidebar menu */
 .sidenav {
     height: 100%; /* Full-height: remove this if you want "auto" height */
