@@ -1,6 +1,7 @@
 package edu.brown.cs.student.chat.gui;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 import com.google.firebase.database.*;
 import spark.QueryParamsMap;
@@ -41,6 +42,8 @@ public class addUserToRoomHandler implements Route {
           ex.printStackTrace();
         }
       }
+    } catch (FirebaseAuthException ex) {
+      System.err.println("ERROR: No user record found for the provided email: " + email);
     } catch (Exception ex) {
       System.err.println("ERROR: An exception occurred. Printing stack trace:");
       ex.printStackTrace();
