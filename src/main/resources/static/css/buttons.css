@@ -1,0 +1,87 @@
+button {
+    font-size: 12px;
+}
+
+.large-blue-button {
+    background: #3D85C6;
+    border: 1px solid #3D85C6;
+    color: #fff;
+    border-radius: 5px;
+    padding: 15px;
+    display: block;
+    width: 60%;
+    margin: 0 auto 20px;
+    transition: 0.3s;
+    -webkit-transition: 0.3s;
+    -moz-transition: 0.3s;
+}
+
+.large-green-button {
+    background: #6AA84E;
+    border: 1px solid #6AA84E;
+    color: #fff;
+    border-radius: 5px;
+    padding: 15px;
+    display: block;
+    width: 60%;
+    margin: 0 auto 20px;
+    transition: 0.3s;
+    -webkit-transition: 0.3s;
+    -moz-transition: 0.3s;
+}
+
+.large-black-button {
+    background: #000000;
+    border: 1px solid #000000;
+    color: #fff;
+    border-radius: 5px;
+    padding: 15px;
+    display: block;
+    width: 60%;
+    margin: 0 auto 20px;
+    transition: 0.3s;
+    -webkit-transition: 0.3s;
+    -moz-transition: 0.3s;
+}
+
+.large-red-button {
+    background: #9b0000;
+    border: 1px solid #9b0000;
+    color: #fff;
+    border-radius: 5px;
+    padding: 15px;
+    display: block;
+    width: 60%;
+    margin: 0 auto 20px;
+    transition: 0.3s;
+    -webkit-transition: 0.3s;
+    -moz-transition: 0.3s;
+}
+
+.large-blue-button:hover {
+    background: #fff;
+    color: #3D85C6;
+    border: 1px solid #3D85C6;
+    cursor: pointer;
+}
+
+.large-green-button:hover {
+    background: #fff;
+    color: #6AA84E;
+    border: 1px solid #6AA84E;
+    cursor: pointer;
+}
+
+.large-black-button:hover {
+    background: #fff;
+    color: #000000;
+    border: 1px solid #000000;
+    cursor: pointer;
+}
+
+.large-red-button:hover {
+    background: #fff;
+    color: #9b0000;
+    border: 1px solid #9b0000;
+    cursor: pointer;
+}
