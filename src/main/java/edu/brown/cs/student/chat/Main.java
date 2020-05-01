@@ -87,9 +87,10 @@ public class Main {
     Spark.get("/chat/:roomId", new ChatFrontHandler(), freeMarker);
     Spark.get("/calendar", new CalendarHandler(), freeMarker);
 
-    Spark.post("/createRoom", new createRoomHandler());
-    Spark.get("/getUserRooms", new getUserRoomsHandler());
-    Spark.post("/addUserToRoom", new addUserToRoomHandler());
+    Spark.post("/createRoom", new CreateRoomHandler());
+    Spark.get("/getUserRooms", new GetUserRoomsHandler());
+    Spark.post("/addUserToRoom", new AddUserToRoomHandler());
+    Spark.post("/removeUserFromRoom", new RemoveUserFromRoomHandler());
   }
 
   /**

@@ -1,6 +1,7 @@
 package edu.brown.cs.student.chat.gui;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 import com.google.firebase.database.*;
 import spark.QueryParamsMap;
@@ -8,9 +9,10 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
-public class createRoomHandler implements Route {
+public class AddUserToRoomHandler implements Route {
 
   @Override
   public String handle(Request request, Response response) {
@@ -19,38 +21,35 @@ public class createRoomHandler implements Route {
     DatabaseReference roomsRef = database.getReference("chat/room-metadata");
     QueryParamsMap qm = request.queryMap();
 
-    String auth = qm.value("auth");
-    String emailsOneString = qm.value("emails");
-    String[] emails = emailsOneString.split(",");
-    String groupId = qm.value("groupId");
+    String email = qm.value("email");
+    String groupId = qm.value("roomId");
     String groupName = qm.value("groupName");
-
-    List<String> uids = new ArrayList<>();
-    uids.add(auth);
+    String uid = "";
 
     // get UIDs from emails, then add the groupId under each UID at user/UID/added-rooms
-    for (String email : emails) {
-      try {
-        if (email != null && !email.equals("")) {
-          UserRecord userRecord = FirebaseAuth.getInstance().getUserByEmail(email);
-          String uid = userRecord.getUid();
-          uids.add(uid);
-          DatabaseReference userRef = usersRef.child(uid);
-          updateUserAddedRooms(userRef, groupId, groupName);
-        }
-      } catch (Exception ex) {
-        System.err.println("ERROR: An exception occurred. Printing stack trace:\n");
-        ex.printStackTrace();
-      }
-    }
-    updateUserAddedRooms(usersRef.child(auth), groupId, groupName);
-
     try {
-      createRoomAddedRooms(roomsRef, groupId, uids);
+      if (email != null && !email.equals("")) {
+        UserRecord userRecord = FirebaseAuth.getInstance().getUserByEmail(email);
+        uid = userRecord.getUid();
+
+        DatabaseReference userRef = usersRef.child(uid);
+        updateUserAddedRooms(userRef, groupId, groupName);
+
+        try {
+          updateRoomAddedRooms(roomsRef, groupId, uid);
+        } catch (Exception ex) {
+          System.err.println("ERROR: An exception occurred. Printing stack trace:");
+          ex.printStackTrace();
+        }
+      }
+    } catch (FirebaseAuthException ex) {
+      System.err.println("ERROR: No user record found for the provided email: " + email);
     } catch (Exception ex) {
-      System.err.println("ERROR: An exception occurred. Printing stack trace:\n");
+      System.err.println("ERROR: An exception occurred. Printing stack trace:");
       ex.printStackTrace();
     }
+
+
     return "";
   }
 
@@ -86,21 +85,20 @@ public class createRoomHandler implements Route {
     });
   }
 
-  private void createRoomAddedRooms(DatabaseReference roomsRef, String roomId, List<String> uids) {
+  private void updateRoomAddedRooms(DatabaseReference roomsRef, String roomId, String uid) {
     roomsRef.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
         DatabaseReference roomsRef = dataSnapshot.getRef();
         DatabaseReference roomRef = roomsRef.child(roomId);
 
-        for (String uid : uids) {
-          Map<String, Object> roomUpdates = new HashMap<>();
-          Map<String, Object> roomDetails = new HashMap<>();
-          roomDetails.put("uid", uid);
-          roomUpdates.put("added-users/" + uid, roomDetails);
 
-          roomRef.updateChildrenAsync(roomUpdates);
-        }
+        Map<String, Object> roomUpdates = new HashMap<>();
+        Map<String, Object> roomDetails = new HashMap<>();
+        roomDetails.put("uid", uid);
+        roomUpdates.put("added-users/" + uid, roomDetails);
+
+        roomRef.updateChildrenAsync(roomUpdates);
       }
 
       @Override

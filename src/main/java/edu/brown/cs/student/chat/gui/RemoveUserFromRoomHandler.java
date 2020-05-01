@@ -9,10 +9,7 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class addUserToRoomHandler implements Route {
+public class RemoveUserFromRoomHandler implements Route {
 
   @Override
   public String handle(Request request, Response response) {
@@ -23,7 +20,6 @@ public class addUserToRoomHandler implements Route {
 
     String email = qm.value("email");
     String groupId = qm.value("roomId");
-    String groupName = qm.value("groupName");
     String uid = "";
 
     // get UIDs from emails, then add the groupId under each UID at user/UID/added-rooms
@@ -33,10 +29,10 @@ public class addUserToRoomHandler implements Route {
         uid = userRecord.getUid();
 
         DatabaseReference userRef = usersRef.child(uid);
-        updateUserAddedRooms(userRef, groupId, groupName);
+        updateUserRemovedRooms(userRef, groupId);
 
         try {
-          updateRoomAddedRooms(roomsRef, groupId, uid);
+          updateRoomRemovedRooms(roomsRef, groupId, uid);
         } catch (Exception ex) {
           System.err.println("ERROR: An exception occurred. Printing stack trace:");
           ex.printStackTrace();
@@ -53,28 +49,14 @@ public class addUserToRoomHandler implements Route {
     return "";
   }
 
-  private void updateUserAddedRooms(DatabaseReference userRef, String groupId, String groupName) {
+  private void updateUserRemovedRooms(DatabaseReference userRef, String groupId) {
     userRef.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
         if (dataSnapshot.hasChild("added-rooms")) {
           DatabaseReference userAddedRoomsRef = dataSnapshot.getRef().child("added-rooms");
-          Map<String, Object> userUpdates = new HashMap<>();
-          Map<String, Object> roomDetails = new HashMap<>();
-          roomDetails.put("groupId", groupId);
-          roomDetails.put("groupName", groupName);
-          userUpdates.put(groupId, roomDetails);
 
-          userAddedRoomsRef.updateChildrenAsync(userUpdates);
-        } else {
-          DatabaseReference userRef = dataSnapshot.getRef();
-          Map<String, Object> userUpdates = new HashMap<>();
-          Map<String, Object> roomDetails = new HashMap<>();
-          roomDetails.put("groupId", groupId);
-          roomDetails.put("groupName", groupName);
-          userUpdates.put("added-rooms/" + groupId, roomDetails);
-
-          userRef.updateChildrenAsync(userUpdates);
+          userAddedRoomsRef.child(groupId).removeValueAsync();
         }
       }
 
@@ -85,20 +67,14 @@ public class addUserToRoomHandler implements Route {
     });
   }
 
-  private void updateRoomAddedRooms(DatabaseReference roomsRef, String roomId, String uid) {
+  private void updateRoomRemovedRooms(DatabaseReference roomsRef, String roomId, String uid) {
     roomsRef.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
         DatabaseReference roomsRef = dataSnapshot.getRef();
         DatabaseReference roomRef = roomsRef.child(roomId);
 
-
-        Map<String, Object> roomUpdates = new HashMap<>();
-        Map<String, Object> roomDetails = new HashMap<>();
-        roomDetails.put("uid", uid);
-        roomUpdates.put("added-users/" + uid, roomDetails);
-
-        roomRef.updateChildrenAsync(roomUpdates);
+        roomRef.child("added-users").child(uid).removeValueAsync();
       }
 
       @Override

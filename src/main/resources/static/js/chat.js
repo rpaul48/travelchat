@@ -1,9 +1,11 @@
 let chat;
 let roomId;
+let curUser;
 
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
         // get a Firebase Database ref
+        curUser = user;
         var chatRef = firebase.database().ref("chat");
 
         // create a FirechatUI instance, get the corresponding Firechat instance
@@ -47,6 +49,14 @@ firebase.auth().onAuthStateChanged(function(user) {
 
 function leaveChat() {
     chat.leaveRoom(roomId);
+
+    $.ajax({
+        url: "/removeUserFromRoom",
+        type: "post",
+        data: {"auth": firebase.auth().currentUser.uid, "email": curUser.email, "roomId": roomId},
+        async: false,
+    });
+
     window.location.href = "/manage-chats";
 }
 
