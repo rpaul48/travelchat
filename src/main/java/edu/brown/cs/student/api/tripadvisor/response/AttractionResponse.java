@@ -12,12 +12,11 @@ import java.util.List;
  * @author Joshua Nathan Mugerwa
  * @version 1.0
  */
-public class AttractionResponse extends Response {
+public class AttractionResponse {
     private List<Attraction> attractions;
 
     public AttractionResponse(HttpResponse<JsonNode> response) {
         this.attractions = new ArrayList<>();
-        this.parseResponse(response);
     }
 
     public List<Attraction> getAttractions() {
@@ -28,8 +27,4 @@ public class AttractionResponse extends Response {
         this.attractions = attractions;
     }
 
-    @Override
-    public void parseResponse(HttpResponse<JsonNode> response) {
-        //TODO: Specific parsing logic.
-    }
 }

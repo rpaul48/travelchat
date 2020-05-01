@@ -7,8 +7,7 @@ import java.util.Map;
  * @author Joshua Nathan Mugerwa
  * @version 1.0
  */
-public class HotelRequest extends Request {
+public class HotelRequest {
     public HotelRequest(String hostURL, String currency, Map<String, Object> givenParams) {
-        super(hostURL, currency, givenParams);
     }
 }
