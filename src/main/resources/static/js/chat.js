@@ -51,7 +51,6 @@ function leaveChat() {
 }
 
 function openSettings() {
-    document.getElementById("firechat-wrapper").style.display = "none";
     $("#settings-div").fadeIn();
 }
 
