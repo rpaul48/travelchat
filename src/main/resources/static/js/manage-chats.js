@@ -21,37 +21,28 @@ function createChat() {
 
     // get all emails of desired invitees
     var emails = document.getElementById("add-user-field").value;
-    var allEmails = emails.split(",");
-    var uids = [];
 
-    for (const email of allEmails) {
-        // for every invitee, make a GET request to our Spark server to get their UID
+    // create a room, invite all invitees who have an account
+    chat.createRoom(groupName, "public", function(roomId) {
+        // for every invitee, make a POST request to our Spark server to get their UID
         $.ajax({
-            url: "/getUID",
-            type: "get",
+            url: "/createRoom",
+            type: "post",
             // authenticated with the current user's UID
-            data: {"auth": currentUser.uid, "email": email},
-            // MUST be a synchronous request, or else uids will not update correctly
+            data: {"auth": currentUser.uid,
+                "emails": emails,
+                "groupId": roomId,
+                "groupName": groupName},
+            // MUST be a synchronous request
             async: false,
             success: function (data) {
-                uids.push(data);
+                document.getElementById("room-id").innerHTML =
+                    "<br><b> " + groupName + " group ID: </b> " + roomId;
+
+                chat.enterRoom(roomId);
+                closeCreateChat();
+                window.location.href = "/chat/" + roomId;
             }});
-        }
-
-    // create a private room, invite all invitees who have an account
-    chat.createRoom(groupName, "private", function(roomId) {
-        for (const uid of uids) {
-            if (uid !== "") {
-                chat.inviteUser(uid, roomId);
-            }
-        }
-
-        document.getElementById("room-id").innerHTML =
-            "<br><b> " + groupName + " group ID: </b> " + roomId;
-
-        chat.enterRoom(roomId);
-        closeCreateChat();
-        window.location.href = "/chat/" + roomId;
     })
 }
 
@@ -111,15 +102,13 @@ function showUserChats() {
                 chat.setUser(user.uid, user.uid);
             }
 
-            var userRooms = {};
-
             $.ajax({
                 url: "/getUserRooms",
                 type: "get",
                 data: {"uid": user.uid},
                 async: false,
                 success: function (data) {
-                    userRooms = JSON.parse(data);
+                    var userRooms = JSON.parse(data);
                     for (let id of Object.keys(userRooms)) {
                         var groupName = userRooms[id];
                         var idString = "\'" + String(id) + "\'";

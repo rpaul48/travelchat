@@ -21,10 +21,24 @@ firebase.auth().onAuthStateChanged(function(user) {
             chat.setUser(user.uid, user.uid);
         }
 
-        // enter the desired room, specified by the url's path
-        var path = window.location.pathname;
-        roomId = path.substring(path.lastIndexOf('/') + 1);
-        chat.enterRoom(roomId);
+        $.ajax({
+            url: "/getUserRooms",
+            type: "get",
+            data: {"uid": user.uid},
+            async: false,
+            success: function (data) {
+                var path = window.location.pathname;
+                roomId = path.substring(path.lastIndexOf('/') + 1);
+                var userRooms = JSON.parse(data);
+
+                if (Object.keys(userRooms).includes(roomId)) {
+                    // user is added to the room, enter the chat
+                    chat.enterRoom(roomId);
+                } else {
+                    // user is not added to the room, redirect to manage-chats
+                    window.location.href = "/manage-chats";
+                }
+            }});
     } else {
         // user is not logged in, redirect to login
         window.location.href = "/login";
