@@ -62,6 +62,19 @@ function closePopup(id) {
     document.getElementById(id).style.display = "none";
 }
 
+function fillLocation(id) {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        document.getElementById(id).value = "Geolocation is not supported by this browser.";
+    }
+
+    function showPosition(position) {
+        document.getElementById(id).value = "latitude: " + position.coords.latitude +
+            ", longitude: " + position.coords.longitude;
+    }
+}
+
 function editProfile() {
     var name = document.getElementById("update-display-name-field").value;
 

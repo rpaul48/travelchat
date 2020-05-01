@@ -46,6 +46,64 @@
 
     <div id="restaurants-div" class="big-popup-div">
         <h2>Browse Restaurants</h2>
+        <div id="form-container">
+            <form id="restaurants-form">
+                <label>Within </label>
+                <select id="miles-select">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">5</option>
+                    <option value="4" selected="selected">10</option>
+                </select>
+                <label> miles from </label>
+                <input type="text" id="restaurant-location" value="">
+                <button type="button" onclick="fillLocation('restaurant-location')">use current location</button>
+
+                <br>
+
+                <label>Cuisine: </label>
+                <select id="cuisine-select">
+                    <option value="1" selected="selected">Any</option>
+                    <option value="2" >American</option>
+                    <option value="3" >Chinese</option>
+                    <option value="4" >Barbecue</option>
+                    <option value="5" >Indian</option>
+                    <option value="6" >Italian</option>
+                    <option value="7" >Japanese</option>
+                    <option value="8" >Mexican</option>
+                    <option value="9" >Seafood</option>
+                    <option value="10" >Thai</option>
+                </select>
+
+                <label>Minimum rating</label>
+                <select id="rating-select">
+                    <option value="1" selected="selected">Any</option>
+                    <option value="2" >3 stars</option>
+                    <option value="3" >4 stars</option>
+                    <option value="4" >5 stars</option>
+                </select>
+
+                <label>Price</label>
+                <select id="price-select">
+                    <option value="1" selected="selected">Any</option>
+                    <option value="2" >$</option>
+                    <option value="3" >$$</option>
+                    <option value="4" >$$$</option>
+                </select>
+
+                <label>Dietary restrictions</label>
+                <select id="diet-select">
+                    <option value="1" selected="selected">None</option>
+                    <option value="2" >Vegetarian friendly</option>
+                    <option value="3" >Vegan options</option>
+                    <option value="4" >Halal</option>
+                    <option value="5" >Kosher</option>
+                    <option value="6" >Gluten-free options</option>
+                </select>
+
+
+            </form>
+        </div>
         <button onclick="closePopup('restaurants-div')" class="large-black-button">Back</button>
     </div>
 
