@@ -16,7 +16,7 @@ import java.util.Map;
 public class getUserRoomsHandler implements Route {
 
   @Override
-  public JSONObject handle(Request request, Response response) throws InterruptedException {
+  public JSONObject handle(Request request, Response response) {
     final boolean[] done = {false};
     Map<String, String> jsonMap = new HashMap<>();
     QueryParamsMap qm = request.queryMap();
@@ -25,7 +25,7 @@ public class getUserRoomsHandler implements Route {
     try {
       // get a reference to user's rooms
       final FirebaseDatabase database = FirebaseDatabase.getInstance();
-      DatabaseReference ref = database.getReference("chat/users/" + uid + "/rooms");
+      DatabaseReference ref = database.getReference("chat/users/" + uid + "/added-rooms");
 
       // attach a listener to read the data at our reference
       ref.addValueEventListener(new ValueEventListener() {
@@ -35,7 +35,7 @@ public class getUserRoomsHandler implements Route {
             HashMap<String, HashMap<String, String>> data =
                   (HashMap<String, HashMap<String, String>>) dataSnapshot.getValue();
             for (String key : data.keySet()) {
-              jsonMap.put(key, data.get(key).get("name"));
+              jsonMap.put(key, data.get(key).get("groupName"));
             }
           }
           done[0] = true;
