@@ -1,9 +1,11 @@
 let chat;
 let roomId;
+let curUser;
 
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
         // get a Firebase Database ref
+        curUser = user;
         var chatRef = firebase.database().ref("chat");
 
         // create a FirechatUI instance, get the corresponding Firechat instance
@@ -47,6 +49,16 @@ firebase.auth().onAuthStateChanged(function(user) {
 
 function leaveChat() {
     chat.leaveRoom(roomId);
+
+    // removes the room from the user's room list and the user from the room's user list
+    $.ajax({
+        url: "/removeUserFromRoom",
+        type: "post",
+        data: {"auth": curUser.uid, "roomId": roomId},
+        async: false,
+    });
+
+    // redirects to manage chats page
     window.location.href = "/manage-chats";
 }
 
@@ -60,6 +72,19 @@ function openPopup(id) {
 
 function closePopup(id) {
     document.getElementById(id).style.display = "none";
+}
+
+function fillLocation(id) {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        document.getElementById(id).value = "Geolocation is not supported by this browser.";
+    }
+
+    function showPosition(position) {
+        document.getElementById(id).value = "latitude: " + position.coords.latitude +
+            ", longitude: " + position.coords.longitude;
+    }
 }
 
 function editProfile() {

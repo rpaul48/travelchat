@@ -4,6 +4,7 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import edu.brown.cs.student.chat.gui.*;
+import edu.brown.cs.student.chat.gui.firebase.*;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -87,9 +88,17 @@ public class Main {
     Spark.get("/chat/:roomId", new ChatFrontHandler(), freeMarker);
     Spark.get("/calendar", new CalendarHandler(), freeMarker);
 
-    Spark.post("/createRoom", new createRoomHandler());
-    Spark.get("/getUserRooms", new getUserRoomsHandler());
-    Spark.post("/addUserToRoom", new addUserToRoomHandler());
+    // Handlers for firebase management
+    Spark.post("/createRoom", new CreateRoomHandler());
+    Spark.get("/getUserRooms", new GetUserRoomsHandler());
+    Spark.post("/addUserToRoom", new AddUserToRoomHandler());
+    Spark.post("/removeUserFromRoom", new RemoveUserFromRoomHandler());
+
+    Spark.post("/browseRestaurants", new RestaurantsSubmitHandler(), freeMarker);
+    Spark.post("/browseActivities", new ActivitiesSubmitHandler(), freeMarker);
+    Spark.post("/browseLodging", new LodgingSubmitHandler(), freeMarker);
+    Spark.post("/browseFlights", new FlightsSubmitHandler(), freeMarker);
+    Spark.post("/planMyDay", new PlanMyDaySubmitHandler(), freeMarker);
   }
 
   /**

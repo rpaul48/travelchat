@@ -1,4 +1,4 @@
-package edu.brown.cs.student.chat.gui;
+package edu.brown.cs.student.chat.gui.firebase;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserRecord;
@@ -10,7 +10,7 @@ import spark.Route;
 
 import java.util.*;
 
-public class createRoomHandler implements Route {
+public class CreateRoomHandler implements Route {
 
   @Override
   public String handle(Request request, Response response) {
