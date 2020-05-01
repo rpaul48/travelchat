@@ -77,7 +77,7 @@ function inviteUser() {
     $.ajax({
         url: "/addUserToRoom",
         type: "post",
-        data: {"auth": user.uid, "email": email, "roomId": roomId, "groupName": groupName},
+        data: {"auth": firebase.auth().currentUser.uid, "email": email, "roomId": roomId, "groupName": groupName},
         async: false,
         });
 }
