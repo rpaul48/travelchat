@@ -65,10 +65,9 @@ function closePopup(id) {
 function editProfile() {
     var name = document.getElementById("update-display-name-field").value;
 
-
     firebase.auth().currentUser.updateProfile({displayName: name}).then(function () {
         console.log("set displayName to: " + firebase.auth().currentUser.displayName);
-        closeEditProfile();
+        closePopup('settings-div');
         location.reload();
     });
 }

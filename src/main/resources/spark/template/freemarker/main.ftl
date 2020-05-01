@@ -49,6 +49,10 @@
     firebase.initializeApp(firebaseConfig);
 </script>
 
+<!-- buttons -->
+<link rel="stylesheet" href="/css/buttons.css">
+<link rel="stylesheet" href="/css/div-types.css">
+
 ${content}
 </body>
 <!-- See http://html5boilerplate.com/ for a good place to start

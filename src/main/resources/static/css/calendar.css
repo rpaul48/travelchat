@@ -1,3 +1,6 @@
+*{
+    font-family: 'Source Sans Pro', sans-serif;
+}
 
 .modal {
     display: none; /* Hidden by default */

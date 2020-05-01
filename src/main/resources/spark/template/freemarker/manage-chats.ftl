@@ -1,9 +1,9 @@
 <link rel="stylesheet" href="/css/travelchat.css">
 <#assign content>
-    <img onclick="logout()" src="/images/TravelChat-Banner.png" alt="TravelChat">
+    <img class="logo" onclick="logout()" src="/images/TravelChat-Banner.png" alt="TravelChat">
 
     <div id="chats-div" class="main-div">
-        <h2><b>Manage Chats</b></h2>
+        <h2>Manage Chats</h2>
         <div id="user-rooms"></div>
         <button onclick="openCreateChat()" class="large-green-button">+ Create new chat</button>
         <button onclick="logout()" class="large-black-button">Back</button>

@@ -1,9 +1,9 @@
 <link rel="stylesheet" href="/css/travelchat.css">
 <#assign content>
-    <img onclick="logout()" src="images/TravelChat-Banner.png" alt="TravelChat">
+    <img class="logo" onclick="logout()" src="images/TravelChat-Banner.png" alt="TravelChat">
 
     <div id="login-div" class="main-div">
-        <h2><b>Welcome to TravelChat!</b></h2>
+        <h2>Welcome to TravelChat</h2>
         <input type="email" placeholder="Email" id="email-field"/>
         <input type="password" placeholder="Password" id="password-field"/>
 

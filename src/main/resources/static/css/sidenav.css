@@ -26,6 +26,19 @@
     margin-left: 20px;
 }
 
+/* The sidebar menu */
+.sidenav {
+    height: 100%; /* Full-height: remove this if you want "auto" height */
+    position: absolute;
+    right: 71.79%;
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: #2F5860; /* Dark Blue */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 20px;
+}
+
 .sidewrapper .sidenav h2{
     color: #fff;
     text-align: center;
