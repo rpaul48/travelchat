@@ -112,7 +112,8 @@ function showUserChats() {
                     for (let id of Object.keys(userRooms)) {
                         var groupName = userRooms[id];
                         var idString = "\'" + String(id) + "\'";
-                        $("#user-rooms").append("<button onclick=\"goToRoom(" + idString + ")\" class=\"large-green-button\">" + groupName + "</button>");
+                        $("#user-rooms").append("<button onclick=\"goToRoom(" + idString + ")\"" +
+                            "class=\"large-blue-button\">" + groupName + "</button>");
                     }
                 }});
         }
