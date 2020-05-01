@@ -54,9 +54,12 @@ function openSettings() {
     $("#settings-div").fadeIn();
 }
 
-function closeEditProfile() {
-    document.getElementById("settings-div").style.display = "none";
-    document.getElementById("firechat-wrapper").style.display = "block";
+function openPopup(id) {
+    document.getElementById(id).style.display = "block";
+}
+
+function closePopup(id) {
+    document.getElementById(id).style.display = "none";
 }
 
 function editProfile() {
