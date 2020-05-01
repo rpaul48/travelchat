@@ -53,7 +53,7 @@ function leaveChat() {
     $.ajax({
         url: "/removeUserFromRoom",
         type: "post",
-        data: {"auth": firebase.auth().currentUser.uid, "email": curUser.email, "roomId": roomId},
+        data: {"auth": curUser.uid, "roomId": roomId},
         async: false,
     });
 

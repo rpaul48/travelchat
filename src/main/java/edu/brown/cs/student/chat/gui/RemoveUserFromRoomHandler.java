@@ -18,34 +18,23 @@ public class RemoveUserFromRoomHandler implements Route {
     DatabaseReference roomsRef = database.getReference("chat/room-metadata");
     QueryParamsMap qm = request.queryMap();
 
-    String email = qm.value("email");
     String groupId = qm.value("roomId");
-    String uid = "";
+    String uid = qm.value("auth");
 
     // get UIDs from emails, then add the groupId under each UID at user/UID/added-rooms
     try {
-      if (email != null && !email.equals("")) {
-        UserRecord userRecord = FirebaseAuth.getInstance().getUserByEmail(email);
-        uid = userRecord.getUid();
-
         DatabaseReference userRef = usersRef.child(uid);
         updateUserRemovedRooms(userRef, groupId);
-
         try {
           updateRoomRemovedRooms(roomsRef, groupId, uid);
         } catch (Exception ex) {
           System.err.println("ERROR: An exception occurred. Printing stack trace:");
           ex.printStackTrace();
         }
-      }
-    } catch (FirebaseAuthException ex) {
-      System.err.println("ERROR: No user record found for the provided email: " + email);
     } catch (Exception ex) {
       System.err.println("ERROR: An exception occurred. Printing stack trace:");
       ex.printStackTrace();
     }
-
-
     return "";
   }
 
