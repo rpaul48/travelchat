@@ -50,8 +50,6 @@ public class Main {
       System.out.println("ERROR: An exception occurred. Printing stack trace:\n");
       ex.printStackTrace();
     }
-    //Chat chat = new Chat();
-    //Chat.main(new String[]{});
   }
 
   private static FreeMarkerEngine createEngine() {
