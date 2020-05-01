@@ -91,6 +91,7 @@ public class Main {
 
     Spark.post("/createRoom", new createRoomHandler());
     Spark.get("/getUserRooms", new getUserRoomsHandler());
+    Spark.post("/addUserToRoom", new addUserToRoomHandler());
   }
 
   /**

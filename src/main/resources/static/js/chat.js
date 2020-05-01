@@ -72,3 +72,15 @@ function editProfile() {
         location.reload();
     });
 }
+
+function inviteUser() {
+    var email = document.getElementById("invite-search").value;
+    var groupName = $("#groupName").text();
+
+    $.ajax({
+        url: "/addUserToRoom",
+        type: "post",
+        data: {"auth": firebase.auth().currentUser.uid, "email": email, "roomId": roomId, "groupName": groupName},
+        async: false,
+        });
+}
