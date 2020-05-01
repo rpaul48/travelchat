@@ -100,9 +100,11 @@
                     <option value="5" >Kosher</option>
                     <option value="6" >Gluten-free options</option>
                 </select>
-
-
+                <button type="submit">Search</button>
             </form>
+        </div>
+        <div class="results-container">
+
         </div>
         <button onclick="closePopup('restaurants-div')" class="large-black-button">Back</button>
     </div>

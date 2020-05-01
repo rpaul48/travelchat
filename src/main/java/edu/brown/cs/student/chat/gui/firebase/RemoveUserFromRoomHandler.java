@@ -1,4 +1,4 @@
-package edu.brown.cs.student.chat.gui;
+package edu.brown.cs.student.chat.gui.firebase;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;

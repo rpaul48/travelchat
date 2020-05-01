@@ -50,6 +50,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 function leaveChat() {
     chat.leaveRoom(roomId);
 
+    // removes the room from the user's room list and the user from the room's user list
     $.ajax({
         url: "/removeUserFromRoom",
         type: "post",
@@ -57,6 +58,7 @@ function leaveChat() {
         async: false,
     });
 
+    // redirects to manage chats page
     window.location.href = "/manage-chats";
 }
 

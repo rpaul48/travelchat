@@ -1,7 +1,6 @@
-package edu.brown.cs.student.chat.gui;
+package edu.brown.cs.student.chat.gui.firebase;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 import com.google.firebase.database.*;
 import spark.QueryParamsMap;
@@ -9,10 +8,9 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-public class AddUserToRoomHandler implements Route {
+public class CreateRoomHandler implements Route {
 
   @Override
   public String handle(Request request, Response response) {
@@ -21,35 +19,38 @@ public class AddUserToRoomHandler implements Route {
     DatabaseReference roomsRef = database.getReference("chat/room-metadata");
     QueryParamsMap qm = request.queryMap();
 
-    String email = qm.value("email");
-    String groupId = qm.value("roomId");
+    String auth = qm.value("auth");
+    String emailsOneString = qm.value("emails");
+    String[] emails = emailsOneString.split(",");
+    String groupId = qm.value("groupId");
     String groupName = qm.value("groupName");
-    String uid = "";
+
+    List<String> uids = new ArrayList<>();
+    uids.add(auth);
 
     // get UIDs from emails, then add the groupId under each UID at user/UID/added-rooms
-    try {
-      if (email != null && !email.equals("")) {
-        UserRecord userRecord = FirebaseAuth.getInstance().getUserByEmail(email);
-        uid = userRecord.getUid();
-
-        DatabaseReference userRef = usersRef.child(uid);
-        updateUserAddedRooms(userRef, groupId, groupName);
-
-        try {
-          updateRoomAddedRooms(roomsRef, groupId, uid);
-        } catch (Exception ex) {
-          System.err.println("ERROR: An exception occurred. Printing stack trace:");
-          ex.printStackTrace();
+    for (String email : emails) {
+      try {
+        if (email != null && !email.equals("")) {
+          UserRecord userRecord = FirebaseAuth.getInstance().getUserByEmail(email);
+          String uid = userRecord.getUid();
+          uids.add(uid);
+          DatabaseReference userRef = usersRef.child(uid);
+          updateUserAddedRooms(userRef, groupId, groupName);
         }
+      } catch (Exception ex) {
+        System.err.println("ERROR: An exception occurred. Printing stack trace:\n");
+        ex.printStackTrace();
       }
-    } catch (FirebaseAuthException ex) {
-      System.err.println("ERROR: No user record found for the provided email: " + email);
+    }
+    updateUserAddedRooms(usersRef.child(auth), groupId, groupName);
+
+    try {
+      createRoomAddedRooms(roomsRef, groupId, uids);
     } catch (Exception ex) {
-      System.err.println("ERROR: An exception occurred. Printing stack trace:");
+      System.err.println("ERROR: An exception occurred. Printing stack trace:\n");
       ex.printStackTrace();
     }
-
-
     return "";
   }
 
@@ -85,20 +86,21 @@ public class AddUserToRoomHandler implements Route {
     });
   }
 
-  private void updateRoomAddedRooms(DatabaseReference roomsRef, String roomId, String uid) {
+  private void createRoomAddedRooms(DatabaseReference roomsRef, String roomId, List<String> uids) {
     roomsRef.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
         DatabaseReference roomsRef = dataSnapshot.getRef();
         DatabaseReference roomRef = roomsRef.child(roomId);
 
+        for (String uid : uids) {
+          Map<String, Object> roomUpdates = new HashMap<>();
+          Map<String, Object> roomDetails = new HashMap<>();
+          roomDetails.put("uid", uid);
+          roomUpdates.put("added-users/" + uid, roomDetails);
 
-        Map<String, Object> roomUpdates = new HashMap<>();
-        Map<String, Object> roomDetails = new HashMap<>();
-        roomDetails.put("uid", uid);
-        roomUpdates.put("added-users/" + uid, roomDetails);
-
-        roomRef.updateChildrenAsync(roomUpdates);
+          roomRef.updateChildrenAsync(roomUpdates);
+        }
       }
 
       @Override

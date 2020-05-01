@@ -64,3 +64,9 @@
 .main-div input:focus {
     border: 1px solid #777;
 }
+
+.big-popup-div .results-container {
+    outline: #5e5e5e solid 1px;
+    margin: 10px;
+    height: 300px;
+}
