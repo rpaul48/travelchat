@@ -55,9 +55,7 @@
                     <option value="3">5</option>
                     <option value="4" selected="selected">10</option>
                 </select>
-                <label> miles from </label>
-                <input type="text" id="restaurant-location" value="">
-                <button type="button" onclick="fillLocation('restaurant-location')">use current location</button>
+                <label> miles from current location </label>
 
                 <br>
 
@@ -100,9 +98,10 @@
                     <option value="5" >Kosher</option>
                     <option value="6" >Gluten-free options</option>
                 </select>
-                <button type="submit">Search</button>
+                <button onclick="browseRestaurants()" type="button">Search</button>
             </form>
         </div>
+
         <div class="results-container">
 
         </div>

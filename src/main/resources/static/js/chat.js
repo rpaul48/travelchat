@@ -62,31 +62,6 @@ function leaveChat() {
     window.location.href = "/manage-chats";
 }
 
-function openSettings() {
-    $("#settings-div").fadeIn();
-}
-
-function openPopup(id) {
-    document.getElementById(id).style.display = "block";
-}
-
-function closePopup(id) {
-    document.getElementById(id).style.display = "none";
-}
-
-function fillLocation(id) {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-    } else {
-        document.getElementById(id).value = "Geolocation is not supported by this browser.";
-    }
-
-    function showPosition(position) {
-        document.getElementById(id).value = "latitude: " + position.coords.latitude +
-            ", longitude: " + position.coords.longitude;
-    }
-}
-
 function editProfile() {
     var name = document.getElementById("update-display-name-field").value;
 
@@ -107,4 +82,55 @@ function inviteUser() {
         data: {"auth": firebase.auth().currentUser.uid, "email": email, "roomId": roomId, "groupName": groupName},
         async: false,
         });
+}
+
+// displays the div with the input id
+function openPopup(id) {
+    document.getElementById(id).style.display = "block";
+}
+
+// stops displaying the div with the input id
+function closePopup(id) {
+    document.getElementById(id).style.display = "none";
+}
+
+// returns the user's current coordinates
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        return "Geolocation is not supported by this browser.";
+    }
+    function showPosition(position) {
+        return position.coords.latitude + " " + position.coords.longitude;
+    }
+}
+
+// returns search results for restaurants
+function browseRestaurants() {
+    var location = getLocation();
+    if (location === "Geolocation is not supported by this browser.") {
+
+    } else {
+        var miles_sel = document.getElementById("miles-select");
+        var miles = miles_sel.options[miles_sel.selectedIndex].text;
+        var cuisine_sel = document.getElementById("cuisine-select");
+        var cuisine = cuisine_sel.options[cuisine_sel.selectedIndex].text;
+        var rating_sel = document.getElementById("rating-select");
+        var rating = rating_sel.options[rating_sel.selectedIndex].text;
+        var price_sel = document.getElementById("price-select");
+        var price = price_sel.options[price_sel.selectedIndex].text;
+        var diet_sel = document.getElementById("diet-select");
+        var diet = diet_sel.options[diet_sel.selectedIndex].text;
+
+        // returns a list of restaurant options which match the query parameters
+        $.ajax({
+            url: "/browseRestaurants",
+            type: "get",
+            data: {"miles": miles, "location": location, "cuisine": cuisine, "rating": rating, "price": price, "diet": diet},
+            async: false,
+            success: function (data) {
+                var recs = JSON.parse(data);
+            }});
+    }
 }

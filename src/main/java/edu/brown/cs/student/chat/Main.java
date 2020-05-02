@@ -94,10 +94,10 @@ public class Main {
     Spark.post("/addUserToRoom", new AddUserToRoomHandler());
     Spark.post("/removeUserFromRoom", new RemoveUserFromRoomHandler());
 
-    Spark.post("/browseRestaurants", new RestaurantsSubmitHandler(), freeMarker);
+    Spark.post("/browseRestaurants", new RestaurantsSubmitHandler());
     Spark.post("/browseActivities", new ActivitiesSubmitHandler(), freeMarker);
     Spark.post("/browseLodging", new LodgingSubmitHandler(), freeMarker);
-    Spark.post("/browseFlights", new FlightsSubmitHandler(), freeMarker);
+    Spark.post("/browseFlights", new FlightsSubmitHandler());
     Spark.post("/planMyDay", new PlanMyDaySubmitHandler(), freeMarker);
   }
 
