@@ -46,10 +46,10 @@
 
     <div id="restaurants-div" class="big-popup-div">
         <h2>Browse Restaurants</h2>
-        <div id="form-container">
+        <div class="form-container">
             <form id="restaurants-form">
                 <label>Within </label>
-                <select id="miles-select">
+                <select id="restaurant-miles-sel">
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">5</option>
@@ -60,7 +60,7 @@
                 <br>
 
                 <label>Cuisine: </label>
-                <select id="cuisine-select">
+                <select id="cuisine-sel">
                     <option value="1" selected="selected">Any</option>
                     <option value="2" >American</option>
                     <option value="3" >Chinese</option>
@@ -73,24 +73,24 @@
                     <option value="10" >Thai</option>
                 </select>
 
-                <label>Minimum rating</label>
-                <select id="rating-select">
-                    <option value="1" selected="selected">Any</option>
-                    <option value="2" >3 stars</option>
-                    <option value="3" >4 stars</option>
-                    <option value="4" >5 stars</option>
-                </select>
-
                 <label>Price</label>
-                <select id="price-select">
+                <select id="restaurant-price-sel">
                     <option value="1" selected="selected">Any</option>
                     <option value="2" >$</option>
                     <option value="3" >$$</option>
                     <option value="4" >$$$</option>
                 </select>
 
+                <label>Minimum rating</label>
+                <select id="restaurant-rating-sel">
+                    <option value="1" selected="selected">Any</option>
+                    <option value="2" >3 stars</option>
+                    <option value="3" >4 stars</option>
+                    <option value="4" >5 stars</option>
+                </select>
+
                 <label>Dietary restrictions</label>
-                <select id="diet-select">
+                <select id="diet-sel">
                     <option value="1" selected="selected">None</option>
                     <option value="2" >Vegetarian friendly</option>
                     <option value="3" >Vegan options</option>
@@ -101,20 +101,70 @@
                 <button onclick="browseRestaurants()" type="button">Search</button>
             </form>
         </div>
-
-        <div class="results-container">
-
-        </div>
+        <div class="results-container"></div>
         <button onclick="closePopup('restaurants-div')" class="large-black-button">Back</button>
     </div>
 
     <div id="activities-div" class="big-popup-div">
         <h2>Browse Activities</h2>
+        <div class="form-container">
+            <form id="activities-form">
+                <label>Within </label>
+                <select id="activities-miles-sel">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">5</option>
+                    <option value="4" selected="selected">10</option>
+                </select>
+                <label> miles from current location </label>
+                <button onclick="browseActivities()" type="button">Search</button>
+            </form>
+        </div>
+        <div class="results-container"></div>
         <button onclick="closePopup('activities-div')" class="large-black-button">Back</button>
     </div>
 
     <div id="lodging-div" class="big-popup-div">
         <h2>Browse Lodging</h2>
+        <div class="form-container">
+            <form id="lodging-form">
+                <label>Type</label>
+                <select id="hotel-type-sel">
+                    <option value="1" selected="selected">Any</option>
+                    <option value="2" >Hotel</option>
+                    <option value="3" >Bed and breakfast</option>
+                    <option value="4" >Specialty</option>
+                </select>
+                <label>Check-in date:</label>
+                <input type="date" id="check-in"
+                       value="2020-05-15" <!--TODO constrain this by trip date-->
+                       min="2020-05-02" max="2020-12-31">
+                <label>Check-out date:</label>
+                <input type="date" id="check-out"
+                       value="2020-05-16" <!--TODO constrain this by trip date and check-in date-->
+                min="2020-05-03" max="2021-01-01">
+                <label>Price:</label>
+                <select id="hotel-price-sel">
+                    <option value="1" selected="selected">Any</option>
+                    <option value="2" >$</option>
+                    <option value="3" >$$</option>
+                    <option value="4" >$$$</option>
+                </select>
+                <label>Minimum rating:</label>
+                <select id="hotel-rating-sel">
+                    <option value="1" selected="selected">Any</option>
+                    <option value="2" >1 star</option>
+                    <option value="3" >2 star</option>
+                    <option value="4" >3 star</option>
+                    <option value="5" >4 star</option>
+                    <option value="6" >5 star</option>
+                </select>
+                <label>Number of rooms</label>
+                <input type="number" id="num-rooms" value="1">
+                <button onclick="browseLodging()" type="button">Search</button>
+            </form>
+        </div>
+        <div class="results-container"></div>
         <button onclick="closePopup('lodging-div')" class="large-black-button">Back</button>
     </div>
 
