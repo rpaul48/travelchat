@@ -52,6 +52,7 @@ public class GetUserRoomsHandler implements Route {
     }
 
     try {
+      // necessary because ValueEventListener is asynchronous, but we don't want that
       while (!done[0]) {
         Thread.sleep(1);
       }

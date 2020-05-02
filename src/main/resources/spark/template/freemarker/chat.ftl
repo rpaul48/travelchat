@@ -34,6 +34,15 @@
         <button onclick="closePopup('settings-div')" class="large-black-button">Back</button>
     </div>
 
+    <div id="budget-div" class="popup-div">
+        <h2>Budget</h2>
+        <div id="your-budget"></div>
+        <input type="number" step="0.01" placeholder="Amount to Log/Add" id="update-budget-field"/>
+        <button onclick="updateBudget('log')" class="large-blue-button">Log Payment</button>
+        <button onclick="updateBudget('add')" id="add-funds" class="large-green-button">Add Funds</button>
+        <button onclick="closePopup('budget-div')" class="large-black-button">Back</button>
+    </div>
+
     <div id="trip-details-div" class="big-popup-div">
         <h2>Trip Details</h2>
         <button onclick="closePopup('trip-details-div')" class="large-black-button">Back</button>

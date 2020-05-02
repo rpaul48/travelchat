@@ -93,6 +93,8 @@ public class Main {
     Spark.get("/getUserRooms", new GetUserRoomsHandler());
     Spark.post("/addUserToRoom", new AddUserToRoomHandler());
     Spark.post("/removeUserFromRoom", new RemoveUserFromRoomHandler());
+    Spark.post("/getUserBudgetInRoom", new GetUserBudgetInRoomHandler());
+    Spark.post("/updateUserBudgetInRoom", new UpdateUserBudgetInRoomHandler());
 
     Spark.post("/browseRestaurants", new RestaurantsSubmitHandler());
     Spark.post("/browseActivities", new ActivitiesSubmitHandler(), freeMarker);

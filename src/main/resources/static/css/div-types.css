@@ -61,6 +61,14 @@
     margin-bottom: 20px;
 }
 
+.main-div h3, .popup-div h3, .big-popup-div h3{
+    color: black;
+    font-weight: 100;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
 .main-div input:focus {
     border: 1px solid #777;
 }

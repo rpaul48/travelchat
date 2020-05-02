@@ -134,3 +134,38 @@ function browseRestaurants() {
             }});
     }
 }
+
+function displayBudget() {
+    $.ajax({
+        url: "/getUserBudgetInRoom",
+        type: "post",
+        data: {"auth": firebase.auth().currentUser.uid, "roomId": roomId},
+        async: false,
+        success: function (data) {
+            var yourBudget = document.getElementById("your-budget");
+            yourBudget.innerHTML = "<h3>Your budget: $" + data + "</h3>"
+        }
+    });
+}
+
+function updateBudget(logOrAdd) {
+    var amount = document.getElementById("update-budget-field").value.replace(/[^0-9.]/g, '');
+    if (amount != null && amount !== "") {
+        $.ajax({
+            url: "/updateUserBudgetInRoom",
+            type: "post",
+            data: {
+                "auth": firebase.auth().currentUser.uid,
+                "roomId": roomId,
+                "type": logOrAdd,
+                "amount": amount
+            },
+            async: false,
+            success: function (data) {
+                document.getElementById("update-budget-field").value = null;
+                var yourBudget = document.getElementById("your-budget");
+                yourBudget.innerHTML = "<h3>Your budget: $" + data + "</h3>"
+            }
+        });
+    }
+}
