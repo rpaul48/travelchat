@@ -9,7 +9,7 @@ import java.util.Map;
 public class RestaurantsSubmitHandler implements Route {
 
   @Override
-  public JSONObject handle(Request request, Response response) throws Exception {
+  public JSONObject handle(Request request, Response response) {
     QueryParamsMap qm = request.queryMap();
 
     //max miles from location; either 1, 2, 5, or 10
