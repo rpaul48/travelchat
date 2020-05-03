@@ -96,8 +96,9 @@ public class Main {
     Spark.post("/getUserBudgetInRoom", new GetUserBudgetInRoomHandler());
     Spark.post("/updateUserBudgetInRoom", new UpdateUserBudgetInRoomHandler());
 
-    Spark.post("/browseRestaurants", new RestaurantsSubmitHandler());
-    Spark.post("/browseActivities", new ActivitiesSubmitHandler());
+    // Handlers for querying menus within TravelChat chat interface
+    Spark.get("/browseRestaurants", new RestaurantsSubmitHandler());
+    Spark.get("/browseActivities", new ActivitiesSubmitHandler());
     Spark.post("/browseLodging", new LodgingSubmitHandler());
     Spark.post("/browseFlights", new FlightsSubmitHandler());
     Spark.post("/planMyDay", new PlanMyDaySubmitHandler());

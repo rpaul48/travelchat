@@ -126,6 +126,24 @@
                     <option value="4" selected="selected">10</option>
                 </select>
                 <label> miles from current location </label>
+                <br>
+                <label>Type of activity: </label>
+                <div class="activities">
+                    <label><input type="checkbox" name="browse-activity" value="All" checked/>All</label>
+                    <label><input type="checkbox" name="browse-activity" value="Boat Tours & Water Sports">Boat Tours & Water Sports</label>
+                    <label><input type="checkbox" name="browse-activity" value="Fun & Game">Fun & Game</label>
+                    <label><input type="checkbox" name="browse-activity" value="Nature & Parks">Nature & Parks</label>
+                    <label><input type="checkbox" name="browse-activity" value="Sights & Landmarks">Sights & Landmarks</label>
+                    <label><input type="checkbox" name="browse-activity" value="Shopping">Shopping</label>
+                    <label><input type="checkbox" name="browse-activity" value="Transportation">Transportation</label>
+                    <label><input type="checkbox" name="browse-activity" value="Museums">Museums</label>
+                    <label><input type="checkbox" name="browse-activity" value="Outdoor Activities">Outdoor Activities</label>
+                    <label><input type="checkbox" name="browse-activity" value="Spas & Wellness">Spas & Wellness</label>
+                    <label><input type="checkbox" name="browse-activity" value="Classes & Workshops">Classes & Workshops</label>
+                    <label><input type="checkbox" name="browse-activity" value="Tours">Tours</label>
+                    <label><input type="checkbox" name="browse-activity" value="Nightlife">Nightlife</label>
+                </div>
+
                 <button onclick="browseActivities()" type="button">Search</button>
             </form>
         </div>
@@ -146,12 +164,12 @@
                 </select>
                 <label>Check-in date:</label>
                 <input type="date" id="check-in"
-                       value="2020-05-15" <!--TODO constrain this by trip date-->
-                       min="2020-05-02" max="2020-12-31">
+                       value="2020-05-15"
+                       min="2020-05-02" max="2020-12-31"> <!--TODO constrain this by trip date-->
                 <label>Check-out date:</label>
                 <input type="date" id="check-out"
-                       value="2020-05-16" <!--TODO constrain this by trip date and check-in date-->
-                min="2020-05-03" max="2021-01-01">
+                       value="2020-05-16"
+                min="2020-05-03" max="2021-01-01"> <!--TODO constrain this by trip date and check-in date-->
                 <label>Price:</label>
                 <select id="hotel-price-sel">
                     <option value="1" selected="selected">Any</option>
@@ -179,6 +197,32 @@
 
     <div id="flights-div" class="big-popup-div">
         <h2>Browse Flights</h2>
+        <label>Departure airport code: </label>
+        <input type="text" maxlength="3" id="depart">
+        <label>Destination airport code: </label>
+        <input type="text" maxlength="3" id="destination">
+        <label>Adults: </label>
+        <input type="number" step="1" value="0" id="num-adults"></input>
+        <label>Children: </label>
+        <input type="number" step="1" value="0" id="num-children"></input>
+        <label>Seniors: </label>
+        <input type="number" step="1" value="0" id="num-adults"></input>
+        <label>Max number of stops:</label>
+        <select id="max-stops-sel">
+            <option value="1" selected="selected">Any</option>
+            <option value="2" >0</option>
+            <option value="3" >1</option>
+            <option value="4" >2+</option>
+        </select>
+        <label>Class: </label>
+        <select id="flight-class-sel">
+            <option value="1" selected="selected">Any</option>
+            <option value="2" >Economy</option>
+            <option value="3" >Premium Economy</option>
+            <option value="4" >Business</option>
+            <option value="5" >First</option>
+        </select>
+        <button onclick="browseFlights()" type="button">Search</button>
         <button onclick="closePopup('flights-div')" class="large-black-button">Back</button>
     </div>
 
