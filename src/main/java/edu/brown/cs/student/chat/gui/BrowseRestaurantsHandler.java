@@ -6,7 +6,7 @@ import spark.*;
 
 import java.util.Map;
 
-public class RestaurantsSubmitHandler implements Route {
+public class BrowseRestaurantsHandler implements Route {
 
   @Override
   public JSONObject handle(Request request, Response response) {

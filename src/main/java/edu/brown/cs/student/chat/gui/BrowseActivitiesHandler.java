@@ -6,7 +6,7 @@ import spark.*;
 
 import java.util.Map;
 
-public class ActivitiesSubmitHandler implements Route {
+public class BrowseActivitiesHandler implements Route {
   @Override
   public JSONObject handle(Request request, Response response) {
     QueryParamsMap qm = request.queryMap();

@@ -1,4 +1,4 @@
-package edu.brown.cs.student.chat.gui.firebase;
+package edu.brown.cs.student.chat.gui;
 
 import com.google.common.collect.ImmutableMap;
 import spark.ModelAndView;

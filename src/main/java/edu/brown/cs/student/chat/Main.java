@@ -103,11 +103,11 @@ public class Main {
     Spark.post("/updateUserBudgetInRoom", new UpdateUserBudgetInRoomHandler());
 
     // Handlers for querying menus within TravelChat chat interface
-    Spark.get("/browseRestaurants", new RestaurantsSubmitHandler());
-    Spark.get("/browseActivities", new ActivitiesSubmitHandler());
-    Spark.post("/browseLodging", new LodgingSubmitHandler());
-    Spark.post("/browseFlights", new FlightsSubmitHandler());
-    Spark.post("/planMyDay", new PlanMyDaySubmitHandler());
+    Spark.get("/browseRestaurants", new BrowseRestaurantsHandler());
+    Spark.get("/browseActivities", new BrowseActivitiesHandler());
+    Spark.get("/browseLodging", new BrowseLodgingHandler());
+    Spark.get("/browseFlights", new BrowseFlightsHandler());
+    Spark.get("/planMyDay", new PlanMyDayHandler());
 
 
     // Calendar management

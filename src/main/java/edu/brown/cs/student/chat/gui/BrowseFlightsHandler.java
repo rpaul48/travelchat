@@ -9,7 +9,7 @@ import spark.Route;
 
 import java.util.Map;
 
-public class FlightsSubmitHandler implements Route {
+public class BrowseFlightsHandler implements Route {
   @Override
   public JSONObject handle(Request request, Response response) throws Exception {
     QueryParamsMap qm = request.queryMap();
