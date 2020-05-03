@@ -1,4 +1,4 @@
-package edu.brown.cs.student.chat.gui;
+package edu.brown.cs.student.chat.gui.calendar;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -11,4 +11,5 @@ public class CalendarHandler implements TemplateViewRoute {
   public ModelAndView handle(Request request, Response response) throws Exception {
     return new ModelAndView(null, "calendar.ftl");
   }
+
 }

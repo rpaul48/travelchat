@@ -4,6 +4,10 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import edu.brown.cs.student.chat.gui.*;
+import edu.brown.cs.student.chat.gui.calendar.CalendarEvent;
+import edu.brown.cs.student.chat.gui.calendar.CalendarHandler;
+import edu.brown.cs.student.chat.gui.calendar.getCalendarEvents;
+import edu.brown.cs.student.chat.gui.calendar.postCalendarEvent;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -14,6 +18,7 @@ import spark.Spark;
 import spark.template.freemarker.FreeMarkerEngine;
 
 import java.io.*;
+import java.util.*;
 
 public class Main {
 
@@ -85,11 +90,26 @@ public class Main {
     Spark.get("/login", new LoginFrontHandler(), freeMarker);
     Spark.get("/manage-chats", new ManageChatsFrontHandler(), freeMarker);
     Spark.get("/chat/:roomId", new ChatFrontHandler(), freeMarker);
-    Spark.get("/calendar", new CalendarHandler(), freeMarker);
 
     Spark.post("/createRoom", new createRoomHandler());
     Spark.get("/getUserRooms", new getUserRoomsHandler());
     Spark.post("/addUserToRoom", new addUserToRoomHandler());
+
+
+
+
+
+
+    Map<String, List<CalendarEvent>> calendarEvents = new HashMap<>();
+    // For testing
+    calendarEvents.put("chat_id1", new ArrayList<>());
+    calendarEvents.get("chat_id1").add(new CalendarEvent("eventTitle1", "2020-05-02T14:30:00", "2020-05-02T16:30:00"));
+    calendarEvents.get("chat_id1").add(new CalendarEvent("eventTitle2", "2020-05-02T17:30:00", "2020-05-02T19:30:00"));
+
+    Spark.get("/calendar", new CalendarHandler(), freeMarker);
+    Spark.get("/getCalendarEvents", new getCalendarEvents(calendarEvents));
+    Spark.post("/postCalendarEvent", new postCalendarEvent(calendarEvents));
+
   }
 
   /**
