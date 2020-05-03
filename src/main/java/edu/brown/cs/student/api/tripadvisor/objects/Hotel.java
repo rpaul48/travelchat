@@ -1,9 +1,10 @@
 package edu.brown.cs.student.api.tripadvisor.objects;
 
-//public class Hotel {
-//  private GeoLocation geoLocation;
-//}
+import java.text.DecimalFormat;
 
+/**
+ * This is a class for Hotel, as defined by the TripAdvisor API.
+ */
 public class Hotel implements Item {
   private String name; // field "name"
   private double latitude; // field "latitude"
@@ -18,10 +19,32 @@ public class Hotel implements Item {
   private int ranking; // field "ranking_position"
   private String rankingString; // field "ranking"
   private boolean isClosed; // field "is_closed"
+  private String lunit; // field "lunit"
 
+  /**
+   * Default constructor.
+   */
   public Hotel() {
+    this.lunit = "mi";
   }
 
+  /**
+   * Constructor with all fields.
+   * 
+   * @param name
+   * @param latitude
+   * @param longitude
+   * @param distance
+   * @param numReviews
+   * @param locationString
+   * @param photoUrl
+   * @param rating
+   * @param priceLevel
+   * @param price
+   * @param ranking
+   * @param rankingString
+   * @param isClosed
+   */
   public Hotel(String name, double latitude, double longitude, double distance, int numReviews,
       String locationString, String photoUrl, double rating, String priceLevel, String price,
       int ranking, String rankingString, boolean isClosed) {
@@ -39,6 +62,7 @@ public class Hotel implements Item {
     this.ranking = ranking;
     this.rankingString = rankingString;
     this.isClosed = isClosed;
+    this.lunit = "mi";
   }
 
   @Override
@@ -159,5 +183,31 @@ public class Hotel implements Item {
   @Override
   public void setClosed(boolean isClosed) {
     this.isClosed = isClosed;
+  }
+
+  @Override
+  public String toString() {
+    DecimalFormat df = new DecimalFormat("#.##");
+    DecimalFormat df2 = new DecimalFormat("#.####");
+
+    StringBuilder sb = new StringBuilder();
+    sb.append("Name: " + name + "\n");
+    sb.append("Location: " + locationString + "\n");
+    sb.append("Latitude: " + df2.format(latitude) + "\n");
+    sb.append("Longitude: " + df2.format(longitude) + "\n");
+    sb.append("Distance: " + df.format(distance) + " " + lunit + "\n");
+    sb.append("Number of Reviews: " + numReviews + "\n");
+    sb.append("Rating: " + rating + "\n");
+    sb.append("Price Level: " + priceLevel + "\n");
+    sb.append("Price: " + price + "\n");
+    sb.append("Ranking: " + rankingString + "\n");
+
+    if (isClosed) {
+      sb.append("Closed");
+    } else {
+      sb.append("Open");
+    }
+
+    return sb.toString();
   }
 }

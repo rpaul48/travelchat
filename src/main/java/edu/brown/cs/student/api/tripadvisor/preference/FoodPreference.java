@@ -99,7 +99,7 @@ public class FoodPreference implements Preference {
     fields.put("limit", 10); // adjust
     fields.put("lang", "en_US"); // adjust
     fields.put("currency", "USD"); // adjust
-    fields.put("lunit", "km"); // adjust
+    fields.put("lunit", "mi"); // adjust
     fields.put("latitude", latitude);
     fields.put("longitude", longitude);
     fields.put("min_rating", minRating);

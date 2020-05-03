@@ -1,21 +1,11 @@
 package edu.brown.cs.student.api.tripadvisor.objects;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
-//public class Restaurant {
-//  private String name;
-//  // location ID is defined by TripAdvisor API
-//  private String location_id;
-//  private GeoLocation geoLocation;
-//  // e.g. hours[0][1] = opening time on Monday
-//  private String[][] hours;
-//  private String websiteURL;
-//  private String priceLevel;
-//  private String rating;
-//  // e.g. #1 of 1,201 restaurants in New York City
-//  private String ranking;
-//}
-
+/**
+ * This is a class for Restaurant, as defined by the TripAdvisor API.
+ */
 public class Restaurant implements Item {
   private String name;
   private double latitude;
@@ -32,10 +22,33 @@ public class Restaurant implements Item {
   private String address;
 //  private List<String> hours; ///
   private List<String> cuisineTypes;
+  private String lunit; // field "lunit"
 
+  /**
+   * Default constructor.
+   */
   public Restaurant() {
+    this.lunit = "mi";
   }
 
+  /**
+   * Constructor with all fields.
+   * 
+   * @param name
+   * @param latitude
+   * @param longitude
+   * @param numReviews
+   * @param locationString
+   * @param photoUrl
+   * @param distance
+   * @param priceLevel
+   * @param rating
+   * @param isClosed
+   * @param ranking
+   * @param rankingString
+   * @param address
+   * @param cuisineTypes
+   */
   public Restaurant(String name, double latitude, double longitude, int numReviews,
       String locationString, String photoUrl, double distance, String priceLevel, double rating,
       boolean isClosed, int ranking, String rankingString, String address,
@@ -54,6 +67,7 @@ public class Restaurant implements Item {
     this.rankingString = rankingString;
     this.address = address;
     this.cuisineTypes = cuisineTypes;
+    this.lunit = "mi";
   }
 
   @Override
@@ -182,5 +196,31 @@ public class Restaurant implements Item {
 
   public void setRankingString(String rankingString) {
     this.rankingString = rankingString;
+  }
+
+  @Override
+  public String toString() {
+    DecimalFormat df = new DecimalFormat("#.##");
+    DecimalFormat df2 = new DecimalFormat("#.####");
+
+    StringBuilder sb = new StringBuilder();
+    sb.append("Name: " + name + "\n");
+    sb.append("Location: " + locationString + "\n");
+    sb.append("Latitude: " + df2.format(latitude) + "\n");
+    sb.append("Longitude: " + df2.format(longitude) + "\n");
+    sb.append("Distance: " + df.format(distance) + " " + lunit + "\n");
+    sb.append("Number of Reviews: " + numReviews + "\n");
+    sb.append("Rating: " + rating + "\n");
+    sb.append("Price Level: " + priceLevel + "\n");
+    sb.append("Ranking: " + rankingString + "\n");
+    sb.append("Address: " + address + "\n");
+
+    if (isClosed) {
+      sb.append("Closed");
+    } else {
+      sb.append("Open");
+    }
+
+    return sb.toString();
   }
 }
