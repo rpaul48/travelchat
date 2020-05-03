@@ -16,7 +16,7 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-public class LodgingSubmitHandler implements Route {
+public class BrowseLodgingHandler implements Route {
   @Override
   public JSONObject handle(Request request, Response response) throws Exception {
     QueryParamsMap qm = request.queryMap();

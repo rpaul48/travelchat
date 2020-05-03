@@ -18,13 +18,12 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-public class ActivitiesSubmitHandler implements Route {
+public class BrowseActivitiesHandler implements Route {
   @Override
   public JSONObject handle(Request request, Response response)
       throws JSONException, UnirestException {
     QueryParamsMap qm = request.queryMap();
 
-    // of the form "[lat], [lon]"
     String location = qm.value("location");
 
     String[] locationStrings = location.split(",");
@@ -47,9 +46,14 @@ public class ActivitiesSubmitHandler implements Route {
     nameToCode.put("Nightlife", 20);
     nameToCode.put("All", 0);
 
-    // ex) "Fun & Games, Nature & Parks"
-    String activities = qm.value("activityTypes");
-    String[] actNames = activities.replace(" ", "").split(",");
+    /*
+     * an string of activity categories of the form "type1,type2,type3"; (there are
+     * no spaces after commas) options: All, Boat Tours & Water Sports, Fun & Game,
+     * Nature & Parks, Sights & Landmarks, Shopping, Transportation, Museums,
+     * Outdoor Activities, Spas & Wellness, Classes & Workshops, Tours, Nightlife
+     */
+    String activityTypes = qm.value("activityTypes");
+    String[] actNames = activityTypes.replace(" ", "").split(",");
     String subcategory = "";
     for (String activity : actNames) {
       subcategory += nameToCode.get(activity) + ",";

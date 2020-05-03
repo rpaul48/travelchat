@@ -17,7 +17,7 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-public class RestaurantsSubmitHandler implements Route {
+public class BrowseRestaurantsHandler implements Route {
 
   @Override
   public JSONObject handle(Request request, Response response) throws UnirestException {

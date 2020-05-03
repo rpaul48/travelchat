@@ -11,7 +11,7 @@
                 <ul>
                     <li><a onclick="openPopup('settings-div')"><i class="fas fa-cog"></i>Settings</a></li>
                     <li><a onclick="openPopup('trip-details-div')"><i class="fas fa-route"></i>Trip Details</a></li>
-                    <li><a href="/calendar"><i class="fas fa-calendar-alt"></i>Calendar</a></li>
+                    <li><a id="calendar-link"><i class="fas fa-calendar-alt"></i>Calendar</a></li>
                     <li><a onclick="openPopup('plan-my-day-div')"><i class="fas fa-list"></i>Plan My Day</a></li>
                     <li><a onclick="openPopup('restaurants-div')"><i class="fas fa-utensils"></i>Browse Restaurants</a></li>
                     <li><a onclick="openPopup('activities-div')"><i class="fas fa-hiking"></i>Browse Activities</a></li>
@@ -31,7 +31,7 @@
         <input type="text" placeholder="Display Name" id="update-display-name-field"/>
         <button onclick="editProfile()" class="large-green-button">Save Changes</button>
         <button onclick="leaveChat()" id="leave-chat" class="large-red-button">Leave Chat</button>
-        <button onclick="closePopup('settings-div')" class="large-black-button">Back</button>
+        <button onclick="closePopup('settings-div')" class="small-black-button">Back</button>
     </div>
 
     <div id="budget-div" class="popup-div">
@@ -40,17 +40,17 @@
         <input type="number" step="0.01" placeholder="Amount to Log/Add" id="update-budget-field"/>
         <button onclick="updateBudget('log')" class="large-blue-button">Log Payment</button>
         <button onclick="updateBudget('add')" id="add-funds" class="large-green-button">Add Funds</button>
-        <button onclick="closePopup('budget-div')" class="large-black-button">Back</button>
+        <button onclick="closePopup('budget-div')" class="small-black-button">Back</button>
     </div>
 
     <div id="trip-details-div" class="big-popup-div">
         <h2>Trip Details</h2>
-        <button onclick="closePopup('trip-details-div')" class="large-black-button">Back</button>
+        <button onclick="closePopup('trip-details-div')" class="small-black-button">Back</button>
     </div>
 
     <div id="plan-my-day-div" class="big-popup-div">
         <h2>Plan My Day</h2>
-        <button onclick="closePopup('plan-my-day-div')" class="large-black-button">Back</button>
+        <button onclick="closePopup('plan-my-day-div')" class="small-black-button">Back</button>
     </div>
 
     <div id="restaurants-div" class="big-popup-div">
@@ -107,11 +107,11 @@
                     <option value="5" >Kosher</option>
                     <option value="6" >Gluten-free options</option>
                 </select>
-                <button onclick="browseRestaurants()" type="button">Search</button>
+                <button onclick="browseRestaurants()" type="button" class="small-green-button">Search</button>
             </form>
         </div>
         <div class="results-container"></div>
-        <button onclick="closePopup('restaurants-div')" class="large-black-button">Back</button>
+        <button onclick="closePopup('restaurants-div')" class="small-black-button">Back</button>
     </div>
 
     <div id="activities-div" class="big-popup-div">
@@ -126,11 +126,29 @@
                     <option value="4" selected="selected">10</option>
                 </select>
                 <label> miles from current location </label>
-                <button onclick="browseActivities()" type="button">Search</button>
+                <br>
+                <label>Type of activity: </label>
+                <div class="activities">
+                    <label><input type="checkbox" name="browse-activity" value="All" checked/>All</label>
+                    <label><input type="checkbox" name="browse-activity" value="Boat Tours & Water Sports">Boat Tours & Water Sports</label>
+                    <label><input type="checkbox" name="browse-activity" value="Fun & Game">Fun & Game</label>
+                    <label><input type="checkbox" name="browse-activity" value="Nature & Parks">Nature & Parks</label>
+                    <label><input type="checkbox" name="browse-activity" value="Sights & Landmarks">Sights & Landmarks</label>
+                    <label><input type="checkbox" name="browse-activity" value="Shopping">Shopping</label>
+                    <label><input type="checkbox" name="browse-activity" value="Transportation">Transportation</label>
+                    <label><input type="checkbox" name="browse-activity" value="Museums">Museums</label>
+                    <label><input type="checkbox" name="browse-activity" value="Outdoor Activities">Outdoor Activities</label>
+                    <label><input type="checkbox" name="browse-activity" value="Spas & Wellness">Spas & Wellness</label>
+                    <label><input type="checkbox" name="browse-activity" value="Classes & Workshops">Classes & Workshops</label>
+                    <label><input type="checkbox" name="browse-activity" value="Tours">Tours</label>
+                    <label><input type="checkbox" name="browse-activity" value="Nightlife">Nightlife</label>
+                </div>
+
+                <button onclick="browseActivities()" type="button" class="small-green-button">Search</button>
             </form>
         </div>
         <div class="results-container"></div>
-        <button onclick="closePopup('activities-div')" class="large-black-button">Back</button>
+        <button onclick="closePopup('activities-div')" class="small-black-button">Back</button>
     </div>
 
     <div id="lodging-div" class="big-popup-div">
@@ -145,12 +163,14 @@
                     <option value="4" >Specialty</option>
                 </select>
                 <label>Check-in date:</label>
+                <!--TODO constrain this by trip date-->
                 <input type="date" id="check-in"
-                       value="2020-05-15" <!--TODO constrain this by trip date-->
+                       value="2020-05-15"
                        min="2020-05-02" max="2020-12-31">
                 <label>Check-out date:</label>
+                <!--TODO constrain this by trip date and check-in date-->
                 <input type="date" id="check-out"
-                       value="2020-05-16" <!--TODO constrain this by trip date and check-in date-->
+                       value="2020-05-16"
                 min="2020-05-03" max="2021-01-01">
                 <label>Price:</label>
                 <select id="hotel-price-sel">
@@ -170,16 +190,47 @@
                 </select>
                 <label>Number of rooms</label>
                 <input type="number" id="num-rooms" value="1">
-                <button onclick="browseLodging()" type="button">Search</button>
+                <button onclick="browseLodging()" type="button" class="small-green-button">Search</button>
             </form>
         </div>
         <div class="results-container"></div>
-        <button onclick="closePopup('lodging-div')" class="large-black-button">Back</button>
+        <button onclick="closePopup('lodging-div')" class="small-black-button">Back</button>
     </div>
 
     <div id="flights-div" class="big-popup-div">
         <h2>Browse Flights</h2>
-        <button onclick="closePopup('flights-div')" class="large-black-button">Back</button>
+        <div class="form-container">
+            <form id="flights-form">
+                <label>Departure airport code: </label>
+                <input type="text" maxlength="3" id="depart">
+                <label>Destination airport code: </label>
+                <input type="text" maxlength="3" id="destination">
+                <label>Adults: </label>
+                <input type="number" step="1" value="0" id="num-adults"></input>
+                <label>Children: </label>
+                <input type="number" step="1" value="0" id="num-children"></input>
+                <label>Seniors: </label>
+                <input type="number" step="1" value="0" id="num-adults"></input>
+                <label>Max number of stops:</label>
+                <select id="max-stops-sel">
+                    <option value="1" selected="selected">Any</option>
+                    <option value="2" >0</option>
+                    <option value="3" >1</option>
+                    <option value="4" >2+</option>
+                </select>
+                <label>Class: </label>
+                <select id="flight-class-sel">
+                    <option value="1" selected="selected">Any</option>
+                    <option value="2" >Economy</option>
+                    <option value="3" >Premium Economy</option>
+                    <option value="4" >Business</option>
+                    <option value="5" >First</option>
+                </select>
+                <button onclick="browseFlights()" type="button" class="small-green-button">Search</button>
+            </form>
+        </div>
+        <div class="results-container"></div>
+        <button onclick="closePopup('flights-div')" class="small-black-button">Back</button>
     </div>
 
     <script src="/js/login.js"></script>

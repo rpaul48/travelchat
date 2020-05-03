@@ -1,6 +1,7 @@
 let chat;
 let roomId;
 let curUser;
+let coordinates;
 
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
@@ -29,10 +30,10 @@ firebase.auth().onAuthStateChanged(function(user) {
             data: {"uid": user.uid},
             async: false,
             success: function (data) {
-                var path = window.location.pathname;
+                const path = window.location.pathname;
                 roomId = path.substring(path.lastIndexOf('/') + 1);
+                updateCalendarLink();
                 var userRooms = JSON.parse(data);
-
                 if (Object.keys(userRooms).includes(roomId)) {
                     // user is added to the room, enter the chat
                     chat.enterRoom(roomId);
@@ -41,6 +42,17 @@ firebase.auth().onAuthStateChanged(function(user) {
                     window.location.href = "/manage-chats";
                 }
             }});
+
+        // set the current coordinates
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            coordinates = "Geolocation is not supported by this browser.";
+        }
+        function showPosition(position) {
+            coordinates = position.coords.latitude.toString().concat(" ", position.coords.longitude.toString());
+        }
+
     } else {
         // user is not logged in, redirect to login
         window.location.href = "/login";
@@ -94,47 +106,6 @@ function closePopup(id) {
     document.getElementById(id).style.display = "none";
 }
 
-// returns the user's current coordinates
-function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-    } else {
-        return "Geolocation is not supported by this browser.";
-    }
-    function showPosition(position) {
-        return position.coords.latitude + " " + position.coords.longitude;
-    }
-}
-
-// returns search results for restaurants
-function browseRestaurants() {
-    var location = getLocation();
-    if (location === "Geolocation is not supported by this browser.") {
-        window.alert("Please allow your browser to access your location.");
-    } else {
-        var miles_sel = document.getElementById("restaurant-miles-sel");
-        var miles = miles_sel.options[miles_sel.selectedIndex].text;
-        var cuisine_sel = document.getElementById("cuisine-sel");
-        var cuisine = cuisine_sel.options[cuisine_sel.selectedIndex].text;
-        var price_sel = document.getElementById("restaurant-price-sel");
-        var price = price_sel.options[price_sel.selectedIndex].text;
-        var rating_sel = document.getElementById("restaurant-rating-sel");
-        var rating = rating_sel.options[rating_sel.selectedIndex].text;
-        var diet_sel = document.getElementById("diet-sel");
-        var diet = diet_sel.options[diet_sel.selectedIndex].text;
-
-        // returns a list of restaurant options which match the query parameters
-        $.ajax({
-            url: "/browseRestaurants",
-            type: "get",
-            data: {"miles": miles, "location": location, "cuisine": cuisine, "rating": rating, "price": price, "diet": diet},
-            async: false,
-            success: function (data) {
-                var recs = JSON.parse(data);
-            }});
-    }
-}
-
 function displayBudget() {
     $.ajax({
         url: "/getUserBudgetInRoom",
@@ -170,20 +141,52 @@ function updateBudget(logOrAdd) {
     }
 }
 
+// returns search results for restaurants
+function browseRestaurants() {
+    if (coordinates === "Geolocation is not supported by this browser.") {
+        window.alert("Please allow your browser to access your location.");
+    } else {
+        var miles_sel = document.getElementById("restaurant-miles-sel");
+        var miles = miles_sel.options[miles_sel.selectedIndex].text;
+        var cuisine_sel = document.getElementById("cuisine-sel");
+        var cuisine = cuisine_sel.options[cuisine_sel.selectedIndex].text;
+        var price_sel = document.getElementById("restaurant-price-sel");
+        var price = price_sel.options[price_sel.selectedIndex].text;
+        var rating_sel = document.getElementById("restaurant-rating-sel");
+        var rating = rating_sel.options[rating_sel.selectedIndex].text;
+        var diet_sel = document.getElementById("diet-sel");
+        var diet = diet_sel.options[diet_sel.selectedIndex].text;
+
+        // returns a list of restaurant options which match the query parameters
+        $.ajax({
+            url: "/browseRestaurants",
+            type: "get",
+            data: {"miles": miles, "location": coordinates, "cuisine": cuisine, "rating": rating, "price": price, "diet": diet},
+            async: false,
+            success: function (data) {
+                var recs = JSON.parse(data);
+            }});
+    }
+}
+
 // returns search results for activities
 function browseActivities() {
-    var location = getLocation();
-    if (location === "Geolocation is not supported by this browser.") {
+    if (coordinates === "Geolocation is not supported by this browser.") {
         window.alert("Please allow your browser to access your location.");
     } else {
         var miles_sel = document.getElementById("activities-miles-sel");
         var miles = miles_sel.options[miles_sel.selectedIndex].text;
 
+        var activities = [];
+        $("input:checkbox[name=browse-activity]:checked").each(function(){
+            activities.push($(this).val());
+        });
+
         // returns a list of activities options which match the query parameters
         $.ajax({
             url: "/browseActivities",
             type: "get",
-            data: {"miles": miles, "location": location},
+            data: {"location": coordinates, "miles": miles, "activityTypes": activities.toString()},
             async: false,
             success: function (data) {
                 var recs = JSON.parse(data);
@@ -193,8 +196,7 @@ function browseActivities() {
 
 // returns search results for lodging
 function browseLodging() {
-    var location = getLocation();
-    if (location === "Geolocation is not supported by this browser.") {
+    if (coordinates === "Geolocation is not supported by this browser.") {
         window.alert("Please allow your browser to access your location.");
     } else {
         var type_sel = document.getElementById("hotel-type-sel");
@@ -214,11 +216,44 @@ function browseLodging() {
         $.ajax({
             url: "/browseLodging",
             type: "get",
-            data: {"location": location, "type": type, "check-in": checkin, "check-out": checkout,
+            data: {"location": coordinates, "type": type, "check-in": checkin, "check-out": checkout,
             "price": price, "rating": rating, "num-rooms": num_rooms},
             async: false,
             success: function (data) {
                 var recs = JSON.parse(data);
             }});
     }
+}
+
+// returns search results for flights
+function browseFlights() {
+    if (coordinates === "Geolocation is not supported by this browser.") {
+        window.alert("Please allow your browser to access your location.");
+    } else {
+        var depart = document.getElementById("depart").value;
+        var destination = document.getElementById("destination").value;
+        var adults = document.getElementById("num-adults").value;
+        var children = document.getElementById("num-children").value;
+        var seniors = document.getElementById("num-seniors").value;
+        var numStops_sel = document.getElementById("max-stops-sel");
+        var numStops = numStops_sel.options[numStops_sel.selectedIndex].text;
+        var flightClass_sel = document.getElementById("flight-class-sel");
+        var flightClass = flightClass_sel.options[flightClass_sel.selectedIndex].text;
+
+        // returns a list of flight options which match the query parameters
+        $.ajax({
+            url: "/browseFlights",
+            type: "get",
+            data: {"location": coordinates, "depart": depart, "destination": destination, "adults": adults,
+            "children": children, "seniors": seniors, "numStops": numStops, "flightClass": flightClass},
+            async: false,
+            success: function (data) {
+                var recs = JSON.parse(data);
+            }});
+    }
+}
+
+function updateCalendarLink() {
+    const calendarLinkEl = $("#calendar-link");
+    calendarLinkEl.attr("href", "/calendar/" + roomId + "/" + firebase.auth().currentUser.uid);
 }
