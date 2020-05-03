@@ -31,7 +31,7 @@
         <input type="text" placeholder="Display Name" id="update-display-name-field"/>
         <button onclick="editProfile()" class="large-green-button">Save Changes</button>
         <button onclick="leaveChat()" id="leave-chat" class="large-red-button">Leave Chat</button>
-        <button onclick="closePopup('settings-div')" class="large-black-button">Back</button>
+        <button onclick="closePopup('settings-div')" class="small-black-button">Back</button>
     </div>
 
     <div id="budget-div" class="popup-div">
@@ -40,17 +40,17 @@
         <input type="number" step="0.01" placeholder="Amount to Log/Add" id="update-budget-field"/>
         <button onclick="updateBudget('log')" class="large-blue-button">Log Payment</button>
         <button onclick="updateBudget('add')" id="add-funds" class="large-green-button">Add Funds</button>
-        <button onclick="closePopup('budget-div')" class="large-black-button">Back</button>
+        <button onclick="closePopup('budget-div')" class="small-black-button">Back</button>
     </div>
 
     <div id="trip-details-div" class="big-popup-div">
         <h2>Trip Details</h2>
-        <button onclick="closePopup('trip-details-div')" class="large-black-button">Back</button>
+        <button onclick="closePopup('trip-details-div')" class="small-black-button">Back</button>
     </div>
 
     <div id="plan-my-day-div" class="big-popup-div">
         <h2>Plan My Day</h2>
-        <button onclick="closePopup('plan-my-day-div')" class="large-black-button">Back</button>
+        <button onclick="closePopup('plan-my-day-div')" class="small-black-button">Back</button>
     </div>
 
     <div id="restaurants-div" class="big-popup-div">
@@ -107,11 +107,11 @@
                     <option value="5" >Kosher</option>
                     <option value="6" >Gluten-free options</option>
                 </select>
-                <button onclick="browseRestaurants()" type="button">Search</button>
+                <button onclick="browseRestaurants()" type="button" class="small-green-button">Search</button>
             </form>
         </div>
         <div class="results-container"></div>
-        <button onclick="closePopup('restaurants-div')" class="large-black-button">Back</button>
+        <button onclick="closePopup('restaurants-div')" class="small-black-button">Back</button>
     </div>
 
     <div id="activities-div" class="big-popup-div">
@@ -144,11 +144,11 @@
                     <label><input type="checkbox" name="browse-activity" value="Nightlife">Nightlife</label>
                 </div>
 
-                <button onclick="browseActivities()" type="button">Search</button>
+                <button onclick="browseActivities()" type="button" class="small-green-button">Search</button>
             </form>
         </div>
         <div class="results-container"></div>
-        <button onclick="closePopup('activities-div')" class="large-black-button">Back</button>
+        <button onclick="closePopup('activities-div')" class="small-black-button">Back</button>
     </div>
 
     <div id="lodging-div" class="big-popup-div">
@@ -190,42 +190,47 @@
                 </select>
                 <label>Number of rooms</label>
                 <input type="number" id="num-rooms" value="1">
-                <button onclick="browseLodging()" type="button">Search</button>
+                <button onclick="browseLodging()" type="button" class="small-green-button">Search</button>
             </form>
         </div>
         <div class="results-container"></div>
-        <button onclick="closePopup('lodging-div')" class="large-black-button">Back</button>
+        <button onclick="closePopup('lodging-div')" class="small-black-button">Back</button>
     </div>
 
     <div id="flights-div" class="big-popup-div">
         <h2>Browse Flights</h2>
-        <label>Departure airport code: </label>
-        <input type="text" maxlength="3" id="depart">
-        <label>Destination airport code: </label>
-        <input type="text" maxlength="3" id="destination">
-        <label>Adults: </label>
-        <input type="number" step="1" value="0" id="num-adults"></input>
-        <label>Children: </label>
-        <input type="number" step="1" value="0" id="num-children"></input>
-        <label>Seniors: </label>
-        <input type="number" step="1" value="0" id="num-adults"></input>
-        <label>Max number of stops:</label>
-        <select id="max-stops-sel">
-            <option value="1" selected="selected">Any</option>
-            <option value="2" >0</option>
-            <option value="3" >1</option>
-            <option value="4" >2+</option>
-        </select>
-        <label>Class: </label>
-        <select id="flight-class-sel">
-            <option value="1" selected="selected">Any</option>
-            <option value="2" >Economy</option>
-            <option value="3" >Premium Economy</option>
-            <option value="4" >Business</option>
-            <option value="5" >First</option>
-        </select>
-        <button onclick="browseFlights()" type="button">Search</button>
-        <button onclick="closePopup('flights-div')" class="large-black-button">Back</button>
+        <div class="form-container">
+            <form id="flights-form">
+                <label>Departure airport code: </label>
+                <input type="text" maxlength="3" id="depart">
+                <label>Destination airport code: </label>
+                <input type="text" maxlength="3" id="destination">
+                <label>Adults: </label>
+                <input type="number" step="1" value="0" id="num-adults"></input>
+                <label>Children: </label>
+                <input type="number" step="1" value="0" id="num-children"></input>
+                <label>Seniors: </label>
+                <input type="number" step="1" value="0" id="num-adults"></input>
+                <label>Max number of stops:</label>
+                <select id="max-stops-sel">
+                    <option value="1" selected="selected">Any</option>
+                    <option value="2" >0</option>
+                    <option value="3" >1</option>
+                    <option value="4" >2+</option>
+                </select>
+                <label>Class: </label>
+                <select id="flight-class-sel">
+                    <option value="1" selected="selected">Any</option>
+                    <option value="2" >Economy</option>
+                    <option value="3" >Premium Economy</option>
+                    <option value="4" >Business</option>
+                    <option value="5" >First</option>
+                </select>
+                <button onclick="browseFlights()" type="button" class="small-green-button">Search</button>
+            </form>
+        </div>
+        <div class="results-container"></div>
+        <button onclick="closePopup('flights-div')" class="small-black-button">Back</button>
     </div>
 
     <script src="/js/login.js"></script>
