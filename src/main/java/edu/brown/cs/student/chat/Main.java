@@ -93,12 +93,14 @@ public class Main {
     Spark.get("/getUserRooms", new GetUserRoomsHandler());
     Spark.post("/addUserToRoom", new AddUserToRoomHandler());
     Spark.post("/removeUserFromRoom", new RemoveUserFromRoomHandler());
+    Spark.post("/getUserBudgetInRoom", new GetUserBudgetInRoomHandler());
+    Spark.post("/updateUserBudgetInRoom", new UpdateUserBudgetInRoomHandler());
 
-    Spark.post("/browseRestaurants", new RestaurantsSubmitHandler(), freeMarker);
-    Spark.post("/browseActivities", new ActivitiesSubmitHandler(), freeMarker);
-    Spark.post("/browseLodging", new LodgingSubmitHandler(), freeMarker);
-    Spark.post("/browseFlights", new FlightsSubmitHandler(), freeMarker);
-    Spark.post("/planMyDay", new PlanMyDaySubmitHandler(), freeMarker);
+    Spark.post("/browseRestaurants", new RestaurantsSubmitHandler());
+    Spark.post("/browseActivities", new ActivitiesSubmitHandler());
+    Spark.post("/browseLodging", new LodgingSubmitHandler());
+    Spark.post("/browseFlights", new FlightsSubmitHandler());
+    Spark.post("/planMyDay", new PlanMyDaySubmitHandler());
   }
 
   /**
