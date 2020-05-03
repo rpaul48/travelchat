@@ -1,4 +1,4 @@
-package edu.brown.cs.student.chat.gui;
+package edu.brown.cs.student.chat.gui.firebase;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -13,7 +13,7 @@ import spark.Route;
 import java.util.HashMap;
 import java.util.Map;
 
-public class getUserRoomsHandler implements Route {
+public class GetUserRoomsHandler implements Route {
 
   @Override
   public JSONObject handle(Request request, Response response) {
@@ -52,6 +52,7 @@ public class getUserRoomsHandler implements Route {
     }
 
     try {
+      // necessary because ValueEventListener is asynchronous, but we don't want that
       while (!done[0]) {
         Thread.sleep(1);
       }

@@ -12,11 +12,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class getCalendarEvents implements Route {
+public class GetCalendarEventsHandler implements Route {
 
   private Map<String, List<CalendarEvent>> calendarEvents;
 
-  public getCalendarEvents(Map<String, List<CalendarEvent>> calendarEvents) {
+  public GetCalendarEventsHandler(Map<String, List<CalendarEvent>> calendarEvents) {
     this.calendarEvents = calendarEvents;
   }
 

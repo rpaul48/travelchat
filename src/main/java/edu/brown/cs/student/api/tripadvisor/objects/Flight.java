@@ -13,24 +13,21 @@ public class Flight {
     private String layover;
     // Score is defined by TripAdvisor API.
     //private String flightScore;
-    private String searchHash;
-    private String searchID;
     private String dest;
     private String origin;
     private String id;
+    private String duration;
 
-    public Flight(String bookingURL, String price, String cabinClass, String carrier, String layover, String searchHash,
-                  String searchID, String dest, String origin, String id) {
+    public Flight(String bookingURL, String price, String carrier, String layover, String dest, String origin,
+                  String id, String duration) {
         this.bookingURL = bookingURL;
         this.price = price;
-        this.cabinClass = cabinClass;
         this.carrier = carrier;
         this.layover = layover;
-        this.searchHash = searchHash;
-        this.searchID = searchID;
         this.dest = dest;
         this.origin = origin;
         this.id = id;
+        this.duration = duration;
     }
 
     public String getBookingURL() {
@@ -73,22 +70,6 @@ public class Flight {
         this.layover = layover;
     }
 
-    public String getSearchHash() {
-        return searchHash;
-    }
-
-    public void setSearchHash(String searchHash) {
-        this.searchHash = searchHash;
-    }
-
-    public String getSearchID() {
-        return searchID;
-    }
-
-    public void setSearchID(String searchID) {
-        this.searchID = searchID;
-    }
-
     public String getDest() {
         return dest;
     }
@@ -111,5 +92,13 @@ public class Flight {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 }
