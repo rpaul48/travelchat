@@ -30,10 +30,10 @@ firebase.auth().onAuthStateChanged(function(user) {
             data: {"uid": user.uid},
             async: false,
             success: function (data) {
-                var path = window.location.pathname;
+                const path = window.location.pathname;
                 roomId = path.substring(path.lastIndexOf('/') + 1);
+                updateCalendarLink();
                 var userRooms = JSON.parse(data);
-
                 if (Object.keys(userRooms).includes(roomId)) {
                     // user is added to the room, enter the chat
                     chat.enterRoom(roomId);
@@ -251,4 +251,9 @@ function browseFlights() {
                 var recs = JSON.parse(data);
             }});
     }
+}
+
+function updateCalendarLink() {
+    const calendarLinkEl = $("#calendar-link");
+    calendarLinkEl.attr("href", "/calendar/" + roomId + "/" + firebase.auth().currentUser.uid);
 }

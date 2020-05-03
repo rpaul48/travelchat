@@ -1,6 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
 
 
+    //TODO: Take into account timezone. Calendar should be able to switch between time-zones.
+
+    const pathSplit = window.location.pathname.split("/");
+    const userID = pathSplit[pathSplit.length - 1];
+    const chatID = pathSplit[pathSplit.length - 2];
+
     let year = '2020';
     // convert to ISO. Create a function for this later!
     let startDate = year + '-' + '05-02';
@@ -13,24 +19,29 @@ document.addEventListener('DOMContentLoaded', function() {
      * Set up the addEvent modal
      */
 
-    const modal = document.getElementById('add-event-modal');
-    const exitButton = document.getElementsByClassName('close')[0];
+    const modal = $("#add-event-modal");
+    const exitButton = $(".close").first();
     // When the user clicks on (x), close the modal
-    exitButton.onclick = function() {
-        modal.style.display = "none";
-    };
+    exitButton.click(function() {
+        modal.hide();
+    });
 
-    const eventStartEl = document.getElementById('event-start-time');
-    eventStartEl.min = minTime;
-    eventStartEl.max = maxTime;
+    const eventStartEl = $("#event-start-time");
+    eventStartEl.attr({
+        "min" : minTime,
+        "max" : maxTime
+    });
 
-    const eventEndEl = document.getElementById('event-end-time');
-    eventEndEl.min = minTime;
-    eventEndEl.max = maxTime;
+    const eventEndEl = $("#event-end-time");
+    eventEndEl.attr({
+        "min" : minTime,
+        "max" : maxTime
+    });
 
     function resetModal() {
-        eventStartEl.value = startDate + 'T12:30';
-        eventEndEl.value = startDate + 'T13:30';
+        $("#event-title").val("");
+        eventStartEl.val(startDate + 'T12:30');
+        eventEndEl.val(startDate + 'T13:30');
     }
 
 
@@ -51,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 click: function() {
                     // When the user clicks the button, open the modal
                     resetModal();
-                    modal.style.display = "block";
+                    modal.fadeIn();
                 }
             },
             goBack: {
@@ -74,43 +85,50 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     calendar.render();
+    $.get("/getCalendarEvents", { chatID: chatID }, function( data ) {
+
+        console.log("AYE");
+        for (const event of data) {
+            console.log(event);
+            const eventObject = generateEventObject(event.title, event.startTimeISO, event.endTimeISO);
+            calendar.addEvent(eventObject);
+        }
+
+    }, 'json');
 
 
     /**
-     * Set up the modal form to be able to add events to the calendar
+     * Set up "add event" functionality to the modal form.
      */
+    const addEventForm = $("#add-event-form");
+    addEventForm.submit(function() {
 
-
-    const addEventForm = document.getElementById('add-event-form');
-    addEventForm.onsubmit = function() {
-
-        const startTime = document.getElementById('event-start-time').value;
-        const endTime = document.getElementById('event-end-time').value;
+        const startTime = $("#event-start-time").val();
+        const endTime = $("#event-end-time").val();
 
         // Check validity of input
         if (moment(endTime).isBefore(startTime) || moment(endTime).isSame(startTime)){
             alert("Error: End time must be greater than start time.");
         } else {
-            //TODO     alert('Great. Now, update your database...');
-            const title = document.getElementById('event-title').value;
-            addEventToCalendar(title, startTime, endTime)
-            modal.style.display = "none";
+            const title = $("#event-title").val();
+            const price = $("#event-price").val();
+            console.log(price);
+            const eventObject = generateEventObject(title, startTime, endTime);
+            // Add event to database
+            $.post("/postCalendarEvent", eventObject, null, 'json');
+            // Load visually
+            calendar.addEvent(eventObject);
+            modal.hide();
         }
-
 
         // to prevent from reloading the page, return false.
         return false;
 
-    };
+    });
 
+    function generateEventObject(title, startTimeISO, endTimeISO) {
 
-    /**
-     * Function to add events to the calendar. Outside functions will use this.
-     */
-
-    //TODO Function that takes in a JSON Event?
-
-    function addEventToCalendar(title, startTimeISO, endTimeISO) {
+        title = title ? title : "Untitled Event";
 
         let alldayBoolean = false;
         // if the difference in days is >= 2, display as an "all day" event to save calendar space
@@ -120,17 +138,20 @@ document.addEventListener('DOMContentLoaded', function() {
             const startTime = moment(startTimeISO).format("hh:mm:ss a");
             title += " @ " + startTime.substring(0, 5) + startTime.substring(9)
         }
-        console.log(moment(startTimeISO).date());
-        calendar.addEvent(
-            {
-                title: title ? title : "Untitled Event",
-                start: startTimeISO,
-                end: endTimeISO,
-                editable: true,
-                allDay: alldayBoolean
-            }
-        )
 
+        return {
+            title: title,
+            start: startTimeISO,
+            end: endTimeISO,
+            editable: true,
+            allDay: alldayBoolean,
+            chatID: chatID
+        };
+    }
+
+    function updateBudget(amount) {
 
     }
+
+
 });
