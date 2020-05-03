@@ -2,6 +2,7 @@ let chat;
 let roomId;
 let curUser;
 
+
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
         // get a Firebase Database ref
@@ -29,10 +30,10 @@ firebase.auth().onAuthStateChanged(function(user) {
             data: {"uid": user.uid},
             async: false,
             success: function (data) {
-                var path = window.location.pathname;
+                const path = window.location.pathname;
                 roomId = path.substring(path.lastIndexOf('/') + 1);
+                updateCalendarLink();
                 var userRooms = JSON.parse(data);
-
                 if (Object.keys(userRooms).includes(roomId)) {
                     // user is added to the room, enter the chat
                     chat.enterRoom(roomId);
@@ -221,4 +222,14 @@ function browseLodging() {
                 var recs = JSON.parse(data);
             }});
     }
+
 }
+
+function updateCalendarLink() {
+
+    const calendarLinkEl = $("#calendar-link");
+    calendarLinkEl.attr("href", "/calendar/" + roomId + "/" + firebase.auth().currentUser.uid);
+
+}
+
+

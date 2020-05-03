@@ -3,7 +3,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     //TODO: Take into account timezone. Calendar should be able to switch between time-zones.
 
-    const chatID = 'chat_id1';
+    const pathSplit = window.location.pathname.split("/");
+    const userID = pathSplit[pathSplit.length - 1];
+    const chatID = pathSplit[pathSplit.length - 2];
 
     let year = '2020';
     // convert to ISO. Create a function for this later!
@@ -109,6 +111,8 @@ document.addEventListener('DOMContentLoaded', function() {
             alert("Error: End time must be greater than start time.");
         } else {
             const title = $("#event-title").val();
+            const price = $("#event-price").val();
+            console.log(price);
             const eventObject = generateEventObject(title, startTime, endTime);
             // Add event to database
             $.post("/postCalendarEvent", eventObject, null, 'json');
@@ -143,6 +147,10 @@ document.addEventListener('DOMContentLoaded', function() {
             allDay: alldayBoolean,
             chatID: chatID
         };
+    }
+
+    function updateBudget(amount) {
+
     }
 
 

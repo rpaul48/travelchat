@@ -11,7 +11,7 @@
                 <ul>
                     <li><a onclick="openPopup('settings-div')"><i class="fas fa-cog"></i>Settings</a></li>
                     <li><a onclick="openPopup('trip-details-div')"><i class="fas fa-route"></i>Trip Details</a></li>
-                    <li><a href="/calendar"><i class="fas fa-calendar-alt"></i>Calendar</a></li>
+                    <li><a id="calendar-link"><i class="fas fa-calendar-alt"></i>Calendar</a></li>
                     <li><a onclick="openPopup('plan-my-day-div')"><i class="fas fa-list"></i>Plan My Day</a></li>
                     <li><a onclick="openPopup('restaurants-div')"><i class="fas fa-utensils"></i>Browse Restaurants</a></li>
                     <li><a onclick="openPopup('activities-div')"><i class="fas fa-hiking"></i>Browse Activities</a></li>
@@ -145,12 +145,14 @@
                     <option value="4" >Specialty</option>
                 </select>
                 <label>Check-in date:</label>
+                <!--TODO constrain this by trip date-->
                 <input type="date" id="check-in"
-                       value="2020-05-15" <!--TODO constrain this by trip date-->
+                       value="2020-05-15"
                        min="2020-05-02" max="2020-12-31">
                 <label>Check-out date:</label>
+                <!--TODO constrain this by trip date and check-in date-->
                 <input type="date" id="check-out"
-                       value="2020-05-16" <!--TODO constrain this by trip date and check-in date-->
+                       value="2020-05-16"
                 min="2020-05-03" max="2021-01-01">
                 <label>Price:</label>
                 <select id="hotel-price-sel">
