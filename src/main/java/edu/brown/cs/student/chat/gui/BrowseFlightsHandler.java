@@ -1,40 +1,84 @@
 package edu.brown.cs.student.chat.gui;
 
 import com.google.common.collect.ImmutableMap;
+import edu.brown.cs.student.api.tripadvisor.querier.TripAdvisorQuerier;
+import edu.brown.cs.student.api.tripadvisor.request.FlightRequest;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class BrowseFlightsHandler implements Route {
   @Override
-  public JSONObject handle(Request request, Response response) throws Exception {
+  public JSONArray handle(Request request, Response response) throws Exception {
+    // Querier for flights
+    TripAdvisorQuerier querier = new TripAdvisorQuerier();
+    // Get parameters from front-end
     QueryParamsMap qm = request.queryMap();
+    if (!paramsAreValid(qm)) {
+      System.out.println("ERROR: At least one invalid argument was passed as a flight parameter.");
+      return null;
+    }
 
-    //of the form "[lat], [lon]"
-    String location = qm.value("location");
-    //format: three-letter airport code
-    String depart = qm.value("depart");
-    //format: three-letter airport code
-    String destination = qm.value("destination");
-    //format: non-negative integer
-    int adults = Integer.parseInt(qm.value("adults"));
-    //format: non-negative integer
-    int children = Integer.parseInt(qm.value("children"));
-    //format: non-negative integer
-    int seniors = Integer.parseInt(qm.value("seniors"));
-    //options: "Any", "0", "1", "2+" (maximum number of stops)
+    // Session params map
+    Map<String, Object> sessionParams = new HashMap<>();
+    sessionParams.put("d1", qm.value("destination"));
+    sessionParams.put("o1", qm.value("origin"));
+    sessionParams.put("dd1", qm.value("departure_date"));
+    sessionParams.put("currency", "USD");
+    sessionParams.put("ta", qm.value("adults"));
+    sessionParams.put("ts", qm.value("seniors"));
+    sessionParams.put("c", qm.value("flightClass"));
+
+    // Remove any null (i.e. absent) parameters
+    sessionParams.values().removeIf(Objects::isNull);
+
+    // Poll params map
+    Map<String, Object> pollParams = new HashMap<>();
+    pollParams.put("currency", "USD");
+    pollParams.put("so", "Sorted by Best Value");
+
+    // Create request object
+    FlightRequest flightRequest = new FlightRequest(sessionParams, pollParams);
+
+    // Get flights using querier
+    return querier.getFlights(flightRequest);
+  }
+
+  /**
+   * Helper for determining if the user's params are valid.
+   * @param qm
+   * @return True iff the params are valid
+   */
+  public boolean paramsAreValid(QueryParamsMap qm) {
+    String departure_date = qm.value("departure_date");
+    String numAdults = qm.value("adults");
+    String numChildren = qm.value("children");
+    String numSeniors = qm.value("seniors");
     String maxStops = qm.value("numStops");
-    //options: "Any", "Economy", "Premium Economy", "Business", "First"
-    String flightClass = qm.value("flightClass");
 
-    /*(TODO) create a map/list/html string of flights options with information to be displayed for all search results,
-    (TODO) and set equal to v1 in variables; append all potential errors into a string and set as v2*/
+    if (Integer.parseInt(numAdults) < 0 || Integer.parseInt(numChildren) < 0 || Integer.parseInt(numSeniors) < 0) {
+      System.out.println("ERROR: An invalid number of adults, children, and/or seniors was passed in.");
+      return false;
+    }
+    // NOT CURRENTLY QUERYING WITH THIS... BUT WILL PROBABLY ADD BACK IN, SO LEAVING THIS HERE.
+    if (Integer.parseInt(maxStops) < 0) {
+      System.out.println("ERROR: An invalid number of adults was passed in.");
+      return false;
+    }
 
-    Map<String, String> variables = ImmutableMap.of("flights_result", "", "flights_errors", "");
-    return new JSONObject(variables);
+    // Format: YYYY-MM-DD
+    String date_format = "^(19|20)\\d\\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$";
+    if (!departure_date.matches(date_format)) {
+      System.out.println("ERROR: The departure date passed in is not properly formatted.");
+      return false;
+    }
+    return true;
   }
 }

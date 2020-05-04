@@ -2,7 +2,7 @@ package edu.brown.cs.student.api.tripadvisor.objects;
 
 /**
  * A flight, as defined by the TripAdvisor API.
- * 
+ *
  * @author Joshua Nathan Mugerwa
  * @version 1.0
  */
@@ -13,14 +13,25 @@ public class Flight {
   private String carrier;
   private String layover;
   // Score is defined by TripAdvisor API.
-  // private String flightScore;
+  //private String flightScore;
   private String dest;
   private String origin;
   private String id;
   private String duration;
 
-  public Flight(String bookingURL, String price, String carrier, String layover, String dest,
-      String origin, String id, String duration) {
+  /**
+   * Constructs a flight using information queried from the TripAdvisorAPI.
+   * @param bookingURL A URL to the carrier's website
+   * @param price The price of the ticket
+   * @param carrier The carrier
+   * @param layover A description of the layover (or lack thereof)
+   * @param dest The destination of the flight
+   * @param origin The origin of the flight
+   * @param id The TripAdvisor-designated ID of the flight
+   * @param duration A description of the duration of the flight
+   */
+  public Flight(String bookingURL, String price, String carrier, String layover, String dest, String origin,
+                String id, String duration) {
     this.bookingURL = bookingURL;
     this.price = price;
     this.carrier = carrier;

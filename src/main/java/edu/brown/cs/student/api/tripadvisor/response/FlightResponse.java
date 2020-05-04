@@ -16,6 +16,14 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 import edu.brown.cs.student.api.tripadvisor.objects.Flight;
 import edu.brown.cs.student.api.tripadvisor.request.FlightRequest;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A response for flights from the TripAdvisor API; specifically, the
@@ -55,39 +63,67 @@ public class FlightResponse {
   }
 
   /**
-   * Parses all relevant fields from the raw HTTP response, creating a SINGLE
-   * flight.
-   *
-   * It's pretty easy to return more than one flight, but we'll start with one
-   * until the method is proven.
+   * Parses all relevant fields from the raw HTTP response, creating a SINGLE flight.
+   * <p>
+   * It's pretty easy to return more than one flight, but we'll start with one until the method is proven.
    *
    * @return List of flights matching query parameters.
    * @throws UnirestException
    */
-  public List<Flight> getData() throws UnirestException {
+  public List<Flight> getData() {
     HttpResponse<JsonNode> pollResponse = flightRequest.run();
-    JSONObject obj = new JSONObject(pollResponse);
-    JSONObject body = obj.getJSONObject("body");
-    JSONArray array = body.getJSONArray("array");
-    // All fields are in a JSON at index 0, for some reason...
-    JSONObject allFields = array.getJSONObject(0);
-    String sh = getSearchHash(allFields);
-    String origin = getOrigin(allFields);
-    String dest = getDest(allFields);
-    String flightID = getFlightID(allFields);
-    String price = getPrice(allFields);
+    JSONObject allFields = null;
+    try {
+      JSONObject obj = new JSONObject(pollResponse);
+      JSONObject body = obj.getJSONObject("body");
+      JSONArray array = body.getJSONArray("array");
+      // All fields are in a JSON at index 0, for some reason...
+      allFields = array.getJSONObject(0);
+    } catch (JSONException e) {
+      System.out.println("ERROR: Encountered an error while parsing the poll response's JSON.");
+      return null;
+    }
+
+    String sh = null;
+    String origin = null;
+    String dest = null;
+    String flightID = null;
+    String price = null;
+    String layover = null;
+    String duration = null;
+    String carrier = null;
     // CABIN CLASS -- is buggy, may need to omit.
 //    String cabinClass = getCabinClass(allFields);
-    String layover = getLayover(allFields);
+
+    try {
+      sh = getSearchHash(allFields);
+      origin = getOrigin(allFields);
+      dest = getDest(allFields);
+      flightID = getFlightID(allFields);
+      price = getPrice(allFields);
+      layover = getLayover(allFields);
+      duration = getDuration(allFields);
+      carrier = getCarrier(allFields);
+    } catch (JSONException e) {
+      System.out.println("ERROR: Something went wrong when parsing flight fields from JSON.");
+      e.printStackTrace();
+      return null;
+    }
+
     if (layover.trim().equals("")) {
       layover = "no layover";
     }
-    String duration = getDuration(allFields);
-    String bookingURL = getBookingURL(sh, dest, origin, flightID, flightRequest.getSessionID());
-    String carrier = getCarrier(allFields);
+
+    String bookingURL = null;
+    try {
+      bookingURL = getBookingURL(sh, dest, origin, flightID, flightRequest.getSessionID());
+    } catch (UnirestException e) {
+      System.out.println("ERROR: Encountered an error while querying API for booking URL.");
+      return null;
+    }
+
     List<Flight> flights = new ArrayList<>();
-    Flight bestFlight = new Flight(bookingURL, price, carrier, layover, dest, origin, flightID,
-        duration);
+    Flight bestFlight = new Flight(bookingURL, price, carrier, layover, dest, origin, flightID, duration);
     flights.add(bestFlight);
     return flights;
   }
@@ -209,7 +245,7 @@ public class FlightResponse {
       layover = arr.getJSONObject(0).getJSONArray("lo").getJSONObject(0).getString("t");
       layover = layover.substring(layover.indexOf('>') + 1, layover.lastIndexOf('<'));
       String locationOfLayover = arr.getJSONObject(0).getJSONArray("lo").getJSONObject(0)
-          .getString("s");
+              .getString("s");
       layover += " in " + locationOfLayover;
     } catch (Exception e) {
       System.out.println("No layover.");
@@ -227,7 +263,8 @@ public class FlightResponse {
    * @param sid The original querie's search ID.
    * @return
    */
-  public static String getBookingURL(String sh, String d, String o, String id, String sid) {
+  public static String getBookingURL(String sh, String d, String o, String id, String sid) throws
+          UnirestException {
     Map<String, String> params = new HashMap<>();
     params.put("searchHash", sh);
     params.put("Dest", d);
@@ -243,20 +280,20 @@ public class FlightResponse {
     String x_rapidapi_key = "aaf4f074c6msh0940f8b6e880750p1f240bjsne42d7f349197";
     // Send a request and handle response
     HttpResponse<JsonNode> response = null;
-    try {
-      response = Unirest.get(hostURL).queryString(immutableParams)
-          .header("x-rapidapi-host", x_rapidapi_host).header("x-rapidapi-key", x_rapidapi_key)
-          .asJson();
-    } catch (Exception e) {
-      return "Could not get booking URL.";
-    }
+    response = Unirest.get(hostURL)
+            .queryString(immutableParams)
+            .header("x-rapidapi-host", x_rapidapi_host)
+            .header("x-rapidapi-key", x_rapidapi_key)
+            .asJson();
+
     JSONObject obj = new JSONObject(response);
     JSONObject body = obj.getJSONObject("body");
-    String s = "";
+    String s = null;
     try {
       s = body.getJSONArray("array").getJSONObject(0).getString("partner_url");
-    } catch (Exception e) {
-      s = "Could not get booking URL.";
+    } catch (JSONException e) {
+      System.out.println("ERROR: Could not parse booking URL from response.");
+      return null;
     }
     return s;
   }
