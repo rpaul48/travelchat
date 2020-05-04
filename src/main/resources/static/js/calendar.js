@@ -87,10 +87,8 @@ document.addEventListener('DOMContentLoaded', function() {
     calendar.render();
     $.get("/getCalendarEvents", { chatID: chatID }, function( data ) {
 
-        console.log("AYE");
         for (const event of data) {
-            console.log(event);
-            const eventObject = generateEventObject(event.title, event.startTimeISO, event.endTimeISO);
+            const eventObject = generateEventObject(event.id, event.title, event.startTimeISO, event.endTimeISO);
             calendar.addEvent(eventObject);
         }
 
@@ -112,8 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             const title = $("#event-title").val();
             const price = $("#event-price").val();
-            console.log(price);
-            const eventObject = generateEventObject(title, startTime, endTime);
+            const eventObject = generateEventObject(getUUID(), title, startTime, endTime);
             // Add event to database
             $.post("/postCalendarEvent", eventObject, null, 'json');
             // Load visually
@@ -126,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     });
 
-    function generateEventObject(title, startTimeISO, endTimeISO) {
+    function generateEventObject(id, title, startTimeISO, endTimeISO) {
 
         title = title ? title : "Untitled Event";
 
@@ -140,6 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         return {
+            id: id,
             title: title,
             start: startTimeISO,
             end: endTimeISO,
@@ -150,6 +148,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updateBudget(amount) {
+
+    }
+
+    function getUUID() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
 
     }
 

@@ -117,8 +117,8 @@ public class Main {
 //    calendarEvents.get("chat_id1").add(new CalendarEvent("eventTitle2", "2020-05-02T17:30:00", "2020-05-02T19:30:00"));
 
     Spark.get("/calendar/:roomId/:userId", new CalendarFrontHandler(), freeMarker);
-    Spark.get("/getCalendarEvents", new GetCalendarEventsHandler(calendarEvents));
-    Spark.post("/postCalendarEvent", new PostCalendarEventHandler(calendarEvents));
+    Spark.get("/getCalendarEvents", new GetCalendarEventsHandler());
+    Spark.post("/postCalendarEvent", new PostCalendarEventHandler());
 
 
 
