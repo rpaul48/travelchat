@@ -47,7 +47,7 @@ public class BrowseActivitiesHandler implements Route {
     nameToCode.put("All", 0);
 
     /*
-     * an string of activity categories of the form "type1,type2,type3"; (there are
+     * a string of activity categories of the form "type1,type2,type3"; (there are
      * no spaces after commas) options: All, Boat Tours & Water Sports, Fun & Game,
      * Nature & Parks, Sights & Landmarks, Shopping, Transportation, Museums,
      * Outdoor Activities, Spas & Wellness, Classes & Workshops, Tours, Nightlife

@@ -31,6 +31,14 @@ public class BrowseRestaurantsHandler implements Route {
     double lat = Double.parseDouble(locationStrings[0].replaceAll("[^0-9]", ""));
     double lon = Double.parseDouble(locationStrings[1].replaceAll("[^0-9]", ""));
 
+    /* TODO: integrate new cuisines format
+     * a string of cuisine categories of the form "type1,type2,type3"; (there are
+     * no spaces after commas) options: Any, american, barbecue, chinese, italian, indian, japanese,
+     * mexican, seafood, thai
+
+    String cuisineTypes = qm.value("cuisineTypes");
+     */
+
     // options: any, american, barbecue, chinese, italian, indian, japanese,
     // mexican, seafood, thai
     String cuisine = qm.value("cuisine");

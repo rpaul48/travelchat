@@ -141,6 +141,40 @@ function updateBudget(logOrAdd) {
     }
 }
 
+// returns a schedule for the day
+function planMyDay() {
+    if (coordinates === "Geolocation is not supported by this browser.") {
+        window.alert("Please allow your browser to access your location.");
+    } else {
+        var costPerPerson = document.getElementById("cost-per-person").value;
+        var startTime = document.getElementById("start-time").value;
+        var endTime = document.getElementById("end-time").value;
+        var maxDist = document.getElementById("max-distance").value;
+        var numMeals = document.getElementById("num-meals").value;
+        var cuisines = [];
+        $("input:checkbox[name=pmd-cuisine]:checked").each(function(){
+            cuisines.push($(this).val());
+        });
+        var activities = [];
+        $("input:checkbox[name=pmd-activity]:checked").each(function(){
+            activities.push($(this).val());
+        });
+
+        console.log(startTime);
+
+        // returns an ordered schedule of events which satisfy the query parameters
+        $.ajax({
+            url: "/planMyDay",
+            type: "get",
+            data: {"location": coordinates, "costPerPerson": costPerPerson, "startTime": startTime, "endTime": endTime,
+            "maxDist": maxDist, "numMeals": numMeals, "cuisineTypes": cuisines, "activityTypes": activities},
+            async: false,
+            success: function (data) {
+                var recs = JSON.parse(data);
+            }});
+    }
+}
+
 // returns search results for restaurants
 function browseRestaurants() {
     if (coordinates === "Geolocation is not supported by this browser.") {
@@ -157,11 +191,17 @@ function browseRestaurants() {
         var diet_sel = document.getElementById("diet-sel");
         var diet = diet_sel.options[diet_sel.selectedIndex].text;
 
+        var cuisines = [];
+        $("input:checkbox[name=browse-cuisine]:checked").each(function(){
+            cuisines.push($(this).val());
+        });
+
         // returns a list of restaurant options which match the query parameters
         $.ajax({
             url: "/browseRestaurants",
             type: "get",
-            data: {"miles": miles, "location": coordinates, "cuisine": cuisine, "rating": rating, "price": price, "diet": diet},
+            data: {"miles": miles, "location": coordinates, "cuisines": cuisines.toString(),
+                "rating": rating, "price": price, "diet": diet},
             async: false,
             success: function (data) {
                 var recs = JSON.parse(data);

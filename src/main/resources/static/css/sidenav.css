@@ -28,7 +28,7 @@
 
 /* The sidebar menu */
 .sidenav {
-    height: 100%; /* Full-height: remove this if you want "auto" height */
+    height: 100%;
     position: absolute;
     right: 71.79%;
     z-index: 1; /* Stay on top */

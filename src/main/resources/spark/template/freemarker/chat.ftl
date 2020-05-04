@@ -50,6 +50,45 @@
 
     <div id="plan-my-day-div" class="big-popup-div">
         <h2>Plan My Day</h2>
+        <div class="form-container">
+            <form id="restaurants-form">
+                <label>Cost per person (USD): <input type="number" id="cost-per-person" min="0.01" step="0.01" value="100.00"> </label>
+                <label>Start time: <input type="time" id="start-time"></label>
+                <label>End time: <input type="time" id="end-time"></label>
+                <label>Max distance from current location (miles): <input type="number" min="1" id="max-distance"> </label>
+                <label>Number of meals: <input type="number" min="0" id="num-meals"> </label>
+                <label>Preferred cuisines: </label>
+                <div class="checkboxes">
+                    <label><input type="checkbox" name="pmd-cuisine" value="Any" checked>Any</label>
+                    <label><input type="checkbox" name="pmd-cuisine" value="American">American</label>
+                    <label><input type="checkbox" name="pmd-cuisine" value="Barbecue">Barbecue</label>
+                    <label><input type="checkbox" name="pmd-cuisine" value="Chinese">Chinese</label>
+                    <label><input type="checkbox" name="pmd-cuisine" value="Indian">Indian</label>
+                    <label><input type="checkbox" name="pmd-cuisine" value="Italian">Italian</label>
+                    <label><input type="checkbox" name="pmd-cuisine" value="Japanese">Japanese</label>
+                    <label><input type="checkbox" name="pmd-cuisine" value="Mexican">Mexican</label>
+                    <label><input type="checkbox" name="pmd-cuisine" value="Seafood">Seafood</label>
+                    <label><input type="checkbox" name="pmd-cuisine" value="Thai">Thai</label>
+                </div>
+                <label>Preferred activity types: </label>
+                <div class="checkboxes">
+                    <label><input type="checkbox" name="pmd-activity" value="All" checked/>All</label>
+                    <label><input type="checkbox" name="pmd-activity" value="Boat Tours & Water Sports">Boat Tours & Water Sports</label>
+                    <label><input type="checkbox" name="pmd-activity" value="Fun & Game">Fun & Game</label>
+                    <label><input type="checkbox" name="pmd-activity" value="Nature & Parks">Nature & Parks</label>
+                    <label><input type="checkbox" name="pmd-activity" value="Sights & Landmarks">Sights & Landmarks</label>
+                    <label><input type="checkbox" name="pmd-activity" value="Shopping">Shopping</label>
+                    <label><input type="checkbox" name="pmd-activity" value="Transportation">Transportation</label>
+                    <label><input type="checkbox" name="pmd-activity" value="Museums">Museums</label>
+                    <label><input type="checkbox" name="pmd-activity" value="Outdoor Activities">Outdoor Activities</label>
+                    <label><input type="checkbox" name="pmd-activity" value="Spas & Wellness">Spas & Wellness</label>
+                    <label><input type="checkbox" name="pmd-activity" value="Classes & Workshops">Classes & Workshops</label>
+                    <label><input type="checkbox" name="pmd-activity" value="Tours">Tours</label>
+                    <label><input type="checkbox" name="pmd-activity" value="Nightlife">Nightlife</label>
+                </div>
+                <button onclick="planMyDay()" type="button" class="small-green-button">Plan My Day</button>
+            </form>
+        </div>
         <button onclick="closePopup('plan-my-day-div')" class="small-black-button">Back</button>
     </div>
 
@@ -68,19 +107,19 @@
 
                 <br>
 
-                <label>Cuisine: </label>
-                <select id="cuisine-sel">
-                    <option value="1" selected="selected">Any</option>
-                    <option value="2" >American</option>
-                    <option value="3" >Chinese</option>
-                    <option value="4" >Barbecue</option>
-                    <option value="5" >Indian</option>
-                    <option value="6" >Italian</option>
-                    <option value="7" >Japanese</option>
-                    <option value="8" >Mexican</option>
-                    <option value="9" >Seafood</option>
-                    <option value="10" >Thai</option>
-                </select>
+                <label>Preferred cuisines: </label>
+                <div class="checkboxes">
+                    <label><input type="checkbox" name="browse-cuisine" value="Any" checked>Any</label>
+                    <label><input type="checkbox" name="browse-cuisine" value="American">American</label>
+                    <label><input type="checkbox" name="browse-cuisine" value="Barbecue">Barbecue</label>
+                    <label><input type="checkbox" name="browse-cuisine" value="Chinese">Chinese</label>
+                    <label><input type="checkbox" name="browse-cuisine" value="Indian">Indian</label>
+                    <label><input type="checkbox" name="browse-cuisine" value="Italian">Italian</label>
+                    <label><input type="checkbox" name="browse-cuisine" value="Japanese">Japanese</label>
+                    <label><input type="checkbox" name="browse-cuisine" value="Mexican">Mexican</label>
+                    <label><input type="checkbox" name="browse-cuisine" value="Seafood">Seafood</label>
+                    <label><input type="checkbox" name="browse-cuisine" value="Thai">Thai</label>
+                </div>
 
                 <label>Price</label>
                 <select id="restaurant-price-sel">

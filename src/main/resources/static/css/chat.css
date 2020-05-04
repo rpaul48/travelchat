@@ -87,7 +87,7 @@ li {
     text-align: left;
 }
 
-.activities input[type="checkbox"]{
+.checkboxes input[type="checkbox"]{
     width: 20px;
 }
 
