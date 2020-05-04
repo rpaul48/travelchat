@@ -249,7 +249,7 @@
                 <label>Children: </label>
                 <input type="number" step="1" value="0" id="num-children"></input>
                 <label>Seniors: </label>
-                <input type="number" step="1" value="0" id="num-adults"></input>
+                <input type="number" step="1" value="0" id="num-seniors"></input>
                 <label>Max number of stops:</label>
                 <select id="max-stops-sel">
                     <option value="1" selected="selected">Any</option>
