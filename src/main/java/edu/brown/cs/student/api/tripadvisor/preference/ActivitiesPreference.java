@@ -43,7 +43,7 @@ public class ActivitiesPreference implements Preference {
     fields.put("limit", 10); // adjust
     fields.put("lang", "en_US"); // adjust
     fields.put("currency", "USD"); // adjust
-    fields.put("lunit", "km"); // length unit; adjust
+    fields.put("lunit", "mi"); // length unit; adjust
     fields.put("latitude", latitude);
     fields.put("longitude", longitude);
     fields.put("distance", distance);
@@ -111,7 +111,6 @@ public class ActivitiesPreference implements Preference {
       }
     } catch (org.json.JSONException exception) {
       System.err.println("ERROR: Missing element in API result causing error in parsing.");
-      return null;
     }
 
     return attractionsList;

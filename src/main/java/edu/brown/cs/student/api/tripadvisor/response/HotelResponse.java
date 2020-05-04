@@ -1,30 +1,93 @@
 package edu.brown.cs.student.api.tripadvisor.response;
 
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
-import edu.brown.cs.student.api.tripadvisor.objects.Hotel;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.exceptions.UnirestException;
+
+import edu.brown.cs.student.api.tripadvisor.objects.Hotel;
+import edu.brown.cs.student.api.tripadvisor.request.HotelRequest;
+
 /**
  * A response for hotels from the TripAdvisor API.
- * @author Joshua Nathan Mugerwa
- * @version 1.0
  */
 public class HotelResponse {
-    private List<Hotel> hotels;
+  private HotelRequest hotelRequest;
 
-    public HotelResponse(HttpResponse<JsonNode> response) {
-        this.hotels = new ArrayList<>();
+  /**
+   * Constructs a Response object built on given request data.
+   *
+   * @param hotelRequest The data we'll use in our parsers.
+   */
+  public HotelResponse(HotelRequest hotelRequest) {
+    this.hotelRequest = hotelRequest;
+  }
+
+  /**
+   * Getter of hotel request.
+   *
+   * @return hotel request.
+   */
+  public HotelRequest gethotelRequest() {
+    return hotelRequest;
+  }
+
+  /**
+   * Setter of hotel request.
+   *
+   * @param hotelRequest
+   */
+  public void setHotelRequest(HotelRequest hotelRequest) {
+    this.hotelRequest = hotelRequest;
+  }
+
+  /**
+   * Parses all relevant fields from the raw HTTP response for Hotel.
+   *
+   * @return List of hotels matching query parameters.
+   * @throws UnirestException
+   */
+  public List<Hotel> getData() throws UnirestException {
+    List<Hotel> hotelsList = new ArrayList<>();
+
+    try {
+      HttpResponse<JsonNode> queryResponse = hotelRequest.run();
+      JSONObject obj = new JSONObject(queryResponse);
+      JSONArray hotelsArr = (JSONArray) obj.get("data");
+      // goes through all of the hotels recommended
+      for (int i = 0; i < hotelsArr.length(); i++) {
+        Hotel hotel = new Hotel();
+        JSONObject hotelObj = (JSONObject) hotelsArr.get(i);
+
+        JSONObject photoObj = (JSONObject) hotelObj.get("photo");
+        JSONObject imagesObj = (JSONObject) photoObj.get("images");
+        JSONObject smallObj = (JSONObject) imagesObj.get("small");
+
+        hotel.setPhotoUrl(smallObj.getString("url"));
+        hotel.setName(hotelObj.getString("name"));
+        hotel.setLatitude(hotelObj.getDouble("latitude"));
+        hotel.setLongitude(hotelObj.getDouble("longitude"));
+        hotel.setDistance(hotelObj.getDouble("distance"));
+        hotel.setNumReviews(hotelObj.getInt("num_reviews"));
+        hotel.setLocationString(hotelObj.getString("location_string"));
+        hotel.setRating(hotelObj.getDouble("rating"));
+        hotel.setPriceLevel(hotelObj.getString("price_level"));
+        hotel.setPrice(hotelObj.getString("price"));
+        hotel.setRanking(hotelObj.getInt("ranking_position"));
+        hotel.setRankingString(hotelObj.getString("ranking"));
+        hotel.setClosed(hotelObj.getBoolean("is_closed"));
+
+        hotelsList.add(hotel);
+      }
+    } catch (org.json.JSONException exception) {
+      System.err.println("ERROR: Missing element in API result causing error in parsing.");
     }
 
-    public List<Hotel> getHotels() {
-        return hotels;
-    }
-
-    public void setHotels(List<Hotel> hotels) {
-        this.hotels = hotels;
-    }
-
+    return hotelsList;
+  }
 }
