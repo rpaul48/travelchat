@@ -1009,3 +1009,12 @@
   border: 1px solid #6AA84E !important;
   cursor: pointer !important;
 }
+#invite-search:-moz-placeholder {
+  color: #808080 !important;
+}
+#invite-search:-ms-input-placeholder {
+  color: #808080 !important;
+}
+#invite-search::-webkit-input-placeholder {
+  color: #808080 !important;
+}
