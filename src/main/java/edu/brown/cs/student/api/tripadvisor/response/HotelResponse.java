@@ -6,8 +6,6 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 import edu.brown.cs.student.api.tripadvisor.objects.Hotel;
@@ -40,7 +38,7 @@ public class HotelResponse {
   /**
    * Setter of hotel request.
    *
-   * @param hotelRequest
+   * @param hotelRequest to newly set to.
    */
   public void setHotelRequest(HotelRequest hotelRequest) {
     this.hotelRequest = hotelRequest;
@@ -50,42 +48,48 @@ public class HotelResponse {
    * Parses all relevant fields from the raw HTTP response for Hotel.
    *
    * @return List of hotels matching query parameters.
-   * @throws UnirestException
+   * @throws UnirestException - thrown if JSONArray mapped by "data" cannot be
+   *                          obtained.
    */
   public List<Hotel> getData() throws UnirestException {
     List<Hotel> hotelsList = new ArrayList<>();
 
     try {
-      HttpResponse<JsonNode> queryResponse = hotelRequest.run();
-      JSONObject obj = new JSONObject(queryResponse);
+      String queryResult = hotelRequest.run();
+      JSONObject obj = new JSONObject(queryResult);
       JSONArray hotelsArr = (JSONArray) obj.get("data");
       // goes through all of the hotels recommended
       for (int i = 0; i < hotelsArr.length(); i++) {
         Hotel hotel = new Hotel();
         JSONObject hotelObj = (JSONObject) hotelsArr.get(i);
 
-        JSONObject photoObj = (JSONObject) hotelObj.get("photo");
-        JSONObject imagesObj = (JSONObject) photoObj.get("images");
-        JSONObject smallObj = (JSONObject) imagesObj.get("small");
+        try {
+          JSONObject photoObj = (JSONObject) hotelObj.get("photo");
+          JSONObject imagesObj = (JSONObject) photoObj.get("images");
+          JSONObject smallObj = (JSONObject) imagesObj.get("small");
 
-        hotel.setPhotoUrl(smallObj.getString("url"));
-        hotel.setName(hotelObj.getString("name"));
-        hotel.setLatitude(hotelObj.getDouble("latitude"));
-        hotel.setLongitude(hotelObj.getDouble("longitude"));
-        hotel.setDistance(hotelObj.getDouble("distance"));
-        hotel.setNumReviews(hotelObj.getInt("num_reviews"));
-        hotel.setLocationString(hotelObj.getString("location_string"));
-        hotel.setRating(hotelObj.getDouble("rating"));
-        hotel.setPriceLevel(hotelObj.getString("price_level"));
-        hotel.setPrice(hotelObj.getString("price"));
-        hotel.setRanking(hotelObj.getInt("ranking_position"));
-        hotel.setRankingString(hotelObj.getString("ranking"));
-        hotel.setClosed(hotelObj.getBoolean("is_closed"));
+          hotel.setPhotoUrl(smallObj.getString("url"));
+          hotel.setName(hotelObj.getString("name"));
+          hotel.setLatitude(hotelObj.getDouble("latitude"));
+          hotel.setLongitude(hotelObj.getDouble("longitude"));
+          hotel.setDistance(hotelObj.getDouble("distance"));
+          hotel.setNumReviews(hotelObj.getInt("num_reviews"));
+          hotel.setLocationString(hotelObj.getString("location_string"));
+          hotel.setRating(hotelObj.getDouble("rating"));
+          hotel.setPriceLevel(hotelObj.getString("price_level"));
+          hotel.setPrice(hotelObj.getString("price"));
+          hotel.setRanking(hotelObj.getInt("ranking_position"));
+          hotel.setRankingString(hotelObj.getString("ranking"));
+          hotel.setClosed(hotelObj.getBoolean("is_closed"));
+          hotel.setHotelClass(hotelObj.getString("hotel_class"));
+        } catch (org.json.JSONException exception) {
+          continue;
+        }
 
         hotelsList.add(hotel);
       }
     } catch (org.json.JSONException exception) {
-      System.err.println("ERROR: Missing element in API result causing error in parsing.");
+      System.err.println("ERROR: Data is unobtainable.");
     }
 
     return hotelsList;

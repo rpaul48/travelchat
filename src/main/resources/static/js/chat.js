@@ -66,7 +66,8 @@ function leaveChat() {
     $.ajax({
         url: "/removeUserFromRoom",
         type: "post",
-        data: {"auth": curUser.uid, "roomId": roomId},
+        data: {"auth": curUser.uid,
+            "roomId": roomId},
         async: false,
     });
 
@@ -91,7 +92,10 @@ function inviteUser() {
     $.ajax({
         url: "/addUserToRoom",
         type: "post",
-        data: {"auth": firebase.auth().currentUser.uid, "email": email, "roomId": roomId, "groupName": groupName},
+        data: {"auth": firebase.auth().currentUser.uid,
+            "email": email,
+            "roomId": roomId,
+            "groupName": groupName},
         async: false,
         });
 }
@@ -110,7 +114,8 @@ function displayBudget() {
     $.ajax({
         url: "/getUserBudgetInRoom",
         type: "post",
-        data: {"auth": firebase.auth().currentUser.uid, "roomId": roomId},
+        data: {"auth": firebase.auth().currentUser.uid,
+            "roomId": roomId},
         async: false,
         success: function (data) {
             var yourBudget = document.getElementById("your-budget");
@@ -166,8 +171,14 @@ function planMyDay() {
         $.ajax({
             url: "/planMyDay",
             type: "get",
-            data: {"location": coordinates, "costPerPerson": costPerPerson, "startTime": startTime, "endTime": endTime,
-            "maxDist": maxDist, "numMeals": numMeals, "cuisineTypes": cuisines, "activityTypes": activities},
+            data: {"location": coordinates,
+                "costPerPerson": costPerPerson,
+                "startTime": startTime,
+                "endTime": endTime,
+                "maxDist": maxDist,
+                "numMeals": numMeals,
+                "cuisineTypes": cuisines,
+                "activityTypes": activities},
             async: false,
             success: function (data) {
                 var recs = JSON.parse(data);
@@ -200,8 +211,12 @@ function browseRestaurants() {
         $.ajax({
             url: "/browseRestaurants",
             type: "get",
-            data: {"miles": miles, "location": coordinates, "cuisines": cuisines.toString(),
-                "rating": rating, "price": price, "diet": diet},
+            data: {"miles": miles,
+                "location": coordinates,
+                "cuisines": cuisines.toString(),
+                "rating": rating,
+                "price": price,
+                "diet": diet},
             async: false,
             success: function (data) {
                 var recs = JSON.parse(data);
@@ -226,7 +241,9 @@ function browseActivities() {
         $.ajax({
             url: "/browseActivities",
             type: "get",
-            data: {"location": coordinates, "miles": miles, "activityTypes": activities.toString()},
+            data: {"location": coordinates,
+                "miles": miles,
+                "activityTypes": activities.toString()},
             async: false,
             success: function (data) {
                 var recs = JSON.parse(data);
@@ -256,8 +273,13 @@ function browseLodging() {
         $.ajax({
             url: "/browseLodging",
             type: "get",
-            data: {"location": coordinates, "type": type, "check-in": checkin, "check-out": checkout,
-            "price": price, "rating": rating, "num-rooms": num_rooms},
+            data: {"location": coordinates,
+                "type": type,
+                "check-in": checkin,
+                "check-out": checkout,
+                "price": price,
+                "rating": rating,
+                "num-rooms": num_rooms},
             async: false,
             success: function (data) {
                 var recs = JSON.parse(data);
@@ -284,8 +306,14 @@ function browseFlights() {
         $.ajax({
             url: "/browseFlights",
             type: "get",
-            data: {"location": coordinates, "depart": depart, "destination": destination, "adults": adults,
-            "children": children, "seniors": seniors, "numStops": numStops, "flightClass": flightClass},
+            data: {"location": coordinates,
+                "depart": depart,
+                "destination": destination,
+                "adults": adults,
+                "children": children,
+                "seniors": seniors,
+                "numStops": numStops,
+                "flightClass": flightClass},
             async: false,
             success: function (data) {
                 var recs = JSON.parse(data);

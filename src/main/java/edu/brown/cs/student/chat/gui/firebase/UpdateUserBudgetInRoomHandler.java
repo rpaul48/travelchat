@@ -1,6 +1,10 @@
 package edu.brown.cs.student.chat.gui.firebase;
 
-import com.google.firebase.database.*;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
@@ -23,8 +27,8 @@ public class UpdateUserBudgetInRoomHandler implements Route {
     String amount = qm.value("amount");
 
     try {
-        DatabaseReference userRef = roomsRef.child(groupId).child("added-users/" + uid);
-        return updateUserBudget(userRef, type, amount);
+      DatabaseReference userRef = roomsRef.child(groupId).child("added-users/" + uid);
+      return updateUserBudget(userRef, type, amount);
     } catch (Exception ex) {
       System.err.println("ERROR: An exception occurred. Printing stack trace:");
       ex.printStackTrace();
@@ -39,7 +43,8 @@ public class UpdateUserBudgetInRoomHandler implements Route {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
         Map<String, Object> budgetUpdate = new HashMap<>();
-        double currentBudget = Double.parseDouble(((String) dataSnapshot.child("budget").getValue()));
+        double currentBudget = Double.parseDouble(
+              ((String) dataSnapshot.child("budget").getValue()));
 
         if ("log".equals(type)) {
           budget[0] = String.valueOf((currentBudget - Double.parseDouble(amount)));
@@ -64,7 +69,7 @@ public class UpdateUserBudgetInRoomHandler implements Route {
       while (!done[0]) {
         Thread.sleep(1);
       }
-    } catch(InterruptedException ex) {
+    } catch (InterruptedException ex) {
       ex.printStackTrace();
       Thread.currentThread().interrupt();
     }

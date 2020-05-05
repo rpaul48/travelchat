@@ -3,7 +3,7 @@ package edu.brown.cs.student.api.tripadvisor.util;
 import java.util.Map;
 
 /**
- * A location on Earth, described by fields:
+ * A location on Earth, described by fields.
  * "street1"
  * "street2"
  * "city"
@@ -15,13 +15,13 @@ import java.util.Map;
  * @version 1.0
  */
 public class GeoLocation {
-    public Map<String, String> fields;
+  private Map<String, String> fields;
 
-    public GeoLocation(Map<String, String> fields) {
-        this.fields = fields;
-    }
+  public GeoLocation(Map<String, String> fields) {
+    this.fields = fields;
+  }
 
-    public Map<String, String> getFields() {
-        return fields;
-    }
+  public Map<String, String> getFields() {
+    return fields;
+  }
 }

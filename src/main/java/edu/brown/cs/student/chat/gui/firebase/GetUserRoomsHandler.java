@@ -1,9 +1,10 @@
 package edu.brown.cs.student.chat.gui.firebase;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.firebase.database.*;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import org.json.JSONObject;
 import spark.QueryParamsMap;
 import spark.Request;
@@ -56,7 +57,7 @@ public class GetUserRoomsHandler implements Route {
       while (!done[0]) {
         Thread.sleep(1);
       }
-    } catch(InterruptedException ex) {
+    } catch (InterruptedException ex) {
       ex.printStackTrace();
       Thread.currentThread().interrupt();
     }

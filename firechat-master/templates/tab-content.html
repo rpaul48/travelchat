@@ -1,10 +1,8 @@
 <div id='<%- id %>' data-room-id='<%- id %>' class='tab-pane'>
   <div class='tab-pane-menu clearfix'>
-    <div class='firechat-dropdown twofifth'>
-      <a data-event='firechat-user-search-btn' class='full btn firechat-dropdown-toggle' data-toggle="firechat-dropdown" href='#'>
-        <span class='icon plus'>+</span>
-        Add User
-        <span class='caret'></span>
+    <div id="add-user" class='firechat-dropdown twofifth'>
+      <a id="add-user-a" data-event='firechat-user-search-btn' class='full btn' data-toggle="firechat-dropdown" href='#'>
+        Add User ＋
       </a>
 
       <div class='firechat-dropdown-menu' role='menu'>
@@ -23,17 +21,15 @@
             <!--
             <button type='button' class='btn third disabled' data-event='firechat-user-search' data-template='templates/room-user-search-list-item.html' data-target='firechat-room-user-search-<%- id %>' data-controls='firechat-room-user-search-controls-<%- id %>' data-toggle='firechat-pagination-prev' disabled=disabled>Prev</button>
             -->
-            <button type='button' class='btn half active' onclick="inviteUser()">Add</button>
+            <button type='button' class='full btn' onclick="inviteUser()">Add</button>
           </div>
         </div>
       </div>
     </div>
 	
 	<div id='budget-menu' class='firechat-dropdown twofifth'>
-      <a data-event='firechat-user-search-btn' class='full btn' onclick='openPopup("budget-div"); displayBudget()' href='#'>
-        <span class='icon plus'>+</span>
+      <a id='budget-menu-a' data-event='firechat-user-search-btn' class='full btn' onclick='openPopup("budget-div"); displayBudget()' href='#'>
         Your Budget
-        <span class='caret'></span>
       </a>
     </div>
 
@@ -44,7 +40,6 @@
   </div>
 
   <div class='clearfix'>
-    <label>Your message:</label>
     <textarea id='textarea<%- id %>' placeholder='Type your message here...'></textarea>
   </div>
 </div>

@@ -1,4 +1,4 @@
-package edu.brown.cs.student.test;
+package edu.brown.cs.student.api.tripadvisor.objects;
 
 import org.junit.Test;
 

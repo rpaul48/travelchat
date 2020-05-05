@@ -8,6 +8,8 @@
          avoid minification for clarity. -->
     <!-- Place your kit's code here -->
     <script src="https://kit.fontawesome.com/b6b689005b.js" crossorigin="anonymous"></script>
+    <!--favicon for TravelChat-->
+    <link rel="icon" href="/images/TravelChat.png">
 </head>
 <body>
 <!-- Again, we're serving up the unminified source for clarity. -->
@@ -30,7 +32,7 @@
 <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
 
 <!-- Firechat -->
-<link rel="stylesheet" href="https://cdn.firebase.com/libs/firechat/3.0.1/firechat.min.css" />
+<link rel="stylesheet" href="/css/firechat.css" />
 <script src="/js/firechat.js"></script>
 
 <script>

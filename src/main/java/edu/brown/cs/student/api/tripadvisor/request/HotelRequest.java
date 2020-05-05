@@ -4,7 +4,6 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
@@ -18,10 +17,10 @@ public class HotelRequest {
   /**
    * This is the constructor for this class.
    *
-   * @param params - a Map<String, Object> representing the parameters for hotel
-   *               API querying.
+   * @param params - a Map from String to Object representing the parameters for
+   *               hotel API querying.
    */
-  public HotelRequest(Map<String, Object> params) throws UnirestException {
+  public HotelRequest(Map<String, Object> params) {
     // Query parameters
     this.params = params;
   }
@@ -30,45 +29,26 @@ public class HotelRequest {
    * Runs a query with the parameters given in construction. Will return raw
    * HttpResponse.
    *
-   * @return
-   * @throws UnirestException
+   * @return String - result of API query.
+   * @throws UnirestException - thrown if query fails to run.
    */
-  public HttpResponse<JsonNode> run() throws UnirestException {
-    // Latitude and longitude are required parameters. Query cannot be run without
-    // them.
-    if (!params.containsKey("latitude") || !params.containsKey("longitude")) {
-      System.err.println("ERROR: Latitude or longitude missing.");
-      return null;
-    }
-
-    // If fields is passed directly into constructor, latitude and longitude might
-    // not have been assigned.
-    double latitude = (double) params.get("latitude");
-    double longitude = (double) params.get("longitude");
-
-    if (!(latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180)) {
-      System.err.println("ERROR: Latitude or longitude invalid");
-      return null;
-    }
-
+  public String run() throws UnirestException {
     ImmutableMap<String, Object> immutableParams = ImmutableMap.copyOf(params);
     String hostURL = "https://tripadvisor1.p.rapidapi.com/hotels/list-by-latlng";
     // Request headers (with free account's key)
-    String x_rapidapi_host = "tripadvisor1.p.rapidapi.com";
-    String x_rapidapi_key = "9ab9c1d3bdmsha453182e940dd58p105f14jsna2fade8f7b4d";
+    String xRapidapiHost = "tripadvisor1.p.rapidapi.com";
+    String xRapidapiKey = "9ab9c1d3bdmsha453182e940dd58p105f14jsna2fade8f7b4d";
     // Send a request and handle response
 
-    HttpResponse<JsonNode> response = Unirest.get(hostURL).queryString(immutableParams)
-        .header("x-rapidapi-host", x_rapidapi_host).header("x-rapidapi-key", x_rapidapi_key)
-        .asJson();
-
-    return response;
+    HttpResponse<String> response = Unirest.get(hostURL).header("x-rapidapi-host", xRapidapiHost)
+        .header("x-rapidapi-key", xRapidapiKey).queryString(immutableParams).asString();
+    return response.getBody();
   }
 
   /**
    * Getter of params.
    *
-   * @return a Map<String, Object> representing the query parameters.
+   * @return a Map from String to Object representing the query parameters.
    */
   public Map<String, Object> getParams() {
     return params;
@@ -77,8 +57,8 @@ public class HotelRequest {
   /**
    * Setter of params.
    *
-   * @param params - a Map<String, Object> representing the parameters for API
-   *               querying to newly set to.
+   * @param params - a Map from String to Object representing the parameters for
+   *               API querying to newly set to.
    */
   public void setParams(Map<String, Object> params) {
     this.params = params;

@@ -7,28 +7,28 @@ package edu.brown.cs.student.api.tripadvisor.querier;
  * @version 1.0
  */
 public class Querier {
-    private String APIKey;
-    // i.e. RapidAPI
-    private String APIHost;
+  private String apiKey;
+  // i.e. RapidAPI
+  private String apiHost;
 
-    public Querier(String APIKey, String APIHost) {
-        this.APIKey = APIKey;
-        this.APIHost = APIHost;
-    }
+  public Querier(String apiKey, String apiHost) {
+    this.apiKey = apiKey;
+    this.apiHost = apiHost;
+  }
 
-    public String getAPIHost() {
-        return APIHost;
-    }
+  public String getAPIHost() {
+    return apiHost;
+  }
 
-    public void setAPIHost(String APIHost) {
-        this.APIHost = APIHost;
-    }
+  public void setAPIHost(String host) {
+    this.apiHost = host;
+  }
 
-    public String getAPIKey() {
-        return APIKey;
-    }
+  public String getAPIKey() {
+    return apiKey;
+  }
 
-    public void setAPIKey(String APIKey) {
-        this.APIKey = APIKey;
-    }
+  public void setAPIKey(String key) {
+    this.apiKey = key;
+  }
 }

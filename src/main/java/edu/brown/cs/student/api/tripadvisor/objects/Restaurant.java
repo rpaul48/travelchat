@@ -3,8 +3,11 @@ package edu.brown.cs.student.api.tripadvisor.objects;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import edu.brown.cs.student.chat.gui.Constants;
+
 /**
- * This is a class for Restaurant, as defined by the TripAdvisor API.
+ * This is a class for Restaurant, as defined by the TripAdvisor API, with
+ * fields stored using the results of the API query.
  */
 public class Restaurant implements Item {
   private String name;
@@ -12,42 +15,39 @@ public class Restaurant implements Item {
   private double longitude;
   private int numReviews;
   private String locationString;
-  private String photoUrl; // field "photo"-"images"-"small"-"url"
+  private String photoUrl;
   private double distance;
-  private String priceLevel; // field "price_level" (ex. $$)
+  private String priceLevel;
   private double rating;
   private boolean isClosed;
-  private int ranking; // field "ranking_position"
-  private String rankingString; // field "ranking"
+  private int ranking;
+  private String rankingString;
   private String address;
-//  private List<String> hours; ///
   private List<String> cuisineTypes;
-  private String lunit; // field "lunit"
 
   /**
    * Default constructor.
    */
   public Restaurant() {
-    this.lunit = "mi";
   }
 
   /**
    * Constructor with all fields.
-   * 
-   * @param name
-   * @param latitude
-   * @param longitude
-   * @param numReviews
-   * @param locationString
-   * @param photoUrl
-   * @param distance
-   * @param priceLevel
-   * @param rating
-   * @param isClosed
-   * @param ranking
-   * @param rankingString
-   * @param address
-   * @param cuisineTypes
+   *
+   * @param name           - name of Restaurant
+   * @param latitude       - latitude of Restaurant
+   * @param longitude      - longitude of Restaurant
+   * @param numReviews     - number of reviews for Restaurant
+   * @param locationString - location string of Restaurant indicating region
+   * @param photoUrl       - url for an image of Restaurant
+   * @param distance       - distance from specified location to Restaurant
+   * @param priceLevel     - price level (ex. $$$) of Restaurant
+   * @param rating         - rating for Restaurant
+   * @param isClosed       - whether Restaurant is closed
+   * @param ranking        - ranking number of Restaurant within its category
+   * @param rankingString  - ranking string of Restaurant within its category
+   * @param address        - address of Restaurant
+   * @param cuisineTypes   - cuisine types that Restaurant has
    */
   public Restaurant(String name, double latitude, double longitude, int numReviews,
       String locationString, String photoUrl, double distance, String priceLevel, double rating,
@@ -67,7 +67,6 @@ public class Restaurant implements Item {
     this.rankingString = rankingString;
     this.address = address;
     this.cuisineTypes = cuisineTypes;
-    this.lunit = "mi";
   }
 
   @Override
@@ -174,8 +173,8 @@ public class Restaurant implements Item {
   }
 
   @Override
-  public void setClosed(boolean isClosed) {
-    this.isClosed = isClosed;
+  public void setClosed(boolean closed) {
+    this.isClosed = closed;
   }
 
   public void setAddress(String address) {
@@ -204,16 +203,24 @@ public class Restaurant implements Item {
     DecimalFormat df2 = new DecimalFormat("#.####");
 
     StringBuilder sb = new StringBuilder();
-    sb.append("Name: " + name + "\n");
-    sb.append("Location: " + locationString + "\n");
-    sb.append("Latitude: " + df2.format(latitude) + "\n");
-    sb.append("Longitude: " + df2.format(longitude) + "\n");
-    sb.append("Distance: " + df.format(distance) + " " + lunit + "\n");
-    sb.append("Number of Reviews: " + numReviews + "\n");
-    sb.append("Rating: " + rating + "\n");
-    sb.append("Price Level: " + priceLevel + "\n");
-    sb.append("Ranking: " + rankingString + "\n");
-    sb.append("Address: " + address + "\n");
+    sb.append("Name: ").append(name).append("\n");
+    sb.append("Location: ").append(locationString).append("\n");
+    sb.append("Latitude: ").append(df2.format(latitude)).append("\n");
+    sb.append("Longitude: ").append(df2.format(longitude)).append("\n");
+    sb.append("Distance: ").append(df.format(distance)).append(" ").append(Constants.LUNIT);
+    if (cuisineTypes != null && cuisineTypes.size() > 0) {
+      sb.append("\nCuisine Types: ");
+      for (String cuisine : cuisineTypes) {
+        sb.append(cuisine).append(", ");
+      }
+      sb.delete(sb.length() - 2, sb.length());
+    }
+    sb.append("\nNumber of Reviews: ").append(numReviews).append("\n");
+    sb.append("Rating: ").append(rating).append("/5.0\n");
+    sb.append("Price Level: ").append(priceLevel).append("\n");
+    sb.append("Ranking: ").append(rankingString).append("\n");
+    sb.append("Address: ").append(address).append("\n");
+//    sb.append("Photo Url: " + photoUrl + "\n");
 
     if (isClosed) {
       sb.append("Closed");

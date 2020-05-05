@@ -2,8 +2,11 @@ package edu.brown.cs.student.api.tripadvisor.objects;
 
 import java.text.DecimalFormat;
 
+import edu.brown.cs.student.chat.gui.Constants;
+
 /**
- * This is a class for Attraction, as defined by the TripAdvisor API.
+ * This is a class for Attraction, as defined by the TripAdvisor API, with
+ * fields stored using the results of the API query.
  */
 public class Attraction implements Item {
   private String name; // field "name"
@@ -14,27 +17,26 @@ public class Attraction implements Item {
   private String locationString; // field "location_string"
   private String photoUrl; // field "photo"-"images"-"small"-"url"
   private boolean isClosed; // field "is_closed"
-  private String lunit; // field "lunit"
 
   /**
    * Default constructor.
    */
   public Attraction() {
-    this.lunit = "mi";
   }
 
   /**
    * Constructor with all fields.
-   * 
-   * @param name
-   * @param latitude
-   * @param longitude
-   * @param distance
-   * @param numReviews
-   * @param locationString
-   * @param photoUrl
-   * @param priceRange
-   * @param isClosed
+   *
+   * @param name           - name of Attraction
+   * @param latitude       - latitude of Attraction
+   * @param longitude      - longitude of Attraction
+   * @param distance       - distance from specified location used in query to
+   *                       Attraction
+   * @param numReviews     - number of reviews for Attraction
+   * @param locationString - location string of Attraction
+   * @param photoUrl       - url for an image of Attraction
+   * @param priceRange     - price range for Attraction
+   * @param isClosed       - whether Attraction is closed
    */
   public Attraction(String name, double latitude, double longitude, double distance, int numReviews,
       String locationString, String photoUrl, String priceRange, boolean isClosed) {
@@ -46,7 +48,6 @@ public class Attraction implements Item {
     this.locationString = locationString;
     this.photoUrl = photoUrl;
     this.isClosed = isClosed;
-    this.lunit = "mi";
   }
 
   @Override
@@ -125,8 +126,8 @@ public class Attraction implements Item {
   }
 
   @Override
-  public void setClosed(boolean isClosed) {
-    this.isClosed = isClosed;
+  public void setClosed(boolean closed) {
+    this.isClosed = closed;
   }
 
   @Override
@@ -139,8 +140,9 @@ public class Attraction implements Item {
     sb.append("Location: " + locationString + "\n");
     sb.append("Latitude: " + df2.format(latitude) + "\n");
     sb.append("Longitude: " + df2.format(longitude) + "\n");
-    sb.append("Distance: " + df.format(distance) + " " + lunit + "\n");
+    sb.append("Distance: " + df.format(distance) + " " + Constants.LUNIT + "\n");
     sb.append("Number of Reviews: " + numReviews + "\n");
+//    sb.append("Photo Url: " + photoUrl + "\n");
 
     if (isClosed) {
       sb.append("Closed");

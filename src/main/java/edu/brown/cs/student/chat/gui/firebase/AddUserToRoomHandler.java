@@ -3,7 +3,11 @@ package edu.brown.cs.student.chat.gui.firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
-import com.google.firebase.database.*;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
@@ -96,6 +100,7 @@ public class AddUserToRoomHandler implements Route {
         Map<String, Object> roomUpdates = new HashMap<>();
         Map<String, Object> roomDetails = new HashMap<>();
         roomDetails.put("uid", uid);
+        roomDetails.put("budget", "0");
         roomUpdates.put("added-users/" + uid, roomDetails);
 
         roomRef.updateChildrenAsync(roomUpdates);

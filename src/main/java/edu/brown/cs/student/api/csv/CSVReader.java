@@ -23,7 +23,7 @@ public class CSVReader {
 
   /**
    * Loads a CSV file by storing it in an ArrayList of arrays of Strings.
-   * 
+   *
    * @param filePath The path to the CSV to be loaded.
    * @return ArrayList of arrays of Strings containing the CSV data.
    */
@@ -50,7 +50,7 @@ public class CSVReader {
 
   /**
    * Verifies that the header of the CSV matches an expected format.
-   * 
+   *
    * @param expected Array of Strings representing expected header.
    * @return If the header matches what was expected.
    */

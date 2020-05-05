@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.common.collect.ImmutableMap;
@@ -16,14 +17,6 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 import edu.brown.cs.student.api.tripadvisor.objects.Flight;
 import edu.brown.cs.student.api.tripadvisor.request.FlightRequest;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * A response for flights from the TripAdvisor API; specifically, the
@@ -56,19 +49,20 @@ public class FlightResponse {
   /**
    * Setter of flight request.
    *
-   * @param flightRequest
+   * @param flightRequest to newly set to.
    */
   public void setFlightRequest(FlightRequest flightRequest) {
     this.flightRequest = flightRequest;
   }
 
   /**
-   * Parses all relevant fields from the raw HTTP response, creating a SINGLE flight.
+   * Parses all relevant fields from the raw HTTP response, creating a SINGLE
+   * flight.
    * <p>
-   * It's pretty easy to return more than one flight, but we'll start with one until the method is proven.
+   * It's pretty easy to return more than one flight, but we'll start with one
+   * until the method is proven.
    *
    * @return List of flights matching query parameters.
-   * @throws UnirestException
    */
   public List<Flight> getData() {
     HttpResponse<JsonNode> pollResponse = flightRequest.run();
@@ -123,7 +117,8 @@ public class FlightResponse {
     }
 
     List<Flight> flights = new ArrayList<>();
-    Flight bestFlight = new Flight(bookingURL, price, carrier, layover, dest, origin, flightID, duration);
+    Flight bestFlight = new Flight(bookingURL, price, carrier, layover, dest, origin, flightID,
+        duration);
     flights.add(bestFlight);
     return flights;
   }
@@ -131,8 +126,8 @@ public class FlightResponse {
   /**
    * Parses out search hash from HTTP response.
    *
-   * @param allFields
-   * @return
+   * @param allFields - JSONObject containing all fields.
+   * @return search hash String
    */
   public static String getSearchHash(JSONObject allFields) {
     JSONObject summary = allFields.getJSONObject("summary");
@@ -142,8 +137,8 @@ public class FlightResponse {
   /**
    * Parses out flight ID from HTTP response.
    *
-   * @param allFields
-   * @return
+   * @param allFields - JSONObject containing all fields.
+   * @return flight ID String
    */
   public static String getFlightID(JSONObject allFields) {
     JSONArray itineraries = allFields.getJSONArray("itineraries");
@@ -155,32 +150,30 @@ public class FlightResponse {
   /**
    * Parses out flight origin location from HTTP response.
    *
-   * @param allFields
-   * @return
+   * @param allFields - JSONObject containing all fields.
+   * @return origin String
    */
   public static String getOrigin(JSONObject allFields) {
-    JSONObject search_params = allFields.getJSONObject("search_params");
-    String origin = search_params.getJSONArray("s").getJSONObject(0).getString("o");
-    return origin;
+    JSONObject searchParams = allFields.getJSONObject("search_params");
+    return searchParams.getJSONArray("s").getJSONObject(0).getString("o");
   }
 
   /**
    * Parses out flight destination location from HTTP response.
    *
-   * @param allFields
-   * @return
+   * @param allFields - JSONObject containing all fields.
+   * @return destination String
    */
   public static String getDest(JSONObject allFields) {
-    JSONObject search_params = allFields.getJSONObject("search_params");
-    String dest = search_params.getJSONArray("s").getJSONObject(0).getString("d");
-    return dest;
+    JSONObject searchParams = allFields.getJSONObject("search_params");
+    return searchParams.getJSONArray("s").getJSONObject(0).getString("d");
   }
 
   /**
    * Parses out flight price from HTTP response.
    *
-   * @param allFields
-   * @return
+   * @param allFields - JSONObject containing all fields.
+   * @return price String
    */
   public static String getPrice(JSONObject allFields) {
     JSONArray itineraries = allFields.getJSONArray("itineraries");
@@ -192,8 +185,8 @@ public class FlightResponse {
   /**
    * Parses out cabin class from HTTP response.
    *
-   * @param allFields
-   * @return
+   * @param allFields - JSONObject containing all fields.
+   * @return cabin class String
    */
   public static String getCabinClass(JSONObject allFields) {
     JSONArray itineraries = allFields.getJSONArray("itineraries");
@@ -205,8 +198,8 @@ public class FlightResponse {
   /**
    * Parses out flight carrier from HTTP response.
    *
-   * @param allFields
-   * @return
+   * @param allFields - JSONObject containing all fields.
+   * @return carrier String
    */
   public static String getCarrier(JSONObject allFields) {
     JSONArray itineraries = allFields.getJSONArray("itineraries");
@@ -218,8 +211,8 @@ public class FlightResponse {
   /**
    * Parses out flight duration from HTTP response.
    *
-   * @param allFields
-   * @return
+   * @param allFields - JSONObject containing all fields.
+   * @return duration String
    */
   public static String getDuration(JSONObject allFields) {
     JSONArray itineraries = allFields.getJSONArray("itineraries");
@@ -233,8 +226,8 @@ public class FlightResponse {
   /**
    * Parses out flight's layover from HTTP response.
    *
-   * @param allFields
-   * @return
+   * @param allFields - JSONObject containing all fields.
+   * @return layover String
    */
   public static String getLayover(JSONObject allFields) {
     JSONArray itineraries = allFields.getJSONArray("itineraries");
@@ -245,7 +238,7 @@ public class FlightResponse {
       layover = arr.getJSONObject(0).getJSONArray("lo").getJSONObject(0).getString("t");
       layover = layover.substring(layover.indexOf('>') + 1, layover.lastIndexOf('<'));
       String locationOfLayover = arr.getJSONObject(0).getJSONArray("lo").getJSONObject(0)
-              .getString("s");
+          .getString("s");
       layover += " in " + locationOfLayover;
     } catch (Exception e) {
       System.out.println("No layover.");
@@ -261,10 +254,11 @@ public class FlightResponse {
    * @param o   The origin
    * @param id  The flight ID
    * @param sid The original querie's search ID.
-   * @return
+   * @return booking URL string
+   * @throws UnirestException - thrown if query to get booking URL fails.
    */
-  public static String getBookingURL(String sh, String d, String o, String id, String sid) throws
-          UnirestException {
+  public static String getBookingURL(String sh, String d, String o, String id, String sid)
+      throws UnirestException {
     Map<String, String> params = new HashMap<>();
     params.put("searchHash", sh);
     params.put("Dest", d);
@@ -276,19 +270,16 @@ public class FlightResponse {
 
     String hostURL = "https://tripadvisor1.p.rapidapi.com/flights/get-booking-url";
     // Request headers (with free account's key)
-    String x_rapidapi_host = "tripadvisor1.p.rapidapi.com";
-    String x_rapidapi_key = "aaf4f074c6msh0940f8b6e880750p1f240bjsne42d7f349197";
+    String xRapidapiHost = "tripadvisor1.p.rapidapi.com";
+    String xRapidapiKey = "aaf4f074c6msh0940f8b6e880750p1f240bjsne42d7f349197";
     // Send a request and handle response
     HttpResponse<JsonNode> response = null;
-    response = Unirest.get(hostURL)
-            .queryString(immutableParams)
-            .header("x-rapidapi-host", x_rapidapi_host)
-            .header("x-rapidapi-key", x_rapidapi_key)
-            .asJson();
+    response = Unirest.get(hostURL).queryString(immutableParams)
+        .header("x-rapidapi-host", xRapidapiHost).header("x-rapidapi-key", xRapidapiKey).asJson();
 
     JSONObject obj = new JSONObject(response);
     JSONObject body = obj.getJSONObject("body");
-    String s = null;
+    String s;
     try {
       s = body.getJSONArray("array").getJSONObject(0).getString("partner_url");
     } catch (JSONException e) {

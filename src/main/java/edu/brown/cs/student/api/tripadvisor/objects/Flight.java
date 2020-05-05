@@ -30,8 +30,8 @@ public class Flight {
    * @param id The TripAdvisor-designated ID of the flight
    * @param duration A description of the duration of the flight
    */
-  public Flight(String bookingURL, String price, String carrier, String layover, String dest, String origin,
-                String id, String duration) {
+  public Flight(String bookingURL, String price, String carrier, String layover, String dest,
+                String origin, String id, String duration) {
     this.bookingURL = bookingURL;
     this.price = price;
     this.carrier = carrier;

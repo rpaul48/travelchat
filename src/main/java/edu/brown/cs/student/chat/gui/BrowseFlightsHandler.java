@@ -1,18 +1,17 @@
 package edu.brown.cs.student.chat.gui;
 
-import com.google.common.collect.ImmutableMap;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
+import org.json.JSONArray;
+
 import edu.brown.cs.student.api.tripadvisor.querier.TripAdvisorQuerier;
 import edu.brown.cs.student.api.tripadvisor.request.FlightRequest;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 public class BrowseFlightsHandler implements Route {
   @Override
@@ -53,30 +52,34 @@ public class BrowseFlightsHandler implements Route {
 
   /**
    * Helper for determining if the user's params are valid.
-   * @param qm
-   * @return True iff the params are valid
+   *
+   * @param qm QueryParamsMap to use to test the validity of parameters.
+   * @return True iff the params are valid.
    */
-  public boolean paramsAreValid(QueryParamsMap qm) {
-    String departure_date = qm.value("departure_date");
+  public static boolean paramsAreValid(QueryParamsMap qm) {
+    String departureDate = qm.value("departure_date");
     String numAdults = qm.value("adults");
     String numChildren = qm.value("children");
     String numSeniors = qm.value("seniors");
     String maxStops = qm.value("numStops");
 
-    if (Integer.parseInt(numAdults) < 0 || Integer.parseInt(numChildren) < 0 || Integer.parseInt(numSeniors) < 0) {
-      System.out.println("ERROR: An invalid number of adults, children, and/or seniors was passed in.");
+    if (Integer.parseInt(numAdults) < 0 || Integer.parseInt(numChildren) < 0
+        || Integer.parseInt(numSeniors) < 0) {
+      System.out.println(
+          "ERROR: An invalid number of adults, children, " + "and/or seniors was passed in.");
       return false;
     }
-    // NOT CURRENTLY QUERYING WITH THIS... BUT WILL PROBABLY ADD BACK IN, SO LEAVING THIS HERE.
+    // NOT CURRENTLY QUERYING WITH THIS... BUT WILL PROBABLY ADD BACK IN, SO LEAVING
+    // THIS HERE.
     if (Integer.parseInt(maxStops) < 0) {
-      System.out.println("ERROR: An invalid number of adults was passed in.");
+      System.out.println("ERROR: An invalid number of stops was passed in.");
       return false;
     }
 
     // Format: YYYY-MM-DD
-    String date_format = "^(19|20)\\d\\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$";
-    if (!departure_date.matches(date_format)) {
-      System.out.println("ERROR: The departure date passed in is not properly formatted.");
+    String dateFormat = "^(19|20)\\d\\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$";
+    if (!departureDate.matches(dateFormat)) {
+      System.out.println("ERROR: The departure date is not properly formatted.");
       return false;
     }
     return true;
