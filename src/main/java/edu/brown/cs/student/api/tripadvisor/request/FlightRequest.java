@@ -52,6 +52,7 @@ public class FlightRequest {
     // Get SID then poll
     try {
       sessionID = getSID(response);
+      pollParams.put("sid", sessionID);
     } catch (JSONException e) {
       System.out.println("ERROR: An error occurred while parsing the response for search ID.");
       return null;
@@ -59,7 +60,7 @@ public class FlightRequest {
     //Poll (actually retrieve search results)
     HttpResponse<JsonNode> pollResponse = null;
     try {
-      pollResponse = this.pollFlights(sessionID);
+      pollResponse = this.pollFlights();
     } catch (UnirestException e) {
       System.out.println("ERROR: An error occurred while polling the flights API.");
       return null;
@@ -97,7 +98,7 @@ public class FlightRequest {
    * @return A response from the TripAdvisor flights API.
    * @throws UnirestException
    */
-  public HttpResponse<JsonNode> pollFlights(String sid) throws UnirestException {
+  public HttpResponse<JsonNode> pollFlights() throws UnirestException {
     ImmutableMap<String, Object> immutableParams = ImmutableMap.copyOf(pollParams);
     String hostURL = "https://tripadvisor1.p.rapidapi.com/flights/poll";
     // Request headers (with free account's key)

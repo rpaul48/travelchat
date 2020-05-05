@@ -54,7 +54,7 @@ public class BrowseFlightsHandler implements Route {
    * @param qm
    * @return True iff the params are valid
    */
-  public boolean paramsAreValid(QueryParamsMap qm) {
+  public static boolean paramsAreValid(QueryParamsMap qm) {
     String departureDate = qm.value("departure_date");
     String numAdults = qm.value("adults");
     String numChildren = qm.value("children");
@@ -69,14 +69,14 @@ public class BrowseFlightsHandler implements Route {
     }
     // NOT CURRENTLY QUERYING WITH THIS... BUT WILL PROBABLY ADD BACK IN, SO LEAVING THIS HERE.
     if (Integer.parseInt(maxStops) < 0) {
-      System.out.println("ERROR: An invalid number of adults was passed in.");
+      System.out.println("ERROR: An invalid number of stops was passed in.");
       return false;
     }
 
     // Format: YYYY-MM-DD
     String dateFormat = "^(19|20)\\d\\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$";
     if (!departureDate.matches(dateFormat)) {
-      System.out.println("ERROR: The departure date passed in is not properly formatted.");
+      System.out.println("ERROR: The departure date is not properly formatted.");
       return false;
     }
     return true;
