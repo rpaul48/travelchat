@@ -1,4 +1,4 @@
-package edu.brown.cs.student.test;
+package edu.brown.cs.student.chat.gui;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
 import edu.brown.cs.student.api.tripadvisor.querier.TripAdvisorQuerier;

@@ -5,7 +5,8 @@ import java.text.DecimalFormat;
 import edu.brown.cs.student.chat.gui.Constants;
 
 /**
- * This is a class for Attraction, as defined by the TripAdvisor API.
+ * This is a class for Attraction, as defined by the TripAdvisor API, with
+ * fields stored using the results of the API query.
  */
 public class Attraction implements Item {
   private String name; // field "name"
@@ -26,15 +27,16 @@ public class Attraction implements Item {
   /**
    * Constructor with all fields.
    *
-   * @param name
-   * @param latitude
-   * @param longitude
-   * @param distance
-   * @param numReviews
-   * @param locationString
-   * @param photoUrl
-   * @param priceRange
-   * @param isClosed
+   * @param name           - name of Attraction
+   * @param latitude       - latitude of Attraction
+   * @param longitude      - longitude of Attraction
+   * @param distance       - distance from specified location used in query to
+   *                       Attraction
+   * @param numReviews     - number of reviews for Attraction
+   * @param locationString - location string of Attraction
+   * @param photoUrl       - url for an image of Attraction
+   * @param priceRange     - price range for Attraction
+   * @param isClosed       - whether Attraction is closed
    */
   public Attraction(String name, double latitude, double longitude, double distance, int numReviews,
       String locationString, String photoUrl, String priceRange, boolean isClosed) {

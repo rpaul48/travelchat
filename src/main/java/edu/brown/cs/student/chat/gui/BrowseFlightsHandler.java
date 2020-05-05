@@ -1,16 +1,17 @@
 package edu.brown.cs.student.chat.gui;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
+import org.json.JSONArray;
+
 import edu.brown.cs.student.api.tripadvisor.querier.TripAdvisorQuerier;
 import edu.brown.cs.student.api.tripadvisor.request.FlightRequest;
-import org.json.JSONArray;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 public class BrowseFlightsHandler implements Route {
   @Override
@@ -51,8 +52,9 @@ public class BrowseFlightsHandler implements Route {
 
   /**
    * Helper for determining if the user's params are valid.
-   * @param qm
-   * @return True iff the params are valid
+   *
+   * @param qm QueryParamsMap to use to test the validity of parameters.
+   * @return True iff the params are valid.
    */
   public static boolean paramsAreValid(QueryParamsMap qm) {
     String departureDate = qm.value("departure_date");
@@ -62,12 +64,13 @@ public class BrowseFlightsHandler implements Route {
     String maxStops = qm.value("numStops");
 
     if (Integer.parseInt(numAdults) < 0 || Integer.parseInt(numChildren) < 0
-          || Integer.parseInt(numSeniors) < 0) {
-      System.out.println("ERROR: An invalid number of adults, children, "
-            + "and/or seniors was passed in.");
+        || Integer.parseInt(numSeniors) < 0) {
+      System.out.println(
+          "ERROR: An invalid number of adults, children, " + "and/or seniors was passed in.");
       return false;
     }
-    // NOT CURRENTLY QUERYING WITH THIS... BUT WILL PROBABLY ADD BACK IN, SO LEAVING THIS HERE.
+    // NOT CURRENTLY QUERYING WITH THIS... BUT WILL PROBABLY ADD BACK IN, SO LEAVING
+    // THIS HERE.
     if (Integer.parseInt(maxStops) < 0) {
       System.out.println("ERROR: An invalid number of stops was passed in.");
       return false;

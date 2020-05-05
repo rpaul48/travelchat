@@ -38,7 +38,7 @@ public class HotelResponse {
   /**
    * Setter of hotel request.
    *
-   * @param hotelRequest
+   * @param hotelRequest to newly set to.
    */
   public void setHotelRequest(HotelRequest hotelRequest) {
     this.hotelRequest = hotelRequest;
@@ -48,7 +48,8 @@ public class HotelResponse {
    * Parses all relevant fields from the raw HTTP response for Hotel.
    *
    * @return List of hotels matching query parameters.
-   * @throws UnirestException
+   * @throws UnirestException - thrown if JSONArray mapped by "data" cannot be
+   *                          obtained.
    */
   public List<Hotel> getData() throws UnirestException {
     List<Hotel> hotelsList = new ArrayList<>();
