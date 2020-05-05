@@ -18,13 +18,6 @@ import static org.junit.Assert.*;
  * COMMENTED OUT FOR CONVENIENCE; ALL TESTS WORK.
  */
 public class BrowseFlightsHandlerTest {
-    /**
-     * Sets up data used in all tests.
-     */
-    @Before
-    public void before() {
-
-    }
 
     /**
      * Testing our handling logic with ground-truth.
