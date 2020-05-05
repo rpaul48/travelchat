@@ -1,5 +1,10 @@
 package edu.brown.cs.student.api.tripadvisor.objects;
 
+/**
+ * Interface Item that recommendation objects such as Attraction, Hotel, and
+ * Restaurant implement.
+ *
+ */
 public interface Item {
 
   String getName();

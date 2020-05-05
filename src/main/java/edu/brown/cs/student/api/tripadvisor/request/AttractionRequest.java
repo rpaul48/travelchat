@@ -13,15 +13,11 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  */
 public class AttractionRequest {
   private Map<String, Object> params;
-  private static final int MIN_LATITUDE = -90;
-  private static final int MAX_LATITUDE = 90;
-  private static final int MIN_LONGITUDE = -180;
-  private static final int MAX_LONGITUDE = 180;
 
   /**
    * This is the constructor for this class.
    *
-   * @param params - a Map<String, Object> representing the parameters for
+   * @param params - a Map from String to Object representing the parameters for
    *               attraction API querying.
    */
   public AttractionRequest(Map<String, Object> params) {
@@ -33,33 +29,10 @@ public class AttractionRequest {
    * Runs a query with the parameters given in construction. Will return raw
    * HttpResponse.
    *
-   * @return HttpResponse<JsonNode> - response of API query
-   * @throws UnirestException
+   * @return String - result of API query.
+   * @throws UnirestException - thrown if query fails to run.
    */
   public String run() throws UnirestException {
-    // Latitude and longitude are required parameters. Query cannot be run without
-    // them.
-    if (!params.containsKey("tr_latitude") || !params.containsKey("tr_longitude")
-        || !params.containsKey("bl_latitude") || !params.containsKey("bl_longitude")) {
-      System.err.println("ERROR: Top-right/bottom-left latitude or longitude missing.");
-      return "";
-    }
-
-    // If fields is passed directly into constructor, latitude and longitude might
-    // not have been assigned.
-    double trLatitude = (double) params.get("tr_latitude");
-    double trLongitude = (double) params.get("tr_longitude");
-    double blLatitude = (double) params.get("bl_latitude");
-    double blLongitude = (double) params.get("bl_longitude");
-
-    if (!(trLatitude >= MIN_LATITUDE && trLatitude <= MAX_LATITUDE && trLongitude >= MIN_LONGITUDE
-          && trLongitude <= MAX_LONGITUDE && blLatitude >= MIN_LATITUDE
-          && blLatitude <= MAX_LATITUDE && blLongitude >= MIN_LONGITUDE
-          && blLongitude <= MAX_LONGITUDE)) {
-      System.err.println("ERROR: Top-right/bottom-left latitude or longitude invalid");
-      return "";
-    }
-
     ImmutableMap<String, Object> immutableParams = ImmutableMap.copyOf(params);
     String hostURL = "https://tripadvisor1.p.rapidapi.com/attractions/list-in-boundary";
     // Request headers (with free account's key)
@@ -68,15 +41,14 @@ public class AttractionRequest {
     // Send a request and handle response
 
     HttpResponse<String> response = Unirest.get(hostURL).queryString(immutableParams)
-        .header("x-rapidapi-host", xRapidapiHost).header("x-rapidapi-key", xRapidapiKey)
-        .asString();
+        .header("x-rapidapi-host", xRapidapiHost).header("x-rapidapi-key", xRapidapiKey).asString();
     return response.getBody();
   }
 
   /**
    * Getter of params.
    *
-   * @return a Map<String, Object> representing the query parameters.
+   * @return a Map from String to Object representing the query parameters.
    */
   public Map<String, Object> getParams() {
     return params;
@@ -85,8 +57,8 @@ public class AttractionRequest {
   /**
    * Setter of params.
    *
-   * @param params - a Map<String, Object> representing the parameters for API
-   *               querying to newly set to.
+   * @param params - a Map from String to Object representing the parameters for
+   *               API querying to newly set to.
    */
   public void setParams(Map<String, Object> params) {
     this.params = params;

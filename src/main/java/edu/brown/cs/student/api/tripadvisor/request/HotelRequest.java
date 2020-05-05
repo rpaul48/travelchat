@@ -17,10 +17,10 @@ public class HotelRequest {
   /**
    * This is the constructor for this class.
    *
-   * @param params - a Map<String, Object> representing the parameters for hotel
-   *               API querying.
+   * @param params - a Map from String to Object representing the parameters for
+   *               hotel API querying.
    */
-  public HotelRequest(Map<String, Object> params) throws UnirestException {
+  public HotelRequest(Map<String, Object> params) {
     // Query parameters
     this.params = params;
   }
@@ -29,8 +29,8 @@ public class HotelRequest {
    * Runs a query with the parameters given in construction. Will return raw
    * HttpResponse.
    *
-   * @return
-   * @throws UnirestException
+   * @return String - result of API query.
+   * @throws UnirestException - thrown if query fails to run.
    */
   public String run() throws UnirestException {
     ImmutableMap<String, Object> immutableParams = ImmutableMap.copyOf(params);
@@ -48,7 +48,7 @@ public class HotelRequest {
   /**
    * Getter of params.
    *
-   * @return a Map<String, Object> representing the query parameters.
+   * @return a Map from String to Object representing the query parameters.
    */
   public Map<String, Object> getParams() {
     return params;
@@ -57,8 +57,8 @@ public class HotelRequest {
   /**
    * Setter of params.
    *
-   * @param params - a Map<String, Object> representing the parameters for API
-   *               querying to newly set to.
+   * @param params - a Map from String to Object representing the parameters for
+   *               API querying to newly set to.
    */
   public void setParams(Map<String, Object> params) {
     this.params = params;

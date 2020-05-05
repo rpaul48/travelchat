@@ -5,7 +5,8 @@ import java.text.DecimalFormat;
 import edu.brown.cs.student.chat.gui.Constants;
 
 /**
- * This is a class for Hotel, as defined by the TripAdvisor API.
+ * This is a class for Hotel, as defined by the TripAdvisor API, with fields
+ * stored using the results of the API query.
  */
 public class Hotel implements Item {
   private String name; // field "name"
@@ -21,6 +22,7 @@ public class Hotel implements Item {
   private int ranking; // field "ranking_position"
   private String rankingString; // field "ranking"
   private boolean isClosed; // field "is_closed"
+  private String hotelClass; // field "hotel_class"
 
   /**
    * Default constructor.
@@ -31,19 +33,19 @@ public class Hotel implements Item {
   /**
    * Constructor with all fields.
    *
-   * @param name
-   * @param latitude
-   * @param longitude
-   * @param distance
-   * @param numReviews
-   * @param locationString
-   * @param photoUrl
-   * @param rating
-   * @param priceLevel
-   * @param price
-   * @param ranking
-   * @param rankingString
-   * @param isClosed
+   * @param name           - name of Hotel
+   * @param latitude       - latitude of Hotel
+   * @param longitude      - longitude of Hotel
+   * @param distance       - distance from specified location to Hotel
+   * @param numReviews     - number of reviews for Hotel
+   * @param locationString - location String of Hotel indicating region
+   * @param photoUrl       - url for an image of Hotel
+   * @param rating         - rating of Hotel
+   * @param priceLevel     - price level (ex. $$$) of Hotel
+   * @param price          - number representing price of Hotel
+   * @param ranking        - ranking number of Hotel in its category
+   * @param rankingString  - ranking string of Hotel in its category
+   * @param isClosed       - whether Hotel is closed
    */
   public Hotel(String name, double latitude, double longitude, double distance, int numReviews,
       String locationString, String photoUrl, double rating, String priceLevel, String price,
@@ -184,6 +186,14 @@ public class Hotel implements Item {
     this.isClosed = closed;
   }
 
+  public String getHotelClass() {
+    return hotelClass;
+  }
+
+  public void setHotelClass(String hotelClass) {
+    this.hotelClass = hotelClass;
+  }
+
   @Override
   public String toString() {
     DecimalFormat df = new DecimalFormat("#.##");
@@ -195,9 +205,10 @@ public class Hotel implements Item {
     sb.append("Latitude: ").append(df2.format(latitude)).append("\n");
     sb.append("Longitude: ").append(df2.format(longitude)).append("\n");
     sb.append("Distance: ").append(df.format(distance)).append(" ").append(Constants.LUNIT)
-          .append("\n");
+        .append("\n");
     sb.append("Number of Reviews: ").append(numReviews).append("\n");
-    sb.append("Rating: ").append(rating).append("\n");
+    sb.append("Rating: ").append(rating).append("/5.0\n");
+    sb.append("Hotel Class: ").append(hotelClass).append(" stars\n");
     sb.append("Price Level: ").append(priceLevel).append("\n");
     sb.append("Price: ").append(price).append("\n");
     sb.append("Ranking: ").append(rankingString).append("\n");

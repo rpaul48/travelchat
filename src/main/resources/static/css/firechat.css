@@ -316,35 +316,24 @@
 }
 /* Component: Tabs
 ============================================================ */
-/*
-#firechat {
-  .nav > li > a {
-  width: 100%;
-  display: block;
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 36px;
-  font-weight: 100;
-  height: 60px;
-  background-color: #333333;
-  color: white;
-  padding: 20px;
-  text-align: center;
-  border-radius: 10px;
-  margin: 15px;
-}
-}
- */
-/* ORIGINAL STYLING */
 #firechat .nav {
   margin-top: 15px;
   list-style: none;
+  background: #f9f9f9 !important;
 }
 #firechat .nav > li > a {
   display: block;
-  background-color: #eeeeee;
-  text-decoration: none;
+  background: #f9f9f9 !important;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 24px;
+  font-weight: 100;
+  padding-top: 20px !important;
+  padding-bottom: 15px !important;
   overflow: hidden;
   white-space: nowrap;
+  text-align: center;
+  vertical-align: center;
+  border-radius: 10px 10px 0 0;
 }
 #firechat .nav > li > a:hover,
 #firechat .nav > li > a:focus {
@@ -355,25 +344,11 @@
   clear: both;
 }
 #firechat .nav-tabs > li {
-  float: left;
   margin-bottom: -1px;
-  max-width: 70%;
+  max-width: 100%;
 }
 #firechat .nav-tabs > li > a {
-  -webkit-border-top-right-radius: 4px;
-  -webkit-border-bottom-right-radius: 0;
-  -webkit-border-bottom-left-radius: 0;
-  -webkit-border-top-left-radius: 4px;
-  -moz-border-radius-topright: 4px;
-  -moz-border-radius-bottomright: 0;
-  -moz-border-radius-bottomleft: 0;
-  -moz-border-radius-topleft: 4px;
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-  border-top-left-radius: 4px;
   padding: 4px 8px;
-  margin-right: 2px;
   line-height: 20px;
   border: 1px solid transparent;
   border-color: #cccccc;
@@ -641,9 +616,10 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  width: 70%;
   height: 24px;
   display: inline-block;
   *display: inline;
@@ -775,19 +751,19 @@
   font-size: 16px;
   font-weight: 100;
   line-height: 18px;
-  padding: 10px;
+  padding: 20px;
 }
 #firechat input:-moz-placeholder,
 #firechat textarea:-moz-placeholder {
-  color: #ffffff;
+  color: #c0dfe6;
 }
 #firechat input:-ms-input-placeholder,
 #firechat textarea:-ms-input-placeholder {
-  color: #ffffff;
+  color: #c0dfe6;
 }
 #firechat input::-webkit-input-placeholder,
 #firechat textarea::-webkit-input-placeholder {
-  color: #ffffff;
+  color: #c0dfe6;
 }
 #firechat input[disabled],
 #firechat textarea[disabled] {
@@ -806,6 +782,16 @@
   background: #2F5860;
   color: white;
   border: none;
+}
+#firechat textarea:hover,
+#firechat input:hover,
+#firechat textarea:active,
+#firechat input:active,
+#firechat textarea:focus,
+#firechat input:focus {
+  outline: 0 !important;
+  -webkit-appearance: none;
+  box-shadow: none !important;
 }
 #firechat .search-wrapper {
   -webkit-border-radius: 15px;
@@ -827,14 +813,14 @@
   overflow: auto;
   -ms-overflow-x: hidden;
   overflow-x: hidden;
-  height: 132%;
+  height: 124%;
   position: relative;
   margin-bottom: 5px;
   border: 1px solid #cccccc;
   overflow-y: scroll;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
+  -webkit-border-radius: 0 0 10px 10px;
+  -moz-border-radius: 0 0 10px 10px;
+  border-radius: 0 0 10px 10px;
 }
 #firechat .chat textarea {
   overflow: auto;
@@ -900,6 +886,7 @@
 }
 #firechat .tab-pane-menu {
   border: 1px solid #ccc;
+  background: #f9f9f9 !important;
   border-top: none;
   vertical-align: middle;
   padding-bottom: 5px;
@@ -965,4 +952,60 @@
 }
 #firechat a > .icon {
   margin: 3px 1px;
+}
+#add-user {
+  float: left !important;
+  margin-left: 15% !important;
+  margin-bottom: 10px !important;
+}
+#add-user-a {
+  background: #3D85C6 !important;
+  border: 1px solid #3D85C6 !important;
+  color: #fff !important;
+  text-shadow: none !important;
+  display: block !important;
+  transition: 0.3s !important;
+  -webkit-transition: 0.3s !important;
+  -moz-transition: 0.3s !important;
+}
+#add-user-a:hover {
+  background: #fff !important;
+  color: #3D85C6 !important;
+  border: 1px solid #3D85C6 !important;
+  cursor: pointer !important;
+}
+#budget-menu {
+  float: right !important;
+  color: #6AA84E;
+  margin-right: 5% !important;
+  margin-bottom: 10px !important;
+}
+#budget-menu-a {
+  background: #6AA84E !important;
+  border: 1px solid #6AA84E !important;
+  color: #fff !important;
+  text-shadow: none !important;
+  display: block !important;
+  transition: 0.3s !important;
+  -webkit-transition: 0.3s !important;
+  -moz-transition: 0.3s !important;
+}
+#budget-menu-a:hover {
+  background: #fff !important;
+  color: #6AA84E !important;
+  border: 1px solid #6AA84E !important;
+  cursor: pointer !important;
+}
+#invite-search:-moz-placeholder {
+  color: #808080 !important;
+}
+#invite-search:-ms-input-placeholder {
+  color: #808080 !important;
+}
+#invite-search::-webkit-input-placeholder {
+  color: #808080 !important;
+}
+#add-button {
+  margin-right: 60px !important;
+  margin-left: 60px !important;
 }

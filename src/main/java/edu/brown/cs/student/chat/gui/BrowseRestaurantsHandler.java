@@ -28,8 +28,11 @@ public class BrowseRestaurantsHandler implements Route {
     String miles = qm.value("miles");
     // of the form "[lat], [lon]"
     String[] locationStrings = qm.value("location").split(",");
-    String lat = locationStrings[0].replaceAll("[^0-9.]", "");
-    String lon = locationStrings[1].replaceAll("[^0-9.]", "");
+    String lat = locationStrings[0];
+    String lon = locationStrings[1];
+
+    // min rating; options: any, "3 stars", "4 stars", or "5 stars"
+    String rating = qm.value("rating").replaceAll("[^0-9.]", "");
 
     /*
      * format: a string of cuisine categories of the form "type1,type2,type3";
@@ -37,28 +40,43 @@ public class BrowseRestaurantsHandler implements Route {
      * italian, indian, japanese, mexican, seafood, thai
      *
      */
-    String cuisine = qm.value("cuisineTypes").toLowerCase();
-
-    // min rating; options: any, "3 stars", "4 stars", or "5 stars"
-    String rating = qm.value("rating").replaceAll("[^0-9.]", "");
+    String[] cuisinesArr = qm.value("cuisines").toLowerCase().split(",");
+    String cuisines = "";
+    if (cuisinesArr.length != 0) {
+      for (int i = 0; i < cuisinesArr.length; i++) {
+        if (Constants.CUISINE_TYPE_TO_CODE.containsKey(cuisinesArr[i])) {
+          cuisines += Constants.CUISINE_TYPE_TO_CODE.get(cuisinesArr[i]) + ",";
+        }
+      }
+      cuisines = cuisines.substring(0, cuisines.length() - 1);
+    }
 
     /*
      * dietary restrictions; options: "None", "Vegetarian friendly",
-     * "Vegan options", "Halal", "Kosher", "Gluten-free options
+     * "Vegan options", "Halal", "Gluten-free options
      */
-    String diet = qm.value("diet").toLowerCase();
+    String[] dietArr = qm.value("diet").toLowerCase().split(",");
+    String dietStr = "";
+    if (dietArr.length != 0) {
+      for (int i = 0; i < dietArr.length; i++) {
+        if (Constants.DIETARY_RESTRICTION_TO_CODE.containsKey(dietArr[i])) {
+          dietStr += Constants.DIETARY_RESTRICTION_TO_CODE.get(dietArr[i]) + ",";
+        }
+      }
+      dietStr = dietStr.substring(0, dietStr.length() - 1);
+    }
 
     Map<String, Object> params = new HashMap<>();
-    params.put("limit", Constants.LIMIT); // adjust
-    params.put("lang", Constants.LANG); // adjust
-    params.put("currency", Constants.CURRENCY); // adjust
-    params.put("lunit", Constants.LUNIT); // adjust
+    params.put("limit", Constants.LIMIT);
+    params.put("lang", Constants.LANG);
+    params.put("currency", Constants.CURRENCY);
+    params.put("lunit", Constants.LUNIT);
     params.put("latitude", lat);
     params.put("longitude", lon);
     params.put("min_rating", rating);
-    params.put("dietary_restrictions", diet);
+    params.put("dietary_restrictions", dietStr);
     params.put("distance", miles);
-    params.put("combined_food", cuisine);
+    params.put("combined_food", cuisines);
 
     String errorMsg = paramsAreValid(params);
     // Parameters are invalid.
@@ -108,7 +126,8 @@ public class BrowseRestaurantsHandler implements Route {
       return "ERROR: Latitude or longitude is not a number.";
     }
 
-    if (!(latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180)) {
+    if (!(latitude >= Constants.MIN_LATITUDE && latitude <= Constants.MAX_LATITUDE
+        && longitude >= Constants.MIN_LONGITUDE && longitude <= Constants.MAX_LONGITUDE)) {
       return "ERROR: Latitude or longitude is out of range.";
     }
 

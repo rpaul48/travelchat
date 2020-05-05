@@ -17,10 +17,10 @@ public class RestaurantRequest {
   /**
    * This is the constructor for this class.
    *
-   * @param params - a Map<String, Object> representing the parameters for
+   * @param params - a Map from String to Object representing the parameters for
    *               restaurant API querying.
    */
-  public RestaurantRequest(Map<String, Object> params) throws UnirestException {
+  public RestaurantRequest(Map<String, Object> params) {
     // Query parameters
     this.params = params;
   }
@@ -29,8 +29,8 @@ public class RestaurantRequest {
    * Runs a query with the parameters given in construction. Will return raw
    * HttpResponse.
    *
-   * @return HttpResponse<JsonNode> - response of API query
-   * @throws UnirestException
+   * @return String - result of API query.
+   * @throws UnirestException - thrown if query fails to run.
    */
   public String run() throws UnirestException {
     ImmutableMap<String, Object> immutableParams = ImmutableMap.copyOf(params);
@@ -41,15 +41,14 @@ public class RestaurantRequest {
     // Send a request and handle response
 
     HttpResponse<String> response = Unirest.get(hostURL).queryString(immutableParams)
-        .header("x-rapidapi-host", xRapidapiHost).header("x-rapidapi-key", xRapidapiKey)
-        .asString();
+        .header("x-rapidapi-host", xRapidapiHost).header("x-rapidapi-key", xRapidapiKey).asString();
     return response.getBody();
   }
 
   /**
    * Getter of params.
    *
-   * @return a Map<String, Object> representing the query parameters.
+   * @return a Map from String to Object representing the query parameters.
    */
   public Map<String, Object> getParams() {
     return params;
@@ -58,8 +57,8 @@ public class RestaurantRequest {
   /**
    * Setter of params.
    *
-   * @param params - a Map<String, Object> representing the parameters for API
-   *               querying to newly set to.
+   * @param params - a Map from String to Object representing the parameters for
+   *               API querying to newly set to.
    */
   public void setParams(Map<String, Object> params) {
     this.params = params;
