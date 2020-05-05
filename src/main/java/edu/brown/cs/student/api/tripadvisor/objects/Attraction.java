@@ -2,6 +2,8 @@ package edu.brown.cs.student.api.tripadvisor.objects;
 
 import java.text.DecimalFormat;
 
+import edu.brown.cs.student.chat.gui.Constants;
+
 /**
  * This is a class for Attraction, as defined by the TripAdvisor API.
  */
@@ -14,18 +16,16 @@ public class Attraction implements Item {
   private String locationString; // field "location_string"
   private String photoUrl; // field "photo"-"images"-"small"-"url"
   private boolean isClosed; // field "is_closed"
-  private String lunit; // field "lunit"
 
   /**
    * Default constructor.
    */
   public Attraction() {
-    this.lunit = "mi";
   }
 
   /**
    * Constructor with all fields.
-   * 
+   *
    * @param name
    * @param latitude
    * @param longitude
@@ -46,7 +46,6 @@ public class Attraction implements Item {
     this.locationString = locationString;
     this.photoUrl = photoUrl;
     this.isClosed = isClosed;
-    this.lunit = "mi";
   }
 
   @Override
@@ -139,8 +138,9 @@ public class Attraction implements Item {
     sb.append("Location: " + locationString + "\n");
     sb.append("Latitude: " + df2.format(latitude) + "\n");
     sb.append("Longitude: " + df2.format(longitude) + "\n");
-    sb.append("Distance: " + df.format(distance) + " " + lunit + "\n");
+    sb.append("Distance: " + df.format(distance) + " " + Constants.LUNIT + "\n");
     sb.append("Number of Reviews: " + numReviews + "\n");
+//    sb.append("Photo Url: " + photoUrl + "\n");
 
     if (isClosed) {
       sb.append("Closed");

@@ -4,7 +4,6 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
@@ -33,22 +32,27 @@ public class AttractionRequest {
    * @return HttpResponse<JsonNode> - response of API query
    * @throws UnirestException
    */
-  public HttpResponse<JsonNode> run() throws UnirestException {
+  public String run() throws UnirestException {
     // Latitude and longitude are required parameters. Query cannot be run without
     // them.
-    if (!params.containsKey("latitude") || !params.containsKey("longitude")) {
-      System.err.println("ERROR: Latitude or longitude missing.");
-      return null;
+    if (!params.containsKey("tr_latitude") || !params.containsKey("tr_longitude")
+        || !params.containsKey("bl_latitude") || !params.containsKey("bl_longitude")) {
+      System.err.println("ERROR: Top-right/bottom-left latitude or longitude missing.");
+      return "";
     }
 
     // If fields is passed directly into constructor, latitude and longitude might
     // not have been assigned.
-    double latitude = (double) params.get("latitude");
-    double longitude = (double) params.get("longitude");
+    double tr_latitude = (double) params.get("tr_latitude");
+    double tr_longitude = (double) params.get("tr_longitude");
+    double bl_latitude = (double) params.get("bl_latitude");
+    double bl_longitude = (double) params.get("bl_longitude");
 
-    if (!(latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180)) {
-      System.err.println("ERROR: Latitude or longitude invalid");
-      return null;
+    if (!(tr_latitude >= -90 && tr_latitude <= 90 && tr_longitude >= -180 && tr_longitude <= 180
+        && bl_latitude >= -90 && bl_latitude <= 90 && bl_longitude >= -180
+        && bl_longitude <= 180)) {
+      System.err.println("ERROR: Top-right/bottom-left latitude or longitude invalid");
+      return "";
     }
 
     ImmutableMap<String, Object> immutableParams = ImmutableMap.copyOf(params);
@@ -58,11 +62,10 @@ public class AttractionRequest {
     String x_rapidapi_key = "9ab9c1d3bdmsha453182e940dd58p105f14jsna2fade8f7b4d";
     // Send a request and handle response
 
-    HttpResponse<JsonNode> response = Unirest.get(hostURL).queryString(immutableParams)
+    HttpResponse<String> response = Unirest.get(hostURL).queryString(immutableParams)
         .header("x-rapidapi-host", x_rapidapi_host).header("x-rapidapi-key", x_rapidapi_key)
-        .asJson();
-
-    return response;
+        .asString();
+    return response.getBody();
   }
 
   /**

@@ -10,8 +10,8 @@ import com.google.common.collect.ImmutableMap;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 import edu.brown.cs.student.api.tripadvisor.objects.Restaurant;
+import edu.brown.cs.student.api.tripadvisor.querier.TripAdvisorQuerier;
 import edu.brown.cs.student.api.tripadvisor.request.RestaurantRequest;
-import edu.brown.cs.student.api.tripadvisor.response.RestaurantResponse;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
@@ -21,51 +21,38 @@ public class BrowseRestaurantsHandler implements Route {
 
   @Override
   public JSONObject handle(Request request, Response response) throws UnirestException {
+    TripAdvisorQuerier querier = new TripAdvisorQuerier();
     QueryParamsMap qm = request.queryMap();
 
     // max miles from location; either 1, 2, 5, or 10
-    int miles = Integer.parseInt(qm.value("miles"));
+    String miles = qm.value("miles");
     // of the form "[lat], [lon]"
-    String location = qm.value("location");
-    String[] locationStrings = location.split(",");
-    double lat = Double.parseDouble(locationStrings[0].replaceAll("[^0-9]", ""));
-    double lon = Double.parseDouble(locationStrings[1].replaceAll("[^0-9]", ""));
+    String[] locationStrings = qm.value("location").split(",");
+    String lat = locationStrings[0].replaceAll("[^0-9.]", "");
+    String lon = locationStrings[1].replaceAll("[^0-9.]", "");
 
-    /* TODO: integrate new cuisines format
-     * a string of cuisine categories of the form "type1,type2,type3"; (there are
-     * no spaces after commas) options: Any, american, barbecue, chinese, italian, indian, japanese,
-     * mexican, seafood, thai
-
-    String cuisineTypes = qm.value("cuisineTypes");
+    /*
+     * format: a string of cuisine categories of the form "type1,type2,type3";
+     * (there are no spaces after commas) options: Any, american, barbecue, chinese,
+     * italian, indian, japanese, mexican, seafood, thai
+     *
      */
-
-    // options: any, american, barbecue, chinese, italian, indian, japanese,
-    // mexican, seafood, thai
-    String cuisine = qm.value("cuisine");
-    cuisine.toLowerCase();
-    cuisine.replace(" ", "");
+    String cuisine = qm.value("cuisineTypes").toLowerCase();
 
     // min rating; options: any, "3 stars", "4 stars", or "5 stars"
-    double rating = Double.parseDouble(qm.value("rating"));
+    String rating = qm.value("rating").replaceAll("[^0-9.]", "");
 
     /*
      * dietary restrictions; options: "None", "Vegetarian friendly",
      * "Vegan options", "Halal", "Kosher", "Gluten-free options
      */
-    String diet = qm.value("diet");
-    diet.toLowerCase();
-    diet.replace(" ", "");
+    String diet = qm.value("diet").toLowerCase();
 
-    /*
-     * (TODO) create a map/list/html string of restaurants with information to be
-     * displayed for all search results, (TODO) and set equal to v1 in variables;
-     * append all potential errors into a string and set as v2
-     */
     Map<String, Object> params = new HashMap<>();
-    params.put("limit", 10); // adjust
-    params.put("lang", "en_US"); // adjust
-    params.put("currency", "USD"); // adjust
-    params.put("lunit", "mi"); // adjust
+    params.put("limit", Constants.LIMIT); // adjust
+    params.put("lang", Constants.LANG); // adjust
+    params.put("currency", Constants.CURRENCY); // adjust
+    params.put("lunit", Constants.LUNIT); // adjust
     params.put("latitude", lat);
     params.put("longitude", lon);
     params.put("min_rating", rating);
@@ -73,22 +60,74 @@ public class BrowseRestaurantsHandler implements Route {
     params.put("distance", miles);
     params.put("combined_food", cuisine);
 
-    RestaurantResponse rr = new RestaurantResponse(new RestaurantRequest(params));
-    List<Restaurant> restaurants = rr.getData();
-
-    StringBuilder sb = new StringBuilder();
-
-    for (Restaurant restaurant : restaurants) {
-      sb.append(restaurant.toString() + "\n");
+    String errorMsg = paramsAreValid(params);
+    // Parameters are invalid.
+    if (!errorMsg.equals("")) {
+      System.out.println(errorMsg);
+      Map<String, String> variables = ImmutableMap.of("restaurants_result", "",
+          "restaurants_errors", errorMsg);
+      return new JSONObject(variables);
     }
 
-    String msg = "";
+    List<Restaurant> restaurants = querier.getRestaurants(new RestaurantRequest(params));
+
+    StringBuilder sb = new StringBuilder();
     if (restaurants.isEmpty()) {
-      msg = "No matching result.";
+      sb.append("No matching result.");
+    } else {
+      for (Restaurant restaurant : restaurants) {
+        sb.append(restaurant.toString() + "\n-----------------------------\n");
+      }
     }
 
     Map<String, String> variables = ImmutableMap.of("restaurants_result", sb.toString(),
-        "restaurants_errors", msg);
+        "restaurants_errors", "");
     return new JSONObject(variables);
+  }
+
+  /**
+   * Checks if each element in the params is valid and is in the correct
+   * type/format.
+   *
+   * @param Map<String, Object> params
+   * @return "" if all params are valid, error messages otherwise
+   */
+  public String paramsAreValid(Map<String, Object> params) {
+    // Latitude and longitude are required parameters. Query cannot be run without
+    // them.
+    if (!params.containsKey("latitude") || !params.containsKey("longitude")) {
+      return "ERROR: Latitude or longitude is missing.";
+    }
+
+    double latitude;
+    double longitude;
+    try {
+      latitude = Double.parseDouble((String) params.get("latitude"));
+      longitude = Double.parseDouble((String) params.get("longitude"));
+    } catch (NumberFormatException nfe) {
+      return "ERROR: Latitude or longitude is not a number.";
+    }
+
+    if (!(latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180)) {
+      return "ERROR: Latitude or longitude is out of range.";
+    }
+
+    try {
+      if (Double.parseDouble((String) params.get("min_rating")) < 0) {
+        return "ERROR: Min rating cannot be negative.";
+      }
+    } catch (NumberFormatException nfe) {
+      return "ERROR: Min rating is not a number.";
+    }
+
+    try {
+      if (Double.parseDouble((String) params.get("distance")) < 0) {
+        return "ERROR: Distance cannot be negative.";
+      }
+    } catch (NumberFormatException nfe) {
+      return "ERROR: Distance is not a number.";
+    }
+
+    return "";
   }
 }

@@ -2,6 +2,8 @@ package edu.brown.cs.student.api.tripadvisor.objects;
 
 import java.text.DecimalFormat;
 
+import edu.brown.cs.student.chat.gui.Constants;
+
 /**
  * This is a class for Hotel, as defined by the TripAdvisor API.
  */
@@ -19,18 +21,16 @@ public class Hotel implements Item {
   private int ranking; // field "ranking_position"
   private String rankingString; // field "ranking"
   private boolean isClosed; // field "is_closed"
-  private String lunit; // field "lunit"
 
   /**
    * Default constructor.
    */
   public Hotel() {
-    this.lunit = "mi";
   }
 
   /**
    * Constructor with all fields.
-   * 
+   *
    * @param name
    * @param latitude
    * @param longitude
@@ -62,7 +62,6 @@ public class Hotel implements Item {
     this.ranking = ranking;
     this.rankingString = rankingString;
     this.isClosed = isClosed;
-    this.lunit = "mi";
   }
 
   @Override
@@ -195,12 +194,13 @@ public class Hotel implements Item {
     sb.append("Location: " + locationString + "\n");
     sb.append("Latitude: " + df2.format(latitude) + "\n");
     sb.append("Longitude: " + df2.format(longitude) + "\n");
-    sb.append("Distance: " + df.format(distance) + " " + lunit + "\n");
+    sb.append("Distance: " + df.format(distance) + " " + Constants.LUNIT + "\n");
     sb.append("Number of Reviews: " + numReviews + "\n");
     sb.append("Rating: " + rating + "\n");
     sb.append("Price Level: " + priceLevel + "\n");
     sb.append("Price: " + price + "\n");
     sb.append("Ranking: " + rankingString + "\n");
+//    sb.append("Photo Url: " + photoUrl + "\n");
 
     if (isClosed) {
       sb.append("Closed");

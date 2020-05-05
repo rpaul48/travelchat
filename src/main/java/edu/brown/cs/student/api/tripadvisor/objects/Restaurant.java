@@ -3,6 +3,8 @@ package edu.brown.cs.student.api.tripadvisor.objects;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import edu.brown.cs.student.chat.gui.Constants;
+
 /**
  * This is a class for Restaurant, as defined by the TripAdvisor API.
  */
@@ -12,28 +14,25 @@ public class Restaurant implements Item {
   private double longitude;
   private int numReviews;
   private String locationString;
-  private String photoUrl; // field "photo"-"images"-"small"-"url"
+  private String photoUrl;
   private double distance;
-  private String priceLevel; // field "price_level" (ex. $$)
+  private String priceLevel;
   private double rating;
   private boolean isClosed;
-  private int ranking; // field "ranking_position"
-  private String rankingString; // field "ranking"
+  private int ranking;
+  private String rankingString;
   private String address;
-//  private List<String> hours; ///
   private List<String> cuisineTypes;
-  private String lunit; // field "lunit"
 
   /**
    * Default constructor.
    */
   public Restaurant() {
-    this.lunit = "mi";
   }
 
   /**
    * Constructor with all fields.
-   * 
+   *
    * @param name
    * @param latitude
    * @param longitude
@@ -67,7 +66,6 @@ public class Restaurant implements Item {
     this.rankingString = rankingString;
     this.address = address;
     this.cuisineTypes = cuisineTypes;
-    this.lunit = "mi";
   }
 
   @Override
@@ -208,12 +206,20 @@ public class Restaurant implements Item {
     sb.append("Location: " + locationString + "\n");
     sb.append("Latitude: " + df2.format(latitude) + "\n");
     sb.append("Longitude: " + df2.format(longitude) + "\n");
-    sb.append("Distance: " + df.format(distance) + " " + lunit + "\n");
-    sb.append("Number of Reviews: " + numReviews + "\n");
+    sb.append("Distance: " + df.format(distance) + " " + Constants.LUNIT);
+    if (cuisineTypes != null && cuisineTypes.size() > 0) {
+      sb.append("\nCuisine Types: ");
+      for (String cuisine : cuisineTypes) {
+        sb.append(cuisine + ", ");
+      }
+      sb.delete(sb.length() - 2, sb.length());
+    }
+    sb.append("\nNumber of Reviews: " + numReviews + "\n");
     sb.append("Rating: " + rating + "\n");
     sb.append("Price Level: " + priceLevel + "\n");
     sb.append("Ranking: " + rankingString + "\n");
     sb.append("Address: " + address + "\n");
+//    sb.append("Photo Url: " + photoUrl + "\n");
 
     if (isClosed) {
       sb.append("Closed");
