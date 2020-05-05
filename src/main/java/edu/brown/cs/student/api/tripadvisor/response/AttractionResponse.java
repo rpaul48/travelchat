@@ -38,7 +38,7 @@ public class AttractionResponse {
   /**
    * Setter of attraction request.
    *
-   * @param attractionRequest
+   * @param attractionRequest to newly set to.
    */
   public void setattractionRequest(AttractionRequest attractionRequest) {
     this.attractionRequest = attractionRequest;
@@ -48,7 +48,8 @@ public class AttractionResponse {
    * Parses all relevant fields from the raw HTTP response for Attraction.
    *
    * @return List of attractions matching query parameters.
-   * @throws UnirestException
+   * @throws UnirestException - thrown if JSONArray mapped by "data" cannot be
+   *                          obtained.
    */
   public List<Attraction> getData() throws UnirestException {
     List<Attraction> attractionsList = new ArrayList<>();

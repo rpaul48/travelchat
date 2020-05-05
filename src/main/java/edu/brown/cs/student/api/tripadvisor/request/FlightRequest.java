@@ -3,6 +3,7 @@ package edu.brown.cs.student.api.tripadvisor.request;
 import java.util.Map;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.common.collect.ImmutableMap;
@@ -10,7 +11,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import org.json.JSONException;
 
 /**
  * A request for flights from the TripAdvisor API. Specifically, this handles
@@ -26,8 +26,9 @@ public class FlightRequest {
 
   /**
    * Constructs a new request with a set of session and query (poll) parameters.
-   * @param sessionParams
-   * @param pollParams
+   *
+   * @param sessionParams - parameters for session query.
+   * @param pollParams    - parameters for poll query.
    */
   public FlightRequest(Map<String, Object> sessionParams, Map<String, Object> pollParams) {
     // Query parameters
@@ -36,9 +37,10 @@ public class FlightRequest {
   }
 
   /**
-   * Runs a query with the parameters given in construction. Will return raw HttpResponse.
-   * @return pollResponse A response from the TripAdvisor flights API.
-   * @throws UnirestException
+   * Runs a query with the parameters given in construction. Will return raw
+   * HttpResponse.
+   *
+   * @return pollResponse - A response from the TripAdvisor flights API.
    */
   public HttpResponse<JsonNode> run() {
     // Start session and get response
@@ -57,7 +59,7 @@ public class FlightRequest {
       System.out.println("ERROR: An error occurred while parsing the response for search ID.");
       return null;
     }
-    //Poll (actually retrieve search results)
+    // Poll (actually retrieve search results)
     HttpResponse<JsonNode> pollResponse = null;
     try {
       pollResponse = this.pollFlights();
@@ -70,7 +72,8 @@ public class FlightRequest {
 
   /**
    * Accessor of a request's session ID.
-   * @return sessionID
+   *
+   * @return sessionID - flight request's session ID.
    */
   public String getSessionID() {
     return sessionID;
@@ -78,7 +81,8 @@ public class FlightRequest {
 
   /**
    * Accessor of parameters used to start the most recent session.
-   * @return sessionParams
+   *
+   * @return sessionParams - parameters for session query.
    */
   public Map<String, Object> getSessionParams() {
     return sessionParams;
@@ -86,7 +90,8 @@ public class FlightRequest {
 
   /**
    * Mutator of session parameters.
-   * @param sessionParams
+   *
+   * @param sessionParams to newly set to.
    */
   public void setSessionParams(Map<String, Object> sessionParams) {
     this.sessionParams = sessionParams;
@@ -94,9 +99,9 @@ public class FlightRequest {
 
   /**
    * Polls the TripAdvisor API for flights.
-   * @param sid The ID of the current search
+   *
    * @return A response from the TripAdvisor flights API.
-   * @throws UnirestException
+   * @throws UnirestException - thrown if poll flights API query fails.
    */
   public HttpResponse<JsonNode> pollFlights() throws UnirestException {
     ImmutableMap<String, Object> immutableParams = ImmutableMap.copyOf(pollParams);
@@ -105,18 +110,16 @@ public class FlightRequest {
     String xRapidapiHost = "tripadvisor1.p.rapidapi.com";
     String xRapidapiKey = "aaf4f074c6msh0940f8b6e880750p1f240bjsne42d7f349197";
     // Send a request and handle response
-    HttpResponse<JsonNode> response = Unirest.get(hostURL)
-            .queryString(immutableParams)
-            .header("x-rapidapi-host", xRapidapiHost)
-            .header("x-rapidapi-key", xRapidapiKey)
-            .asJson();
+    HttpResponse<JsonNode> response = Unirest.get(hostURL).queryString(immutableParams)
+        .header("x-rapidapi-host", xRapidapiHost).header("x-rapidapi-key", xRapidapiKey).asJson();
     return response;
   }
 
   /**
    * Creates a session with the TripAdvisor flights API.
+   *
    * @return A response from the TripAdvisor flights API.
-   * @throws UnirestException
+   * @throws UnirestException - thrown if create session API query fails.
    */
   public HttpResponse<JsonNode> createSession() throws UnirestException {
     ImmutableMap<String, Object> immutableParams = ImmutableMap.copyOf(sessionParams);
@@ -125,17 +128,15 @@ public class FlightRequest {
     String xRapidapiHost = "tripadvisor1.p.rapidapi.com";
     String xRapidapiKey = "aaf4f074c6msh0940f8b6e880750p1f240bjsne42d7f349197";
     // Send a request and handle response
-    HttpResponse<JsonNode> response = Unirest.get(hostURL)
-            .queryString(immutableParams)
-            .header("x-rapidapi-host", xRapidapiHost)
-            .header("x-rapidapi-key", xRapidapiKey)
-            .asJson();
+    HttpResponse<JsonNode> response = Unirest.get(hostURL).queryString(immutableParams)
+        .header("x-rapidapi-host", xRapidapiHost).header("x-rapidapi-key", xRapidapiKey).asJson();
     return response;
   }
 
   /**
    * Parses out the search ID (SID) of a TripAdvisor API response.
-   * @param response
+   *
+   * @param response - HttpResponse of JsonNode, result of query.
    * @return The SID of the response
    */
   public static String getSID(HttpResponse<JsonNode> response) throws JSONException {

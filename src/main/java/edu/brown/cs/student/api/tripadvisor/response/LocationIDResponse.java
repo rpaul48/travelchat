@@ -23,7 +23,8 @@ public class LocationIDResponse {
    * Parses all relevant fields from the raw HTTP response for location ID.
    *
    * @return String representing location ID.
-   * @throws UnirestException
+   * @throws UnirestException - thrown if JSONArray mapped by "data" cannot be
+   *                          obtained.
    */
   public String getData() throws UnirestException {
     String locationID = "";
@@ -44,7 +45,7 @@ public class LocationIDResponse {
   /**
    * Getter of locationIDRequest.
    *
-   * @return LocationIDRequest
+   * @return LocationIDRequest - location ID Request.
    */
   public LocationIDRequest getLocationIDRequest() {
     return locationIDRequest;

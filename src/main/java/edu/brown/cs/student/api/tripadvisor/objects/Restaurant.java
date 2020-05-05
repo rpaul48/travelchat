@@ -6,7 +6,8 @@ import java.util.List;
 import edu.brown.cs.student.chat.gui.Constants;
 
 /**
- * This is a class for Restaurant, as defined by the TripAdvisor API.
+ * This is a class for Restaurant, as defined by the TripAdvisor API, with
+ * fields stored using the results of the API query.
  */
 public class Restaurant implements Item {
   private String name;
@@ -33,20 +34,20 @@ public class Restaurant implements Item {
   /**
    * Constructor with all fields.
    *
-   * @param name
-   * @param latitude
-   * @param longitude
-   * @param numReviews
-   * @param locationString
-   * @param photoUrl
-   * @param distance
-   * @param priceLevel
-   * @param rating
-   * @param isClosed
-   * @param ranking
-   * @param rankingString
-   * @param address
-   * @param cuisineTypes
+   * @param name           - name of Restaurant
+   * @param latitude       - latitude of Restaurant
+   * @param longitude      - longitude of Restaurant
+   * @param numReviews     - number of reviews for Restaurant
+   * @param locationString - location string of Restaurant indicating region
+   * @param photoUrl       - url for an image of Restaurant
+   * @param distance       - distance from specified location to Restaurant
+   * @param priceLevel     - price level (ex. $$$) of Restaurant
+   * @param rating         - rating for Restaurant
+   * @param isClosed       - whether Restaurant is closed
+   * @param ranking        - ranking number of Restaurant within its category
+   * @param rankingString  - ranking string of Restaurant within its category
+   * @param address        - address of Restaurant
+   * @param cuisineTypes   - cuisine types that Restaurant has
    */
   public Restaurant(String name, double latitude, double longitude, int numReviews,
       String locationString, String photoUrl, double distance, String priceLevel, double rating,

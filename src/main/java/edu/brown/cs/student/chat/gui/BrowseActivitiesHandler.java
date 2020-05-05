@@ -117,7 +117,8 @@ public class BrowseActivitiesHandler implements Route {
     double latitude = ((Double) params.get("tr_latitude")) - Constants.BOUNDARYOFFSET;
     double longitude = ((Double) params.get("tr_longitude")) - Constants.BOUNDARYOFFSET;
 
-    if (!(latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180)) {
+    if (!(latitude >= Constants.MIN_LATITUDE && latitude <= Constants.MAX_LATITUDE
+        && longitude >= Constants.MIN_LONGITUDE && longitude <= Constants.MAX_LONGITUDE)) {
       return "ERROR: Latitude or longitude is out of range.";
     }
 

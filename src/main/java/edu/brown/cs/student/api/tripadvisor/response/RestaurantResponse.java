@@ -38,7 +38,7 @@ public class RestaurantResponse {
   /**
    * Setter of restaurant request.
    *
-   * @param restaurantRequest
+   * @param restaurantRequest to newly set to.
    */
   public void setRestaurantRequest(RestaurantRequest restaurantRequest) {
     this.restaurantRequest = restaurantRequest;
@@ -48,7 +48,7 @@ public class RestaurantResponse {
    * Parses all relevant fields from the raw HTTP response for restaurant.
    *
    * @return List of restaurants matching query parameters.
-   * @throws UnirestException
+   * @throws UnirestException - thrown if JSONArray mapped by "data" cannot be obtained.
    */
   public List<Restaurant> getData() throws UnirestException {
     List<Restaurant> restaurantsList = new ArrayList<>();

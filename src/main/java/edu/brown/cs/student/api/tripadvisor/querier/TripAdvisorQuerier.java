@@ -61,7 +61,7 @@ public class TripAdvisorQuerier extends Querier {
    * @param restaurantRequest The object containing all parameters/constraints
    *                          needed for the query.
    * @return A list of restaurants matching the given parameters.
-   * @throws UnirestException
+   * @throws UnirestException - thrown if query fails to run.
    */
   public List<Restaurant> getRestaurants(RestaurantRequest restaurantRequest)
       throws UnirestException {
@@ -80,7 +80,7 @@ public class TripAdvisorQuerier extends Querier {
    * @param attractionRequest The object containing all parameters/constraints
    *                          needed for the query.
    * @return A list of attractions matching the given parameters.
-   * @throws UnirestException
+   * @throws UnirestException - thrown if query fails to run.
    */
   public List<Attraction> getAttractions(AttractionRequest attractionRequest)
       throws UnirestException {
@@ -99,7 +99,7 @@ public class TripAdvisorQuerier extends Querier {
    * @param flightRequest The object containing all parameters/constraints needed
    *                      for the query.
    * @return A list of flights matching the given parameters.
-   * @throws UnirestException
+   * @throws UnirestException - thrown if query fails to run.
    */
   public JSONArray getFlights(FlightRequest flightRequest) throws UnirestException {
     LOGGER.log(Level.INFO, LOGGER_PREFIX + "Querying flights.");
@@ -131,7 +131,7 @@ public class TripAdvisorQuerier extends Querier {
    * @param hotelRequest The object containing all parameters/constraints needed
    *                     for the query.
    * @return A list of hotels matching the given parameters.
-   * @throws UnirestException
+   * @throws UnirestException - thrown if query fails to run.
    */
   public List<Hotel> getHotels(HotelRequest hotelRequest) throws UnirestException {
     LOGGER.log(Level.INFO, LOGGER_PREFIX + "Querying hotels.");
@@ -143,13 +143,12 @@ public class TripAdvisorQuerier extends Querier {
   }
 
   /**
-   * Queries and returns a list of hotels using constraints detailed in a
-   * HotelRequest.
+   * Queries and returns a location ID based on the city name.
    *
-   * @param hotelRequest The object containing all parameters/constraints needed
-   *                     for the query.
-   * @return A list of hotels matching the given parameters.
-   * @throws UnirestException
+   * @param locationIDRequest The object containing all parameters/constraints
+   *                          needed for the query.
+   * @return A String location ID corresponding to the city name.
+   * @throws UnirestException - thrown if query fails to run.
    */
   public String getLocationID(LocationIDRequest locationIDRequest) throws UnirestException {
     LOGGER.log(Level.INFO, LOGGER_PREFIX + "Querying location ID.");
@@ -164,7 +163,7 @@ public class TripAdvisorQuerier extends Querier {
   /**
    * DEBUGGING.
    *
-   * @param response
+   * @param response - HttpResponse of JsonNode, result of API query.
    */
   public static void printHTTPResponse(HttpResponse<JsonNode> response) {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();

@@ -5,7 +5,8 @@ import java.text.DecimalFormat;
 import edu.brown.cs.student.chat.gui.Constants;
 
 /**
- * This is a class for Hotel, as defined by the TripAdvisor API.
+ * This is a class for Hotel, as defined by the TripAdvisor API, with fields
+ * stored using the results of the API query.
  */
 public class Hotel implements Item {
   private String name; // field "name"
@@ -32,19 +33,19 @@ public class Hotel implements Item {
   /**
    * Constructor with all fields.
    *
-   * @param name
-   * @param latitude
-   * @param longitude
-   * @param distance
-   * @param numReviews
-   * @param locationString
-   * @param photoUrl
-   * @param rating
-   * @param priceLevel
-   * @param price
-   * @param ranking
-   * @param rankingString
-   * @param isClosed
+   * @param name           - name of Hotel
+   * @param latitude       - latitude of Hotel
+   * @param longitude      - longitude of Hotel
+   * @param distance       - distance from specified location to Hotel
+   * @param numReviews     - number of reviews for Hotel
+   * @param locationString - location String of Hotel indicating region
+   * @param photoUrl       - url for an image of Hotel
+   * @param rating         - rating of Hotel
+   * @param priceLevel     - price level (ex. $$$) of Hotel
+   * @param price          - number representing price of Hotel
+   * @param ranking        - ranking number of Hotel in its category
+   * @param rankingString  - ranking string of Hotel in its category
+   * @param isClosed       - whether Hotel is closed
    */
   public Hotel(String name, double latitude, double longitude, double distance, int numReviews,
       String locationString, String photoUrl, double rating, String priceLevel, String price,
