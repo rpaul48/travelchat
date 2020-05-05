@@ -194,41 +194,21 @@
 /* Component: Tabs
 ============================================================ */
 
-/*
-#firechat {
-  .nav > li > a {
-  width: 100%;
-  display: block;
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 36px;
-  font-weight: 100;
-  height: 60px;
-  background-color: #333333;
-  color: white;
-  padding: 20px;
-  text-align: center;
-  border-radius: 10px;
-  margin: 15px;
-}
-}
- */
-
-
-/* ORIGINAL STYLING */
-
 #firechat {
 
   .nav {
     margin-top: 15px;
     list-style: none;
+    background: #f9f9f9 !important
   }
   .nav > li > a {
     display: block;
-    background-color: #eeeeee;
+    background: #f9f9f9 !important;
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 24px;
     font-weight: 100;
-    padding-top: 10px !important;
+    padding-top: 20px !important;
+    padding-bottom: 15px !important;
     overflow: hidden;
     white-space: nowrap;
     text-align: center;
@@ -581,7 +561,7 @@
     font-weight: 100;
     line-height: 18px;
     padding: 20px;
-    .placeholder(white);
+    .placeholder(#c0dfe6);
   }
   input[disabled],
   textarea[disabled] {
@@ -633,7 +613,7 @@
     overflow: auto;
     -ms-overflow-x: hidden;
     overflow-x: hidden;
-    height: 132%;
+    height: 124%;
     position: relative;
     margin-bottom: 5px;
     border: 1px solid #cccccc;
@@ -707,11 +687,11 @@
   }
   .tab-pane-menu {
     border: 1px solid #ccc;
+    background: #f9f9f9 !important;
     border-top: none;
     vertical-align: middle;
     padding-bottom: 5px;
   }
-  .tab-pane-menu
 
   .tab-pane-menu .firechat-dropdown {
     margin: 5px 0 0 5px;
@@ -769,7 +749,8 @@
 
 #add-user {
   float: left !important;
-  margin-left: 10% !important;
+  margin-left: 15% !important;
+  margin-bottom: 10px !important;
 }
 
 #add-user-a {
@@ -793,6 +774,8 @@
 #budget-menu {
   float: right !important;
   color: #6AA84E;
+  margin-right: 5% !important;
+  margin-bottom: 10px !important;
 }
 
 #budget-menu-a {
@@ -817,3 +800,7 @@
   .placeholder(grey) !important;
 }
 
+#add-button {
+  margin-right: 60px !important;
+  margin-left: 60px !important;
+}

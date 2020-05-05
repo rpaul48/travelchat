@@ -316,36 +316,19 @@
 }
 /* Component: Tabs
 ============================================================ */
-/*
-#firechat {
-  .nav > li > a {
-  width: 100%;
-  display: block;
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 36px;
-  font-weight: 100;
-  height: 60px;
-  background-color: #333333;
-  color: white;
-  padding: 20px;
-  text-align: center;
-  border-radius: 10px;
-  margin: 15px;
-}
-}
- */
-/* ORIGINAL STYLING */
 #firechat .nav {
   margin-top: 15px;
   list-style: none;
+  background: #f9f9f9 !important;
 }
 #firechat .nav > li > a {
   display: block;
-  background-color: #eeeeee;
+  background: #f9f9f9 !important;
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 24px;
   font-weight: 100;
-  padding-top: 10px !important;
+  padding-top: 20px !important;
+  padding-bottom: 15px !important;
   overflow: hidden;
   white-space: nowrap;
   text-align: center;
@@ -772,15 +755,15 @@
 }
 #firechat input:-moz-placeholder,
 #firechat textarea:-moz-placeholder {
-  color: #ffffff;
+  color: #c0dfe6;
 }
 #firechat input:-ms-input-placeholder,
 #firechat textarea:-ms-input-placeholder {
-  color: #ffffff;
+  color: #c0dfe6;
 }
 #firechat input::-webkit-input-placeholder,
 #firechat textarea::-webkit-input-placeholder {
-  color: #ffffff;
+  color: #c0dfe6;
 }
 #firechat input[disabled],
 #firechat textarea[disabled] {
@@ -830,7 +813,7 @@
   overflow: auto;
   -ms-overflow-x: hidden;
   overflow-x: hidden;
-  height: 132%;
+  height: 124%;
   position: relative;
   margin-bottom: 5px;
   border: 1px solid #cccccc;
@@ -903,11 +886,12 @@
 }
 #firechat .tab-pane-menu {
   border: 1px solid #ccc;
+  background: #f9f9f9 !important;
   border-top: none;
   vertical-align: middle;
   padding-bottom: 5px;
 }
-#firechat .tab-pane-menu .tab-pane-menu .firechat-dropdown {
+#firechat .tab-pane-menu .firechat-dropdown {
   margin: 5px 0 0 5px;
 }
 #firechat .tab-pane-menu > .icon {
@@ -971,7 +955,8 @@
 }
 #add-user {
   float: left !important;
-  margin-left: 10% !important;
+  margin-left: 15% !important;
+  margin-bottom: 10px !important;
 }
 #add-user-a {
   background: #3D85C6 !important;
@@ -992,6 +977,8 @@
 #budget-menu {
   float: right !important;
   color: #6AA84E;
+  margin-right: 5% !important;
+  margin-bottom: 10px !important;
 }
 #budget-menu-a {
   background: #6AA84E !important;
@@ -1017,4 +1004,8 @@
 }
 #invite-search::-webkit-input-placeholder {
   color: #808080 !important;
+}
+#add-button {
+  margin-right: 60px !important;
+  margin-left: 60px !important;
 }
