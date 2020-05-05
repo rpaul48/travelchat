@@ -1,7 +1,6 @@
 package edu.brown.cs.student.chat.gui.calendar;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.*;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
@@ -27,6 +26,7 @@ public class PostCalendarEventHandler implements Route {
 
     eventsRef.child(uniqueEventID).setValueAsync(
           new CalendarEvent(uniqueEventID, title, startTime, endTime));
+
 
     return "";
   }
