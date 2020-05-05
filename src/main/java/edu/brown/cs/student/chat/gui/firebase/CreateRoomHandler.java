@@ -104,6 +104,7 @@ public class CreateRoomHandler implements Route {
           Map<String, Object> roomUpdates = new HashMap<>();
           Map<String, Object> roomDetails = new HashMap<>();
           roomDetails.put("uid", uid);
+          roomDetails.put("budget", "0");
           roomUpdates.put("added-users/" + uid, roomDetails);
 
           roomRef.updateChildrenAsync(roomUpdates);
