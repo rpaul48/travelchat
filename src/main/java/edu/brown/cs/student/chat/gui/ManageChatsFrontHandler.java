@@ -11,7 +11,7 @@ import java.util.Map;
 public class ManageChatsFrontHandler implements TemplateViewRoute {
 
   @Override
-  public ModelAndView handle(Request request, Response response) throws Exception {
+  public ModelAndView handle(Request request, Response response) {
     Map<String, Object> variables = ImmutableMap.of("title", "Manage Chats",
             "errors", "");
     return new ModelAndView(variables, "manage-chats.ftl");

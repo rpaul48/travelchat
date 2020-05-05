@@ -45,14 +45,14 @@ public class FlightRequest {
     HttpResponse<JsonNode> response = null;
     try {
       response = this.createSession();
-    } catch(UnirestException e) {
+    } catch (UnirestException e) {
       System.out.println("ERROR: An error occurred while starting the flights API session.");
       return null;
     }
     // Get SID then poll
     try {
       sessionID = getSID(response);
-    } catch(JSONException e) {
+    } catch (JSONException e) {
       System.out.println("ERROR: An error occurred while parsing the response for search ID.");
       return null;
     }
@@ -71,7 +71,7 @@ public class FlightRequest {
    * Accessor of a request's session ID.
    * @return sessionID
    */
-  public String getSessionID(){
+  public String getSessionID() {
     return sessionID;
   }
 
@@ -101,13 +101,13 @@ public class FlightRequest {
     ImmutableMap<String, Object> immutableParams = ImmutableMap.copyOf(pollParams);
     String hostURL = "https://tripadvisor1.p.rapidapi.com/flights/poll";
     // Request headers (with free account's key)
-    String x_rapidapi_host = "tripadvisor1.p.rapidapi.com";
-    String x_rapidapi_key = "aaf4f074c6msh0940f8b6e880750p1f240bjsne42d7f349197";
+    String xRapidapiHost = "tripadvisor1.p.rapidapi.com";
+    String xRapidapiKey = "aaf4f074c6msh0940f8b6e880750p1f240bjsne42d7f349197";
     // Send a request and handle response
-    HttpResponse <JsonNode> response = Unirest.get(hostURL)
+    HttpResponse<JsonNode> response = Unirest.get(hostURL)
             .queryString(immutableParams)
-            .header("x-rapidapi-host", x_rapidapi_host)
-            .header("x-rapidapi-key", x_rapidapi_key)
+            .header("x-rapidapi-host", xRapidapiHost)
+            .header("x-rapidapi-key", xRapidapiKey)
             .asJson();
     return response;
   }
@@ -121,13 +121,13 @@ public class FlightRequest {
     ImmutableMap<String, Object> immutableParams = ImmutableMap.copyOf(sessionParams);
     String hostURL = "https://tripadvisor1.p.rapidapi.com/flights/create-session";
     // Request headers (with free account's key)
-    String x_rapidapi_host = "tripadvisor1.p.rapidapi.com";
-    String x_rapidapi_key = "aaf4f074c6msh0940f8b6e880750p1f240bjsne42d7f349197";
+    String xRapidapiHost = "tripadvisor1.p.rapidapi.com";
+    String xRapidapiKey = "aaf4f074c6msh0940f8b6e880750p1f240bjsne42d7f349197";
     // Send a request and handle response
-    HttpResponse <JsonNode> response = Unirest.get(hostURL)
+    HttpResponse<JsonNode> response = Unirest.get(hostURL)
             .queryString(immutableParams)
-            .header("x-rapidapi-host", x_rapidapi_host)
-            .header("x-rapidapi-key", x_rapidapi_key)
+            .header("x-rapidapi-host", xRapidapiHost)
+            .header("x-rapidapi-key", xRapidapiKey)
             .asJson();
     return response;
   }
@@ -145,7 +145,6 @@ public class FlightRequest {
     JSONObject allFields = array.getJSONObject(0);
     // NOW... we can index into the fields
     JSONObject searchParamsJSON = allFields.getJSONObject("search_params");
-    String sid = searchParamsJSON.getString("sid");
-    return sid;
+    return searchParamsJSON.getString("sid");
   }
 }

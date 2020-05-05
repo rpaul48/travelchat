@@ -3,13 +3,25 @@ package edu.brown.cs.student.chat;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import edu.brown.cs.student.chat.gui.*;
 
+import edu.brown.cs.student.chat.gui.BrowseActivitiesHandler;
+import edu.brown.cs.student.chat.gui.BrowseFlightsHandler;
+import edu.brown.cs.student.chat.gui.BrowseLodgingHandler;
+import edu.brown.cs.student.chat.gui.BrowseRestaurantsHandler;
+import edu.brown.cs.student.chat.gui.ChatFrontHandler;
+import edu.brown.cs.student.chat.gui.LoginFrontHandler;
+import edu.brown.cs.student.chat.gui.ManageChatsFrontHandler;
+import edu.brown.cs.student.chat.gui.PlanMyDayHandler;
 import edu.brown.cs.student.chat.gui.calendar.CalendarEvent;
 import edu.brown.cs.student.chat.gui.calendar.CalendarFrontHandler;
 import edu.brown.cs.student.chat.gui.calendar.GetCalendarEventsHandler;
 import edu.brown.cs.student.chat.gui.calendar.PostCalendarEventHandler;
-import edu.brown.cs.student.chat.gui.firebase.*;
+import edu.brown.cs.student.chat.gui.firebase.AddUserToRoomHandler;
+import edu.brown.cs.student.chat.gui.firebase.CreateRoomHandler;
+import edu.brown.cs.student.chat.gui.firebase.GetUserBudgetInRoomHandler;
+import edu.brown.cs.student.chat.gui.firebase.GetUserRoomsHandler;
+import edu.brown.cs.student.chat.gui.firebase.RemoveUserFromRoomHandler;
+import edu.brown.cs.student.chat.gui.firebase.UpdateUserBudgetInRoomHandler;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -19,11 +31,16 @@ import spark.Response;
 import spark.Spark;
 import spark.template.freemarker.FreeMarkerEngine;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class Main {
-
+public final class Main {
   private static final int DEFAULT_PORT = 4567;
 
   public static void main(String[] args) {
@@ -148,7 +165,8 @@ public class Main {
     if (processBuilder.environment().get("PORT") != null) {
       return Integer.parseInt(processBuilder.environment().get("PORT"));
     }
-    return 4567; //return default port if heroku-port isn't set (i.e. on localhost)
+    // return default port if heroku-port isn't set (i.e. on localhost)
+    return DEFAULT_PORT;
   }
 
 }

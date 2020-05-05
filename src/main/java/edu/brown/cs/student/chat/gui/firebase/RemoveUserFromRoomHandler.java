@@ -1,9 +1,10 @@
 package edu.brown.cs.student.chat.gui.firebase;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.UserRecord;
-import com.google.firebase.database.*;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
@@ -23,14 +24,14 @@ public class RemoveUserFromRoomHandler implements Route {
 
     // get UIDs from emails, then add the groupId under each UID at user/UID/added-rooms
     try {
-        DatabaseReference userRef = usersRef.child(uid);
-        updateUserRemovedRooms(userRef, groupId);
-        try {
-          updateRoomRemovedRooms(roomsRef, groupId, uid);
-        } catch (Exception ex) {
-          System.err.println("ERROR: An exception occurred. Printing stack trace:");
-          ex.printStackTrace();
-        }
+      DatabaseReference userRef = usersRef.child(uid);
+      updateUserRemovedRooms(userRef, groupId);
+      try {
+        updateRoomRemovedRooms(roomsRef, groupId, uid);
+      } catch (Exception ex) {
+        System.err.println("ERROR: An exception occurred. Printing stack trace:");
+        ex.printStackTrace();
+      }
     } catch (Exception ex) {
       System.err.println("ERROR: An exception occurred. Printing stack trace:");
       ex.printStackTrace();

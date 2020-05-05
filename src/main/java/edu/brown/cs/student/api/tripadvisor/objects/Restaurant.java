@@ -172,8 +172,8 @@ public class Restaurant implements Item {
   }
 
   @Override
-  public void setClosed(boolean isClosed) {
-    this.isClosed = isClosed;
+  public void setClosed(boolean closed) {
+    this.isClosed = closed;
   }
 
   public void setAddress(String address) {
@@ -202,23 +202,23 @@ public class Restaurant implements Item {
     DecimalFormat df2 = new DecimalFormat("#.####");
 
     StringBuilder sb = new StringBuilder();
-    sb.append("Name: " + name + "\n");
-    sb.append("Location: " + locationString + "\n");
-    sb.append("Latitude: " + df2.format(latitude) + "\n");
-    sb.append("Longitude: " + df2.format(longitude) + "\n");
-    sb.append("Distance: " + df.format(distance) + " " + Constants.LUNIT);
+    sb.append("Name: ").append(name).append("\n");
+    sb.append("Location: ").append(locationString).append("\n");
+    sb.append("Latitude: ").append(df2.format(latitude)).append("\n");
+    sb.append("Longitude: ").append(df2.format(longitude)).append("\n");
+    sb.append("Distance: ").append(df.format(distance)).append(" ").append(Constants.LUNIT);
     if (cuisineTypes != null && cuisineTypes.size() > 0) {
       sb.append("\nCuisine Types: ");
       for (String cuisine : cuisineTypes) {
-        sb.append(cuisine + ", ");
+        sb.append(cuisine).append(", ");
       }
       sb.delete(sb.length() - 2, sb.length());
     }
-    sb.append("\nNumber of Reviews: " + numReviews + "\n");
-    sb.append("Rating: " + rating + "\n");
-    sb.append("Price Level: " + priceLevel + "\n");
-    sb.append("Ranking: " + rankingString + "\n");
-    sb.append("Address: " + address + "\n");
+    sb.append("\nNumber of Reviews: ").append(numReviews).append("\n");
+    sb.append("Rating: ").append(rating).append("\n");
+    sb.append("Price Level: ").append(priceLevel).append("\n");
+    sb.append("Ranking: ").append(rankingString).append("\n");
+    sb.append("Address: ").append(address).append("\n");
 //    sb.append("Photo Url: " + photoUrl + "\n");
 
     if (isClosed) {

@@ -36,12 +36,12 @@ public class RestaurantRequest {
     ImmutableMap<String, Object> immutableParams = ImmutableMap.copyOf(params);
     String hostURL = "https://tripadvisor1.p.rapidapi.com/restaurants/list-by-latlng";
     // Request headers (with free account's key)
-    String x_rapidapi_host = "tripadvisor1.p.rapidapi.com";
-    String x_rapidapi_key = "9ab9c1d3bdmsha453182e940dd58p105f14jsna2fade8f7b4d";
+    String xRapidapiHost = "tripadvisor1.p.rapidapi.com";
+    String xRapidapiKey = "9ab9c1d3bdmsha453182e940dd58p105f14jsna2fade8f7b4d";
     // Send a request and handle response
 
     HttpResponse<String> response = Unirest.get(hostURL).queryString(immutableParams)
-        .header("x-rapidapi-host", x_rapidapi_host).header("x-rapidapi-key", x_rapidapi_key)
+        .header("x-rapidapi-host", xRapidapiHost).header("x-rapidapi-key", xRapidapiKey)
         .asString();
     return response.getBody();
   }

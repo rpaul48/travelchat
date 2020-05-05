@@ -124,8 +124,8 @@ public class Attraction implements Item {
   }
 
   @Override
-  public void setClosed(boolean isClosed) {
-    this.isClosed = isClosed;
+  public void setClosed(boolean closed) {
+    this.isClosed = closed;
   }
 
   @Override

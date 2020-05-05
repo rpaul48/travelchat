@@ -32,5 +32,5 @@ public interface Item {
 
   void setPhotoUrl(String photoUrl);
 
-  void setClosed(boolean isClosed);
+  void setClosed(boolean closed);
 }

@@ -60,7 +60,7 @@ public class PlanMyDayHandler implements Route {
    * Checks if each element in the params is valid and is in the correct
    * type/format.
    *
-   * @param Map<String, Object> params
+   * @param params parameters
    * @return "" if all params are valid, error messages otherwise
    */
   public String paramsAreValid(Map<String, Object> params) {
@@ -84,8 +84,8 @@ public class PlanMyDayHandler implements Route {
     }
 
     // Format: YYYY-MM-DD
-    String date_format = "^(19|20)\\d\\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$";
-    if (!((String) params.get("checkin")).matches(date_format)) {
+    String dateFormat = "^(19|20)\\d\\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$";
+    if (!((String) params.get("checkin")).matches(dateFormat)) {
       return "ERROR: The check-in date is not in correct format.";
     }
 

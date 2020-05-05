@@ -1,6 +1,10 @@
 package edu.brown.cs.student.chat.gui.firebase;
 
-import com.google.firebase.database.*;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
@@ -21,8 +25,8 @@ public class GetUserBudgetInRoomHandler implements Route {
     String uid = qm.value("auth");
 
     try {
-        DatabaseReference userRef = roomsRef.child(groupId).child("added-users/" + uid);
-        return getUserBudget(userRef);
+      DatabaseReference userRef = roomsRef.child(groupId).child("added-users/" + uid);
+      return getUserBudget(userRef);
     } catch (Exception ex) {
       System.err.println("ERROR: An exception occurred. Printing stack trace:");
       ex.printStackTrace();
@@ -59,7 +63,7 @@ public class GetUserBudgetInRoomHandler implements Route {
       while (!done[0]) {
         Thread.sleep(1);
       }
-    } catch(InterruptedException ex) {
+    } catch (InterruptedException ex) {
       ex.printStackTrace();
       Thread.currentThread().interrupt();
     }

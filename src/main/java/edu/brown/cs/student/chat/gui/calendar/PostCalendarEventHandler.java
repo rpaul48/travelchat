@@ -7,8 +7,6 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-import java.util.UUID;
-
 public class PostCalendarEventHandler implements Route {
 
   @Override
@@ -27,8 +25,8 @@ public class PostCalendarEventHandler implements Route {
     DatabaseReference roomRef = database.getReference("chat/room-metadata").child(chatID);
     DatabaseReference eventsRef = roomRef.child("events");
 
-    eventsRef.child(uniqueEventID).setValueAsync(new CalendarEvent(uniqueEventID, title, startTime, endTime));
-
+    eventsRef.child(uniqueEventID).setValueAsync(
+          new CalendarEvent(uniqueEventID, title, startTime, endTime));
 
     return "";
   }

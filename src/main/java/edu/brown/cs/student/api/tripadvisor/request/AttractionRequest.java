@@ -13,6 +13,10 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  */
 public class AttractionRequest {
   private Map<String, Object> params;
+  private static final int MIN_LATITUDE = -90;
+  private static final int MAX_LATITUDE = 90;
+  private static final int MIN_LONGITUDE = -180;
+  private static final int MAX_LONGITUDE = 180;
 
   /**
    * This is the constructor for this class.
@@ -20,7 +24,7 @@ public class AttractionRequest {
    * @param params - a Map<String, Object> representing the parameters for
    *               attraction API querying.
    */
-  public AttractionRequest(Map<String, Object> params) throws UnirestException {
+  public AttractionRequest(Map<String, Object> params) {
     // Query parameters
     this.params = params;
   }
@@ -43,14 +47,15 @@ public class AttractionRequest {
 
     // If fields is passed directly into constructor, latitude and longitude might
     // not have been assigned.
-    double tr_latitude = (double) params.get("tr_latitude");
-    double tr_longitude = (double) params.get("tr_longitude");
-    double bl_latitude = (double) params.get("bl_latitude");
-    double bl_longitude = (double) params.get("bl_longitude");
+    double trLatitude = (double) params.get("tr_latitude");
+    double trLongitude = (double) params.get("tr_longitude");
+    double blLatitude = (double) params.get("bl_latitude");
+    double blLongitude = (double) params.get("bl_longitude");
 
-    if (!(tr_latitude >= -90 && tr_latitude <= 90 && tr_longitude >= -180 && tr_longitude <= 180
-        && bl_latitude >= -90 && bl_latitude <= 90 && bl_longitude >= -180
-        && bl_longitude <= 180)) {
+    if (!(trLatitude >= MIN_LATITUDE && trLatitude <= MAX_LATITUDE && trLongitude >= MIN_LONGITUDE
+          && trLongitude <= MAX_LONGITUDE && blLatitude >= MIN_LATITUDE
+          && blLatitude <= MAX_LATITUDE && blLongitude >= MIN_LONGITUDE
+          && blLongitude <= MAX_LONGITUDE)) {
       System.err.println("ERROR: Top-right/bottom-left latitude or longitude invalid");
       return "";
     }
@@ -58,12 +63,12 @@ public class AttractionRequest {
     ImmutableMap<String, Object> immutableParams = ImmutableMap.copyOf(params);
     String hostURL = "https://tripadvisor1.p.rapidapi.com/attractions/list-in-boundary";
     // Request headers (with free account's key)
-    String x_rapidapi_host = "tripadvisor1.p.rapidapi.com";
-    String x_rapidapi_key = "9ab9c1d3bdmsha453182e940dd58p105f14jsna2fade8f7b4d";
+    String xRapidapiHost = "tripadvisor1.p.rapidapi.com";
+    String xRapidapiKey = "9ab9c1d3bdmsha453182e940dd58p105f14jsna2fade8f7b4d";
     // Send a request and handle response
 
     HttpResponse<String> response = Unirest.get(hostURL).queryString(immutableParams)
-        .header("x-rapidapi-host", x_rapidapi_host).header("x-rapidapi-key", x_rapidapi_key)
+        .header("x-rapidapi-host", xRapidapiHost).header("x-rapidapi-key", xRapidapiKey)
         .asString();
     return response.getBody();
   }

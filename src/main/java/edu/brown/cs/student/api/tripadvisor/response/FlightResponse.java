@@ -1,19 +1,10 @@
 package edu.brown.cs.student.api.tripadvisor.response;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import com.google.common.collect.ImmutableMap;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-
 import edu.brown.cs.student.api.tripadvisor.objects.Flight;
 import edu.brown.cs.student.api.tripadvisor.request.FlightRequest;
 import org.json.JSONArray;
@@ -65,7 +56,8 @@ public class FlightResponse {
   /**
    * Parses all relevant fields from the raw HTTP response, creating a SINGLE flight.
    * <p>
-   * It's pretty easy to return more than one flight, but we'll start with one until the method is proven.
+   * It's pretty easy to return more than one flight, but we'll start with one until the method
+   * is proven.
    *
    * @return List of flights matching query parameters.
    * @throws UnirestException
@@ -123,7 +115,8 @@ public class FlightResponse {
     }
 
     List<Flight> flights = new ArrayList<>();
-    Flight bestFlight = new Flight(bookingURL, price, carrier, layover, dest, origin, flightID, duration);
+    Flight bestFlight = new Flight(bookingURL, price, carrier, layover, dest, origin, flightID,
+          duration);
     flights.add(bestFlight);
     return flights;
   }
@@ -159,9 +152,8 @@ public class FlightResponse {
    * @return
    */
   public static String getOrigin(JSONObject allFields) {
-    JSONObject search_params = allFields.getJSONObject("search_params");
-    String origin = search_params.getJSONArray("s").getJSONObject(0).getString("o");
-    return origin;
+    JSONObject searchParams = allFields.getJSONObject("search_params");
+    return searchParams.getJSONArray("s").getJSONObject(0).getString("o");
   }
 
   /**
@@ -171,9 +163,8 @@ public class FlightResponse {
    * @return
    */
   public static String getDest(JSONObject allFields) {
-    JSONObject search_params = allFields.getJSONObject("search_params");
-    String dest = search_params.getJSONArray("s").getJSONObject(0).getString("d");
-    return dest;
+    JSONObject searchParams = allFields.getJSONObject("search_params");
+    return searchParams.getJSONArray("s").getJSONObject(0).getString("d");
   }
 
   /**
@@ -276,19 +267,19 @@ public class FlightResponse {
 
     String hostURL = "https://tripadvisor1.p.rapidapi.com/flights/get-booking-url";
     // Request headers (with free account's key)
-    String x_rapidapi_host = "tripadvisor1.p.rapidapi.com";
-    String x_rapidapi_key = "aaf4f074c6msh0940f8b6e880750p1f240bjsne42d7f349197";
+    String xRapidapiHost = "tripadvisor1.p.rapidapi.com";
+    String xRapidapiKey = "aaf4f074c6msh0940f8b6e880750p1f240bjsne42d7f349197";
     // Send a request and handle response
     HttpResponse<JsonNode> response = null;
     response = Unirest.get(hostURL)
             .queryString(immutableParams)
-            .header("x-rapidapi-host", x_rapidapi_host)
-            .header("x-rapidapi-key", x_rapidapi_key)
+            .header("x-rapidapi-host", xRapidapiHost)
+            .header("x-rapidapi-key", xRapidapiKey)
             .asJson();
 
     JSONObject obj = new JSONObject(response);
     JSONObject body = obj.getJSONObject("body");
-    String s = null;
+    String s;
     try {
       s = body.getJSONArray("array").getJSONObject(0).getString("partner_url");
     } catch (JSONException e) {

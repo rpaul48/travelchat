@@ -89,7 +89,7 @@ public class BrowseRestaurantsHandler implements Route {
    * Checks if each element in the params is valid and is in the correct
    * type/format.
    *
-   * @param Map<String, Object> params
+   * @param params parameters
    * @return "" if all params are valid, error messages otherwise
    */
   public String paramsAreValid(Map<String, Object> params) {

@@ -23,8 +23,6 @@ public class GetCalendarEventsHandler implements Route {
     DatabaseReference roomRef = database.getReference("chat/room-metadata").child(chatID);
     DatabaseReference eventsRef = roomRef.child("events");
 
-    
-
     List<Map<String, String>> jsonArray = new ArrayList<>();
 //    if (calendarEvents.containsKey(chatID)) {
 //      for (CalendarEvent event : calendarEvents.get(chatID)) {

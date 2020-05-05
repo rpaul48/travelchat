@@ -32,22 +32,22 @@ public class BrowseLodgingHandler implements Route {
     if (subcategory.equals("any")) {
       subcategory = "";
     } else if (subcategory.contains("bed and breakfast")) {
-      subcategory.replace("bed and breakfast", "bb");
+      subcategory = subcategory.replace("bed and breakfast", "bb");
     }
 
     // format: "2020-05-15" (year-month in two digits-day number in two digits)
     String checkIn = qm.value("check-in");
 
     // format: integer
-    String numNights = qm.value("num-nights");/////// *** CHANGED!
+    String numNights = qm.value("num-nights"); /////// *** CHANGED!
 
     // min rating; options: "Any", "1 star", "2 star", "3 star", "4 star", or "5
     // star"
     String hotelClass = qm.value("rating").replaceAll("[^0-9,.]", "");
 
     // format: double
-    String minPrice = qm.value("min-price");/////// *** CHANGED!
-    String maxPrice = qm.value("max-price");/////// *** CHANGED!
+    String minPrice = qm.value("min-price"); /////// *** CHANGED!
+    String maxPrice = qm.value("max-price"); /////// *** CHANGED!
 
     // format: integer
     String numRooms = qm.value("num-rooms");
@@ -83,7 +83,7 @@ public class BrowseLodgingHandler implements Route {
       sb.append("No matching result.");
     } else {
       for (Hotel hotel : hotels) {
-        sb.append(hotel.toString() + "\n-----------------------------\n");
+        sb.append(hotel.toString()).append("\n-----------------------------\n");
       }
     }
 
@@ -96,7 +96,7 @@ public class BrowseLodgingHandler implements Route {
    * Checks if each element in the params is valid and is in the correct
    * type/format.
    *
-   * @param Map<String, Object> params
+   * @param params parameters
    * @return "" if all params are valid, error messages otherwise
    */
   public String paramsAreValid(Map<String, Object> params) {
@@ -120,8 +120,8 @@ public class BrowseLodgingHandler implements Route {
     }
 
     // Format: YYYY-MM-DD
-    String date_format = "^(19|20)\\d\\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$";
-    if (!((String) params.get("checkin")).matches(date_format)) {
+    String dateFormat = "^(19|20)\\d\\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$";
+    if (!((String) params.get("checkin")).matches(dateFormat)) {
       return "ERROR: The check-in date is not in correct format.";
     }
 

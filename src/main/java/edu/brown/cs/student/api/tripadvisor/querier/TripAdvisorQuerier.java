@@ -38,18 +38,18 @@ import edu.brown.cs.student.api.tripadvisor.response.RestaurantResponse;
  * @version 1.0
  */
 public class TripAdvisorQuerier extends Querier {
-  private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-  private final static String loggerPrefix = "TripAdvisor API: ";
-  private final static String x_rapidapi_key = "aaf4f074c6msh0940f8b6e880750p1f240bjsne42d7f349197";
-  private final static String x_rapidapi_host = "tripadvisor1.p.rapidapi.com";
+  private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+  private static final String LOGGER_PREFIX = "TripAdvisor API: ";
+  private static final String X_RAPIDAPI_KEY = "aaf4f074c6msh0940f8b6e880750p1f240bjsne42d7f349197";
+  private static final String X_RAPIDAPI_HOST = "tripadvisor1.p.rapidapi.com";
 
   /**
    * Constructor; assigns a key and host and logs initialization.
    */
   public TripAdvisorQuerier() {
-    super(x_rapidapi_key, x_rapidapi_host);
-    LOGGER.log(Level.INFO, loggerPrefix + String
-        .format("Querier initalized with key %s and host %s", x_rapidapi_key, x_rapidapi_host));
+    super(X_RAPIDAPI_KEY, X_RAPIDAPI_HOST);
+    LOGGER.log(Level.INFO, LOGGER_PREFIX + String
+        .format("Querier initalized with key %s and host %s", X_RAPIDAPI_KEY, X_RAPIDAPI_HOST));
   }
 
   /**
@@ -63,11 +63,11 @@ public class TripAdvisorQuerier extends Querier {
    */
   public List<Restaurant> getRestaurants(RestaurantRequest restaurantRequest)
       throws UnirestException {
-    LOGGER.log(Level.INFO, loggerPrefix + "Querying restaurants.");
+    LOGGER.log(Level.INFO, LOGGER_PREFIX + "Querying restaurants.");
     RestaurantResponse restaurantResponse = new RestaurantResponse(restaurantRequest);
     List<Restaurant> restaurants = restaurantResponse.getData();
     LOGGER.log(Level.INFO,
-        loggerPrefix + String.format("Successfully queried %d restaurants.", restaurants.size()));
+        LOGGER_PREFIX + String.format("Successfully queried %d restaurants.", restaurants.size()));
     return restaurants;
   }
 
@@ -82,11 +82,11 @@ public class TripAdvisorQuerier extends Querier {
    */
   public List<Attraction> getAttractions(AttractionRequest attractionRequest)
       throws UnirestException {
-    LOGGER.log(Level.INFO, loggerPrefix + "Querying attractions.");
+    LOGGER.log(Level.INFO, LOGGER_PREFIX + "Querying attractions.");
     AttractionResponse attractionResponse = new AttractionResponse(attractionRequest);
     List<Attraction> attractions = attractionResponse.getData();
     LOGGER.log(Level.INFO,
-        loggerPrefix + String.format("Successfully queried %d attractions.", attractions.size()));
+        LOGGER_PREFIX + String.format("Successfully queried %d attractions.", attractions.size()));
     return attractions;
   }
 
@@ -100,13 +100,13 @@ public class TripAdvisorQuerier extends Querier {
    * @throws UnirestException
    */
   public JSONArray getFlights(FlightRequest flightRequest) throws UnirestException {
-    LOGGER.log(Level.INFO, loggerPrefix + "Querying flights.");
+    LOGGER.log(Level.INFO, LOGGER_PREFIX + "Querying flights.");
     // Create Session -> Poll -> Returned parsed response
     FlightResponse flightResponse = new FlightResponse(flightRequest);
     // Serialize and return results
     List<Flight> data = flightResponse.getData();
     LOGGER.log(Level.INFO,
-        loggerPrefix + String.format("Successfully queried %d flights.", data.size()));
+        LOGGER_PREFIX + String.format("Successfully queried %d flights.", data.size()));
 
     JSONArray flightArray = new JSONArray();
     for (Flight flight : data) {
@@ -132,16 +132,16 @@ public class TripAdvisorQuerier extends Querier {
    * @throws UnirestException
    */
   public List<Hotel> getHotels(HotelRequest hotelRequest) throws UnirestException {
-    LOGGER.log(Level.INFO, loggerPrefix + "Querying hotels.");
+    LOGGER.log(Level.INFO, LOGGER_PREFIX + "Querying hotels.");
     HotelResponse hotelResponse = new HotelResponse(hotelRequest);
     List<Hotel> hotels = hotelResponse.getData();
     LOGGER.log(Level.INFO,
-        loggerPrefix + String.format("Successfully queried %d hotels.", hotels.size()));
+        LOGGER_PREFIX + String.format("Successfully queried %d hotels.", hotels.size()));
     return hotels;
   }
 
   /**
-   * DEBUGGING
+   * DEBUGGING.
    *
    * @param response
    */
