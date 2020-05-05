@@ -80,6 +80,7 @@ public class HotelResponse {
           hotel.setRanking(hotelObj.getInt("ranking_position"));
           hotel.setRankingString(hotelObj.getString("ranking"));
           hotel.setClosed(hotelObj.getBoolean("is_closed"));
+          hotel.setHotelClass(hotelObj.getString("hotel_class"));
         } catch (org.json.JSONException exception) {
           continue;
         }

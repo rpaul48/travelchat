@@ -25,10 +25,12 @@ import edu.brown.cs.student.api.tripadvisor.objects.Restaurant;
 import edu.brown.cs.student.api.tripadvisor.request.AttractionRequest;
 import edu.brown.cs.student.api.tripadvisor.request.FlightRequest;
 import edu.brown.cs.student.api.tripadvisor.request.HotelRequest;
+import edu.brown.cs.student.api.tripadvisor.request.LocationIDRequest;
 import edu.brown.cs.student.api.tripadvisor.request.RestaurantRequest;
 import edu.brown.cs.student.api.tripadvisor.response.AttractionResponse;
 import edu.brown.cs.student.api.tripadvisor.response.FlightResponse;
 import edu.brown.cs.student.api.tripadvisor.response.HotelResponse;
+import edu.brown.cs.student.api.tripadvisor.response.LocationIDResponse;
 import edu.brown.cs.student.api.tripadvisor.response.RestaurantResponse;
 
 /**
@@ -138,6 +140,25 @@ public class TripAdvisorQuerier extends Querier {
     LOGGER.log(Level.INFO,
         LOGGER_PREFIX + String.format("Successfully queried %d hotels.", hotels.size()));
     return hotels;
+  }
+
+  /**
+   * Queries and returns a list of hotels using constraints detailed in a
+   * HotelRequest.
+   *
+   * @param hotelRequest The object containing all parameters/constraints needed
+   *                     for the query.
+   * @return A list of hotels matching the given parameters.
+   * @throws UnirestException
+   */
+  public String getLocationID(LocationIDRequest locationIDRequest) throws UnirestException {
+    LOGGER.log(Level.INFO, LOGGER_PREFIX + "Querying location ID.");
+    LocationIDResponse locationIDResponse = new LocationIDResponse(locationIDRequest);
+    String locationID = locationIDResponse.getData();
+    if (locationID != null && !locationID.equals("")) {
+      LOGGER.log(Level.INFO, LOGGER_PREFIX + String.format("Successfully queried location ID."));
+    }
+    return locationID;
   }
 
   /**

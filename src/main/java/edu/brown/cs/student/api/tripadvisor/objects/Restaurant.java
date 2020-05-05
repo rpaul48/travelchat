@@ -215,7 +215,7 @@ public class Restaurant implements Item {
       sb.delete(sb.length() - 2, sb.length());
     }
     sb.append("\nNumber of Reviews: ").append(numReviews).append("\n");
-    sb.append("Rating: ").append(rating).append("\n");
+    sb.append("Rating: ").append(rating).append("/5.0\n");
     sb.append("Price Level: ").append(priceLevel).append("\n");
     sb.append("Ranking: ").append(rankingString).append("\n");
     sb.append("Address: ").append(address).append("\n");

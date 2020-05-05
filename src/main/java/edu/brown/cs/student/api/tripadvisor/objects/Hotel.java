@@ -21,6 +21,7 @@ public class Hotel implements Item {
   private int ranking; // field "ranking_position"
   private String rankingString; // field "ranking"
   private boolean isClosed; // field "is_closed"
+  private String hotelClass; // field "hotel_class"
 
   /**
    * Default constructor.
@@ -184,6 +185,14 @@ public class Hotel implements Item {
     this.isClosed = closed;
   }
 
+  public String getHotelClass() {
+    return hotelClass;
+  }
+
+  public void setHotelClass(String hotelClass) {
+    this.hotelClass = hotelClass;
+  }
+
   @Override
   public String toString() {
     DecimalFormat df = new DecimalFormat("#.##");
@@ -195,9 +204,10 @@ public class Hotel implements Item {
     sb.append("Latitude: ").append(df2.format(latitude)).append("\n");
     sb.append("Longitude: ").append(df2.format(longitude)).append("\n");
     sb.append("Distance: ").append(df.format(distance)).append(" ").append(Constants.LUNIT)
-          .append("\n");
+        .append("\n");
     sb.append("Number of Reviews: ").append(numReviews).append("\n");
-    sb.append("Rating: ").append(rating).append("\n");
+    sb.append("Rating: ").append(rating).append("/5.0\n");
+    sb.append("Hotel Class: ").append(hotelClass).append(" stars\n");
     sb.append("Price Level: ").append(priceLevel).append("\n");
     sb.append("Price: ").append(price).append("\n");
     sb.append("Ranking: ").append(rankingString).append("\n");
