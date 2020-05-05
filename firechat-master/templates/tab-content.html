@@ -1,10 +1,8 @@
 <div id='<%- id %>' data-room-id='<%- id %>' class='tab-pane'>
   <div class='tab-pane-menu clearfix'>
-    <div class='firechat-dropdown twofifth'>
-      <a data-event='firechat-user-search-btn' class='full btn firechat-dropdown-toggle' data-toggle="firechat-dropdown" href='#'>
-        <span class='icon plus'>+</span>
-        Add User
-        <span class='caret'></span>
+    <div id="add-user" class='firechat-dropdown twofifth'>
+      <a id="add-user-a" data-event='firechat-user-search-btn' class='full btn firechat-dropdown-toggle' data-toggle="firechat-dropdown" href='#'>
+        Add User ＋
       </a>
 
       <div class='firechat-dropdown-menu' role='menu'>
@@ -30,10 +28,8 @@
     </div>
 	
 	<div id='budget-menu' class='firechat-dropdown twofifth'>
-      <a data-event='firechat-user-search-btn' class='full btn' onclick='openPopup("budget-div"); displayBudget()' href='#'>
-        <span class='icon plus'>+</span>
+      <a id='budget-menu-a' data-event='firechat-user-search-btn' class='full btn' onclick='openPopup("budget-div"); displayBudget()' href='#'>
         Your Budget
-        <span class='caret'></span>
       </a>
     </div>
 
