@@ -10,6 +10,11 @@ body {
     width: 200px;
     height: auto;
     margin: 20px;
+
+}
+
+.logo:hover {
+    cursor: pointer;
 }
 
 #user-rooms {

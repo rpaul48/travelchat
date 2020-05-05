@@ -30,7 +30,7 @@
 <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
 
 <!-- Firechat -->
-<link rel="stylesheet" href="https://cdn.firebase.com/libs/firechat/3.0.1/firechat.min.css" />
+<link rel="stylesheet" href="/css/firechat.css" />
 <script src="/js/firechat.js"></script>
 
 <script>
