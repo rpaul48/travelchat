@@ -342,8 +342,10 @@
 #firechat .nav > li > a {
   display: block;
   background-color: #eeeeee;
-  font-size: 16px;
-  font-weight: 700;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 24px;
+  font-weight: 100;
+  padding-top: 10px !important;
   overflow: hidden;
   white-space: nowrap;
   text-align: center;
