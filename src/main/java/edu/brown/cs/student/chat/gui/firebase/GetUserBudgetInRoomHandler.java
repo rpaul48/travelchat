@@ -43,11 +43,6 @@ public class GetUserBudgetInRoomHandler implements Route {
         if (dataSnapshot.hasChild("budget")) {
           // if there is a budget already set, get it
           budget[0] = (String) dataSnapshot.child("budget").getValue();
-        } else {
-          // if there is no budget set, add a budget of 0
-          Map<String, Object> budgetUpdate = new HashMap<>();
-          budgetUpdate.put("budget", "0");
-          dataSnapshot.getRef().updateChildrenAsync(budgetUpdate);
         }
         done[0] = true;
       }
