@@ -108,4 +108,26 @@ form input[type="text"]{
     overflow-y: scroll;
 }
 
+#trip-details-div {
+    text-align: center;
+}
+
+#trip-details-div input {
+    width: 40%;
+    margin-top: 10px;
+}
+
+.small-black-button {
+    position: absolute;
+    bottom: 10px;
+}
+
+#settings-div input{
+    margin-top: 50px;
+}
+
+#trip-details-div form {
+    margin-top: 40px;
+}
+
 
