@@ -45,6 +45,8 @@
 
     <div id="trip-details-div" class="big-popup-div">
         <h2>Trip Details</h2>
+        <label>Start date: <input type="date" id="trip-start-date" min="2020-01-01" class="date-class"></label>
+        <label>End date: <input type="date" id="trip-end-date" min="2020-01-01" class="date-class"></label>
         <button onclick="closePopup('trip-details-div')" class="small-black-button">Back</button>
     </div>
 
@@ -52,7 +54,7 @@
         <h2>Plan My Day</h2>
         <div class="form-container">
             <form id="plan-my-day-form">
-                <label>Date: <input type="date" id="date-to-plan"></label>
+                <label>Date: <input type="date" class="date-class" min="2020-01-01" id="date-to-plan"></label>
                 <label>Max distance from current location (miles): <input type="number" min="1" id="max-distance"> </label>
                 <label>Preferred cuisines: </label>
                 <div class="checkboxes">
@@ -199,13 +201,9 @@
                     <option value="4" >Specialty</option>
                 </select>
                 <label>Check-in date:</label>
-                <input type="date" id="check-in"
-                       value="2020-05-15"
-                       min="2020-05-06">
+                <input type="date" id="check-in" value="2020-05-15" min="2020-01-01" class="date-class">
                 <label>Check-out date:</label>
-                <input type="date" id="check-out"
-                       value="2020-05-16"
-                min="2020-05-03">
+                <input type="date" id="check-out" value="2020-05-16" min="2020-01-01" class="date-class">
                 <label>Minimum rating:</label>
                 <select id="hotel-rating-sel">
                     <option value="1" selected="selected">Any</option>
@@ -229,19 +227,17 @@
         <div class="form-container">
             <form id="flights-form">
                 <label>Departure date:</label>
-                <input type="date" id="departure-date"
-                       value="2020-05-15"
-                       min="2020-05-06">
+                <input type="date" id="departure-date" value="2020-05-15" min="2020-01-01" class="date-class">
                 <label>Departure airport code: </label>
                 <input type="text" maxlength="3" id="depart">
                 <label>Destination airport code: </label>
                 <input type="text" maxlength="3" id="destination">
                 <label>Adults: </label>
-                <input type="number" step="1" value="1" id="num-adults"></input>
+                <input type="number" step="1" value="1" min="0" id="num-adults"></input>
                 <label>Children: </label>
-                <input type="number" step="1" value="0" id="num-children"></input>
+                <input type="number" step="1" value="0" min="0" id="num-children"></input>
                 <label>Seniors: </label>
-                <input type="number" step="1" value="0" id="num-seniors"></input>
+                <input type="number" step="1" value="0" min="0" id="num-seniors"></input>
                 <label>Max number of stops:</label>
                 <select id="max-stops-sel">
                     <option value="1" selected="selected">Any</option>

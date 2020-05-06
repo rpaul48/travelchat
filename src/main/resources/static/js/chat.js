@@ -2,6 +2,7 @@ let chat;
 let roomId;
 let curUser;
 let coordinates;
+let today;
 
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
@@ -51,6 +52,23 @@ firebase.auth().onAuthStateChanged(function(user) {
         }
         function showPosition(position) {
             coordinates = position.coords.latitude.toString().concat(" ", position.coords.longitude.toString());
+        }
+
+        // set the current date
+        today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+
+        today = yyyy + '-' + mm + '-' + dd;
+
+        var dates = document.getElementsByClassName("date-class");
+
+        // sets the value and min for all dates equal to today
+        var i;
+        for (i = 0; i < dates.length; i++) {
+            dates[i].setAttribute("value", today);
+            dates[i].setAttribute("min", today);
         }
 
     } else {
