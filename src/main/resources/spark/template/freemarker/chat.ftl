@@ -57,7 +57,9 @@
         <div class="form-container">
             <form id="plan-my-day-form">
                 <label for="date-to-plan">Date: <input type="date" class="date-class" min="2020-01-01" id="date-to-plan"></label>
-                <label for="max-distance">Max distance from current location (miles): <input type="number" min="1" id="max-distance"> </label>
+                <label for="max-distance">Max distance willing to travel: <input type="number" min="1" id="max-distance"> </label>
+                <label for="pmd-address"> miles from: <input type="text" placeholder="input address"
+                                                             class="address" id="pmd-address"></label>
                 <label>Preferred cuisines: </label>
                 <div class="checkboxes">
                     <label><input type="checkbox" name="pmd-cuisine" value="Any" checked>Any</label>
@@ -104,7 +106,7 @@
                     <option value="3">5</option>
                     <option value="4" selected="selected">10</option>
                 </select>
-                <label> miles from <input type="text" placeholder="input address" id="restaurant-address"></label>
+                <label> miles from <input type="text" placeholder="input address" class="address" id="restaurant-address"></label>
                 <br>
 
                 <label>Preferred cuisines: </label>
@@ -164,7 +166,7 @@
                     <option value="3">5</option>
                     <option value="4" selected="selected">10</option>
                 </select>
-                <label> miles from current location </label>
+                <label> miles from <input type="text" placeholder="input address" class="address" id="activities-address"></label>
                 <br>
                 <label>Type of activity: </label>
                 <div class="checkboxes">
@@ -194,6 +196,7 @@
         <h2>Browse Lodging</h2>
         <div class="form-container">
             <form id="lodging-form">
+                <label> Near: <input type="text" placeholder="input address" class="address" id="lodging-address"></label>
                 <label for="hotel-type-sel">Type</label>
                 <select aria-label="Lodging Type" id="hotel-type-sel">
                     <option value="1" selected="selected">Any</option>
