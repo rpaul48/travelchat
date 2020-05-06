@@ -6,9 +6,10 @@ from requests.exceptions import RequestException
 class WebScraper:
     '''
     A simple web scraper.
-
     MUCH credit to Colin OKeefe of RealPython.org!
+
     author: Joshua Nathan Mugerwa
+    version: 5/5/20
     '''
 
     def __init__(self):
@@ -20,6 +21,7 @@ class WebScraper:
     def log_error(self, error):
         """
         Informal logging of an error that occurred during scraping.
+
         :param error: Error
             The error that occured during scraping
         """
@@ -30,6 +32,7 @@ class WebScraper:
         Attempts to get the content at `url` by making an HTTP GET request.
         If the content-type of response is some kind of HTML/XML, return the
         text content, otherwise return None.
+
         :param url: string
             The URL of the page to scrape
         :return: None or Response content
@@ -57,6 +60,7 @@ class WebScraper:
     def is_good_response(self, resp):
         """
         Returns True if the response seems to be HTML, False otherwise.
+
         :param resp: Response
             The response from the target page
         :return: True iff the response is valid
