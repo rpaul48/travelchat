@@ -215,7 +215,7 @@ function browseRestaurants() {
         });
 
         var address = document.getElementById("restaurant-address").value;
-        // TODO: find coordinates of input address
+        coordinates = getLatAndLongFromAddress(address);
         loc = coordinates;
 
         // returns a list of restaurant options which match the query parameters
@@ -362,4 +362,18 @@ function browseFlights() {
 function updateCalendarLink() {
     const calendarLinkEl = $("#calendar-link");
     calendarLinkEl.attr("href", "/calendar/" + roomId + "/" + firebase.auth().currentUser.uid);
+}
+
+
+function getLatAndLongFromAddress(address) {
+    var ret = "";
+    $.ajax({url: "https://www.mapquestapi.com/geocoding/v1/address",
+        type: "get",
+        data: {"key": "b7pNYRJpdr0LJw2A7pupccBhMGHHa0fE", "location": address},
+        async: false,
+        success: function(data) {
+        var latLng = data.results[0].locations[0].latLng;
+        ret = String(latLng.lat) + " " + String(latLng.lng);
+    }});
+    return ret;
 }
