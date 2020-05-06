@@ -74,9 +74,11 @@ public class BrowseFlightsHandler implements Route {
     }
     // NOT CURRENTLY QUERYING WITH THIS... BUT WILL PROBABLY ADD BACK IN, SO LEAVING
     // THIS HERE.
-    if (Integer.parseInt(maxStops) < 0) {
-      System.out.println("ERROR: An invalid number of stops was passed in.");
-      return false;
+    if (!maxStops.equals("Any")) {
+      if (Integer.parseInt(maxStops) < 0) {
+        System.out.println("ERROR: An invalid number of stops was passed in.");
+        return false;
+      }
     }
 
     // Format: YYYY-MM-DD

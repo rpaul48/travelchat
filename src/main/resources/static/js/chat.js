@@ -291,6 +291,7 @@ function browseFlights() {
     if ((coordinates === "Geolocation is not supported by this browser.") || (coordinates == null)) {
         window.alert("Please allow your browser to access your location.");
     } else {
+        var departure_date = document.getElementById("departure-date").value;
         var depart = document.getElementById("depart").value;
         var destination = document.getElementById("destination").value;
         var adults = document.getElementById("num-adults").value;
@@ -306,7 +307,8 @@ function browseFlights() {
             url: "/browseFlights",
             type: "get",
             data: {"location": coordinates,
-                "depart": depart,
+                "departure_date": departure_date,
+                "origin": depart,
                 "destination": destination,
                 "adults": adults,
                 "children": children,
@@ -316,8 +318,10 @@ function browseFlights() {
             async: false,
             success: function (data) {
                 var result = JSON.parse(data);
-                var recs = Object.values(result)[1];
-                document.getElementById("flights-results").innerHTML = recs;
+
+                console.log(result);
+                //var recs = Object.values(result)[0];
+                //document.getElementById("flights-results").innerHTML = recs;
             }});
     }
 }
