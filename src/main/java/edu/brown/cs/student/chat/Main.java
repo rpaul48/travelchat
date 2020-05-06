@@ -131,9 +131,6 @@ public final class Main {
     Spark.get("/calendar/:roomId/:userId", new CalendarFrontHandler(), freeMarker);
     Spark.get("/getCalendarEvents", new GetCalendarEventsHandler());
     Spark.post("/postCalendarEvent", new PostCalendarEventHandler());
-
-
-
   }
 
   /**

@@ -164,7 +164,7 @@
                 <label> miles from current location </label>
                 <br>
                 <label>Type of activity: </label>
-                <div class="activities">
+                <div class="checkboxes">
                     <label><input type="checkbox" name="browse-activity" value="All" checked/>All</label>
                     <label><input type="checkbox" name="browse-activity" value="Boat Tours & Water Sports">Boat Tours & Water Sports</label>
                     <label><input type="checkbox" name="browse-activity" value="Fun & Game">Fun & Game</label>
@@ -183,7 +183,7 @@
                 <button onclick="browseActivities()" type="button" class="small-green-button">Search</button>
             </form>
         </div>
-        <div class="results-container"></div>
+        <div id="activities-results" class="results-container"></div>
         <button onclick="closePopup('activities-div')" class="small-black-button">Back</button>
     </div>
 
@@ -222,7 +222,7 @@
                 <button onclick="browseLodging()" type="button" class="small-green-button">Search</button>
             </form>
         </div>
-        <div class="results-container"></div>
+        <div id="lodging-results" class="results-container"></div>
         <button onclick="closePopup('lodging-div')" class="small-black-button">Back</button>
     </div>
 
@@ -258,7 +258,7 @@
                 <button onclick="browseFlights()" type="button" class="small-green-button">Search</button>
             </form>
         </div>
-        <div class="results-container"></div>
+        <div id="flights-results" class="results-container"></div>
         <button onclick="closePopup('flights-div')" class="small-black-button">Back</button>
     </div>
 
