@@ -182,13 +182,12 @@ function planMyDay() {
 
 // returns search results for restaurants
 function browseRestaurants() {
-    if (coordinates === "Geolocation is not supported by this browser.") {
+    if ((coordinates === "Geolocation is not supported by this browser.") ||
+        (coordinates == null)) {
         window.alert("Please allow your browser to access your location.");
     } else {
         var miles_sel = document.getElementById("restaurant-miles-sel");
         var miles = miles_sel.options[miles_sel.selectedIndex].text;
-        var cuisine_sel = document.getElementById("cuisine-sel");
-        var cuisine = cuisine_sel.options[cuisine_sel.selectedIndex].text;
         var price_sel = document.getElementById("restaurant-price-sel");
         var price = price_sel.options[price_sel.selectedIndex].text;
         var rating_sel = document.getElementById("restaurant-rating-sel");
@@ -213,7 +212,9 @@ function browseRestaurants() {
                 "diet": diet},
             async: false,
             success: function (data) {
-                var recs = JSON.parse(data);
+                var result = JSON.parse(data);
+                var recs = Object.values(result)[0];
+                document.getElementById("restaurants-results").innerHTML = recs;
             }});
     }
 }

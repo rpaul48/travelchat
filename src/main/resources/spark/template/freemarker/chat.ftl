@@ -51,7 +51,7 @@
     <div id="plan-my-day-div" class="big-popup-div">
         <h2>Plan My Day</h2>
         <div class="form-container">
-            <form id="restaurants-form">
+            <form id="plan-my-day-form">
                 <label>Date: <input type="date" id="date-to-plan"></label>
                 <label>Max distance from current location (miles): <input type="number" min="1" id="max-distance"> </label>
                 <label>Preferred cuisines: </label>
@@ -129,9 +129,10 @@
                 <label>Minimum rating</label>
                 <select id="restaurant-rating-sel">
                     <option value="1" selected="selected">Any</option>
-                    <option value="2" >3 stars</option>
-                    <option value="3" >4 stars</option>
-                    <option value="4" >5 stars</option>
+                    <option value="2" >2 stars</option>
+                    <option value="3" >3 stars</option>
+                    <option value="4" >4 stars</option>
+                    <option value="5" >5 stars</option>
                 </select>
 
                 <label>Dietary restrictions</label>
@@ -145,7 +146,7 @@
                 <button onclick="browseRestaurants()" type="button" class="small-green-button">Search</button>
             </form>
         </div>
-        <div class="results-container"></div>
+        <div id="restaurants-results" class="results-container"></div>
         <button onclick="closePopup('restaurants-div')" class="small-black-button">Back</button>
     </div>
 

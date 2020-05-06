@@ -29,13 +29,16 @@ public class BrowseRestaurantsHandler implements Route {
 
     // max miles from location; either 1, 2, 5, or 10
     String miles = qm.value("miles");
-    // of the form "[lat], [lon]"
-    String[] locationStrings = qm.value("location").split(",");
+    // of the form "[lat] [lon]"
+    String[] locationStrings = qm.value("location").split(" ");
     String lat = locationStrings[0];
     String lon = locationStrings[1];
-
-    // min rating; options: any, "3 stars", "4 stars", or "5 stars"
+    // min rating; options: any, "2 stars", "3 stars", "4 stars", or "5 stars"
     String rating = qm.value("rating").replaceAll("[^0-5.,]", "");
+
+    if (rating.equals("")) {
+      rating = "0";
+    }
 
     /*
      * format: a string of cuisine categories of the form "type1,type2,type3";
@@ -58,7 +61,6 @@ public class BrowseRestaurantsHandler implements Route {
       cuisines = cuisines.substring(0, cuisines.length() - 1);
     }
 
-    // options: any, $, $$, $$$
     String price = Constants.RESTAURANT_PRICE_TO_CODE.get(qm.value("price"));
 
     /*
