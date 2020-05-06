@@ -58,14 +58,14 @@ public class BrowseRestaurantsHandler implements Route {
       cuisines = cuisines.substring(0, cuisines.length() - 1);
     }
 
-    // options: any, $, $$, $$$
+    // options: any, $, $$-$$$, $$$$
     String price = Constants.RESTAURANT_PRICE_TO_CODE.get(qm.value("price"));
 
     /*
      * dietary restrictions; options: "None", "Vegetarian friendly",
      * "Vegan options", "Halal", "Gluten-free options
      */
-    String[] dietArr = qm.value("diet").replaceAll("-", " ").toLowerCase().split(",");
+    String[] dietArr = qm.value("diet").toLowerCase().split(",");
     String dietStr = "";
     if (dietArr.length != 0) {
       for (int i = 0; i < dietArr.length; i++) {

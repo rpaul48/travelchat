@@ -125,8 +125,8 @@
                 <select id="restaurant-price-sel">
                     <option value="1" selected="selected">Any</option>
                     <option value="2" >$</option>
-                    <option value="3" >$$</option>
-                    <option value="4" >$$$</option>
+                    <option value="3" >$$-$$$</option>
+                    <option value="4" >$$$$</option>
                 </select>
 
                 <label>Minimum rating</label>
