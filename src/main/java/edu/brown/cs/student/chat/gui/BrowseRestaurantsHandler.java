@@ -58,6 +58,9 @@ public class BrowseRestaurantsHandler implements Route {
       cuisines = cuisines.substring(0, cuisines.length() - 1);
     }
 
+    // options: any, $, $$, $$$
+    String price = Constants.RESTAURANT_PRICE_TO_CODE.get(qm.value("price"));
+
     /*
      * dietary restrictions; options: "None", "Vegetarian friendly",
      * "Vegan options", "Halal", "Gluten-free options
@@ -84,6 +87,7 @@ public class BrowseRestaurantsHandler implements Route {
     params.put("dietary_restrictions", dietStr);
     params.put("distance", miles);
     params.put("combined_food", cuisines);
+    params.put("prices_restaurants", price);
 
     String errorMsg = paramsAreValid(params);
     // Parameters are invalid.
