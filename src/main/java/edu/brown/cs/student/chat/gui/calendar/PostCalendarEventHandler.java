@@ -11,27 +11,25 @@ public class PostCalendarEventHandler implements Route {
 
   @Override
   public String handle(Request request, Response response) {
+    try {
+      QueryParamsMap qm = request.queryMap();
+      String uniqueEventID = qm.value("id");
+      String chatID = qm.value("chatID");
+      String title = qm.value("title");
+      String startTime = qm.value("start");
+      String endTime = qm.value("end");
 
 
-    QueryParamsMap qm = request.queryMap();
-    String uniqueEventID = qm.value("id");
-    String chatID = qm.value("chatID");
-    String title = qm.value("title");
-    String startTime = qm.value("start");
-    String endTime = qm.value("end");
+      final FirebaseDatabase database = FirebaseDatabase.getInstance();
+      DatabaseReference roomRef = database.getReference("chat/room-metadata").child(chatID);
+      DatabaseReference eventsRef = roomRef.child("events");
 
-
-    final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference roomRef = database.getReference("chat/room-metadata").child(chatID);
-    DatabaseReference eventsRef = roomRef.child("events");
-
-    eventsRef.child(uniqueEventID).setValueAsync(
-          new CalendarEvent(uniqueEventID, title, startTime, endTime));
-
-
+      eventsRef.child(uniqueEventID).setValueAsync(
+            new CalendarEvent(uniqueEventID, title, startTime, endTime));
+    } catch (Exception ex) {
+      System.err.println("ERROR: An error occurred posting calendar event. Printing stack trace:");
+      ex.printStackTrace();
+    }
     return "";
   }
-
-
-
 }
