@@ -260,13 +260,6 @@ function browseLodging() {
         var rating = rating_sel.options[rating_sel.selectedIndex].text;
         var num_rooms = document.getElementById("num-rooms").value;
 
-        console.log(coordinates);
-        console.log(type);
-        console.log(checkin);
-        console.log(checkout);
-        console.log(rating);
-        console.log(num_rooms);
-
         // returns a list of lodging options which match the query parameters
         $.ajax({
             url: "/browseLodging",
@@ -319,9 +312,24 @@ function browseFlights() {
             success: function (data) {
                 var result = JSON.parse(data);
 
-                console.log(result);
-                //var recs = Object.values(result)[0];
-                //document.getElementById("flights-results").innerHTML = recs;
+                var i;
+                for (i = 0; i < result.length; i++) {
+                    var html = [];
+                    html.push(
+                        "<p>",
+                        "carrier: ",
+                        result[i].carrier,
+                        "<br>",
+                        "price: ",
+                        result[i].price,
+                        "<br>",
+                        "booking url: ",
+                        result[i].booking_url,
+                        "<hr>",
+                        "</p>",
+                    );
+                    document.getElementById("flights-results").innerHTML += html.join("");
+                }
             }});
     }
 }
