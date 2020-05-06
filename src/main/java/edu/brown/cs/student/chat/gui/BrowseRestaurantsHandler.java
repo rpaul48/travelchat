@@ -35,7 +35,7 @@ public class BrowseRestaurantsHandler implements Route {
     String lon = locationStrings[1];
 
     // min rating; options: any, "3 stars", "4 stars", or "5 stars"
-    String rating = qm.value("rating").replaceAll("[^0-9.]", "");
+    String rating = qm.value("rating").replaceAll("[^0-5.,]", "");
 
     /*
      * format: a string of cuisine categories of the form "type1,type2,type3";
@@ -47,6 +47,10 @@ public class BrowseRestaurantsHandler implements Route {
     String cuisines = "";
     if (cuisinesArr.length != 0) {
       for (int i = 0; i < cuisinesArr.length; i++) {
+        /*
+         * Can only run query using unique code corresponding to each cuisine type.
+         * Conversion from cuisine type name to code is necessary.
+         */
         if (Constants.CUISINE_TYPE_TO_CODE.containsKey(cuisinesArr[i])) {
           cuisines += Constants.CUISINE_TYPE_TO_CODE.get(cuisinesArr[i]) + ",";
         }
@@ -54,11 +58,14 @@ public class BrowseRestaurantsHandler implements Route {
       cuisines = cuisines.substring(0, cuisines.length() - 1);
     }
 
+    // options: any, $, $$, $$$
+    String price = Constants.RESTAURANT_PRICE_TO_CODE.get(qm.value("price"));
+
     /*
      * dietary restrictions; options: "None", "Vegetarian friendly",
      * "Vegan options", "Halal", "Gluten-free options
      */
-    String[] dietArr = qm.value("diet").toLowerCase().split(",");
+    String[] dietArr = qm.value("diet").replaceAll("-", " ").toLowerCase().split(",");
     String dietStr = "";
     if (dietArr.length != 0) {
       for (int i = 0; i < dietArr.length; i++) {
@@ -80,6 +87,7 @@ public class BrowseRestaurantsHandler implements Route {
     params.put("dietary_restrictions", dietStr);
     params.put("distance", miles);
     params.put("combined_food", cuisines);
+    params.put("prices_restaurants", price);
 
     String errorMsg = paramsAreValid(params);
     // Parameters are invalid.
@@ -97,7 +105,7 @@ public class BrowseRestaurantsHandler implements Route {
       sb.append("No matching result.");
     } else {
       for (Restaurant restaurant : restaurants) {
-        sb.append(restaurant.toString() + "<br>" + "-----------------------------" + "<br>");
+        sb.append(restaurant.toStringHTML() + Constants.SEPARATOR_HTML);
       }
     }
 

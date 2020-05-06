@@ -8,7 +8,7 @@ import com.google.common.collect.ImmutableMap;
  * Defines constants to be used for the queries.
  */
 public class Constants {
-  public static final Map<String, String> ATTRACTION_NAME_TO_CODE = ImmutableMap
+  public static final Map<String, String> ATTRACTION_SUBCATEGORY_TO_CODE = ImmutableMap
       .<String, String>builder().put("Boat Tours & Water Sports", "55").put("Fun & Game", "56")
       .put("Nature & Parks", "57").put("Sights & Landmarks", "47").put("Food & Drink", "36")
       .put("Shopping", "26").put("Transportation", "59").put("Museums", "49")
@@ -25,6 +25,10 @@ public class Constants {
       .<String, String>builder().put("vegetarian friendly", "10665").put("vegan options", "10697")
       .put("halal", "10751").put("gluten free options", "10992").put("none", "all").build();
 
+  public static final Map<String, String> RESTAURANT_PRICE_TO_CODE = ImmutableMap
+      .<String, String>builder().put("$", "10953").put("$$", "10955").put("$$$", "10955")
+      .put("any", "all").build();
+
   public static final int LIMIT = 30;
   public static final String LANG = "en_US";
   public static final String CURRENCY = "USD";
@@ -40,4 +44,5 @@ public class Constants {
   public static final int MAX_LATITUDE = 90;
   public static final int MIN_LONGITUDE = -180;
   public static final int MAX_LONGITUDE = 180;
+  public static final String SEPARATOR_HTML = "<br>" + "-----------------------------" + "<br>";
 }

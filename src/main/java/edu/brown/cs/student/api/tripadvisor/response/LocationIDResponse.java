@@ -30,6 +30,11 @@ public class LocationIDResponse {
     String locationID = "";
     try {
       String queryResult = locationIDRequest.run();
+
+      if (queryResult.equals("")) {
+        return locationID;
+      }
+
       JSONObject obj = new JSONObject(queryResult);
       JSONArray arr = (JSONArray) obj.get("data");
       JSONObject obj1 = (JSONObject) arr.get(0);

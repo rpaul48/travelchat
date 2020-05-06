@@ -262,8 +262,6 @@ function browseLodging() {
         var checkin = checkin_sel.options[checkin_sel.selectedIndex].text;
         var checkout_sel = document.getElementById("check-out");
         var checkout = checkout_sel.options[checkout_sel.selectedIndex].text;
-        var price_sel = document.getElementById("hotel-price-sel");
-        var price = price_sel.options[price_sel.selectedIndex].text;
         var rating_sel = document.getElementById("hotel-rating-sel");
         var rating = rating_sel.options[rating_sel.selectedIndex].text;
         var num_rooms_sel = document.getElementById("num-rooms");
@@ -277,7 +275,6 @@ function browseLodging() {
                 "type": type,
                 "check-in": checkin,
                 "check-out": checkout,
-                "price": price,
                 "rating": rating,
                 "num-rooms": num_rooms},
             async: false,

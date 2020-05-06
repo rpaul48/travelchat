@@ -143,8 +143,7 @@
                     <option value="2" >Vegetarian friendly</option>
                     <option value="3" >Vegan options</option>
                     <option value="4" >Halal</option>
-                    <option value="5" >Kosher</option>
-                    <option value="6" >Gluten-free options</option>
+                    <option value="5" >Gluten-free options</option>
                 </select>
                 <button onclick="browseRestaurants()" type="button" class="small-green-button">Search</button>
             </form>
@@ -211,13 +210,6 @@
                 <input type="date" id="check-out"
                        value="2020-05-16"
                 min="2020-05-03" max="2021-01-01">
-                <label>Price:</label>
-                <select id="hotel-price-sel">
-                    <option value="1" selected="selected">Any</option>
-                    <option value="2" >$</option>
-                    <option value="3" >$$</option>
-                    <option value="4" >$$$</option>
-                </select>
                 <label>Minimum rating:</label>
                 <select id="hotel-rating-sel">
                     <option value="1" selected="selected">Any</option>

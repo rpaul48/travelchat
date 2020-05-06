@@ -54,15 +54,27 @@ public class BrowseActivitiesHandler implements Route {
     String activityTypes = qm.value("activityTypes");
     String[] activities = activityTypes.split(",");
     for (int i = 0; i < activities.length; i++) {
-      activities[i] = Constants.ATTRACTION_NAME_TO_CODE.get(activities[i]);
+      /*
+       * Can only run query using unique code corresponding to each activity type
+       * (attraction subcategory). Conversion from activity type name to code is
+       * necessary.
+       */
+      activities[i] = Constants.ATTRACTION_SUBCATEGORY_TO_CODE.get(activities[i]);
     }
 
+    /*
+     * Attraction query based on different subcategories, or types, cannot be run
+     * all at once on the API. Only one activity type is allowed per query.
+     * Therefore need to run multiple queries for multiple activity types, while
+     * making sure that there are no duplicates of Attraction.
+     */
     for (String activity : activities) {
       Map<String, Object> params = new HashMap<>();
       params.put("limit", Constants.LIMIT);
       params.put("lang", Constants.LANG);
       params.put("currency", Constants.CURRENCY);
       params.put("lunit", Constants.LUNIT);
+      // Defined lat-lon boundary to search from using the predetermined offset.
       params.put("tr_latitude", lat + Constants.BOUNDARYOFFSET);
       params.put("tr_longitude", lon + Constants.BOUNDARYOFFSET);
       params.put("bl_latitude", lat - Constants.BOUNDARYOFFSET);
@@ -80,8 +92,10 @@ public class BrowseActivitiesHandler implements Route {
 
       List<Attraction> attractions = querier.getAttractions(new AttractionRequest(params));
       for (Attraction attraction : attractions) {
-        // To avoid adding attractions that belong to two different categories and thus
-        // are obtained twice.
+        /*
+         * To avoid duplicates, check if attraction has already been seen and thus
+         * should not be added again.
+         */
         if (!attractionsMap.containsKey(attraction.getName())) {
           attractionsMap.put(attraction.getName(), attraction);
         }
@@ -93,7 +107,7 @@ public class BrowseActivitiesHandler implements Route {
       sb.append("No matching result.");
     } else {
       for (Attraction attraction : attractionsMap.values()) {
-        sb.append(attraction.toString() + "<br>" + "-----------------------------" + "<br>");
+        sb.append(attraction.toStringHTML() + Constants.SEPARATOR_HTML);
       }
     }
 

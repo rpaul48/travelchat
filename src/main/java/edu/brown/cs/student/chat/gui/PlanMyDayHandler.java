@@ -18,6 +18,10 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+/**
+ * Class that handles requests for activities and restaurants for PlanMyDay
+ * feature.
+ */
 public class PlanMyDayHandler implements Route {
   @Override
   public JSONObject handle(Request request, Response response) throws Exception {
@@ -66,6 +70,10 @@ public class PlanMyDayHandler implements Route {
     String cuisines = "";
     if (cuisinesArr.length != 0) {
       for (int i = 0; i < cuisinesArr.length; i++) {
+        /*
+         * Can only run query using unique code corresponding to each cuisine type.
+         * Conversion from cuisine type name to code is necessary.
+         */
         if (Constants.CUISINE_TYPE_TO_CODE.containsKey(cuisinesArr[i])) {
           cuisines += Constants.CUISINE_TYPE_TO_CODE.get(cuisinesArr[i]) + ",";
         }
@@ -82,7 +90,12 @@ public class PlanMyDayHandler implements Route {
     String activityTypes = qm.value("activityTypes");
     String[] activities = activityTypes.split(",");
     for (int i = 0; i < activities.length; i++) {
-      activities[i] = Constants.ATTRACTION_NAME_TO_CODE.get(activities[i]);
+      /*
+       * Can only run query using unique code corresponding to each activity type
+       * (attraction subcategory). Conversion from activity type name to code is
+       * necessary.
+       */
+      activities[i] = Constants.ATTRACTION_SUBCATEGORY_TO_CODE.get(activities[i]);
     }
 
     // Query attractions.
@@ -109,8 +122,10 @@ public class PlanMyDayHandler implements Route {
 
       List<Attraction> attractions = querier.getAttractions(new AttractionRequest(params));
       for (Attraction attraction : attractions) {
-        // To avoid adding attractions that belong to two different categories and thus
-        // are obtained twice.
+        /*
+         * To avoid duplicates, check if attraction has already been seen and thus
+         * should not be added again.
+         */
         if (!attractionsMap.containsKey(attraction.getName())) {
           attractionsMap.put(attraction.getName(), attraction);
         }
@@ -120,8 +135,9 @@ public class PlanMyDayHandler implements Route {
     if (attractionsMap.isEmpty()) {
       sb.append("No matching result.");
     } else {
+      sb.append("ATTRACTIONS:<br><br>");
       for (Attraction attraction : attractionsMap.values()) {
-        sb.append(attraction.toString() + "<br>" + "-----------------------------" + "<br>");
+        sb.append(attraction.toStringHTML() + Constants.SEPARATOR_HTML);
       }
     }
 
@@ -150,8 +166,9 @@ public class PlanMyDayHandler implements Route {
     if (restaurants.isEmpty()) {
       sb.append("No matching result.");
     } else {
+      sb.append("<br><br>RESTAURANTS:<br><br>");
       for (Restaurant restaurant : restaurants) {
-        sb.append(restaurant.toString() + "\n-----------------------------\n");
+        sb.append(restaurant.toStringHTML() + Constants.SEPARATOR_HTML);
       }
     }
 
