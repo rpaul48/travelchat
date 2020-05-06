@@ -13,6 +13,9 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+/**
+ * Class that handles requests for flights.
+ */
 public class BrowseFlightsHandler implements Route {
   @Override
   public JSONArray handle(Request request, Response response) throws Exception {

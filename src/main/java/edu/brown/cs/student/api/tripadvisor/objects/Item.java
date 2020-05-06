@@ -38,4 +38,6 @@ public interface Item {
   void setPhotoUrl(String photoUrl);
 
   void setClosed(boolean closed);
+
+  String toStringHTML();
 }

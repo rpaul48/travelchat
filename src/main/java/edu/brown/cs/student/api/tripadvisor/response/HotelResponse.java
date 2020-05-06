@@ -56,6 +56,11 @@ public class HotelResponse {
 
     try {
       String queryResult = hotelRequest.run();
+
+      if (queryResult.equals("")) {
+        return hotelsList;
+      }
+
       JSONObject obj = new JSONObject(queryResult);
       JSONArray hotelsArr = (JSONArray) obj.get("data");
       // goes through all of the hotels recommended

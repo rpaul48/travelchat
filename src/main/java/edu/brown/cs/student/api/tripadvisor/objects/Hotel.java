@@ -222,4 +222,32 @@ public class Hotel implements Item {
 
     return sb.toString();
   }
+
+  @Override
+  public String toStringHTML() {
+    DecimalFormat df = new DecimalFormat("#.##");
+    DecimalFormat df2 = new DecimalFormat("#.####");
+
+    StringBuilder sb = new StringBuilder();
+    sb.append("Name: ").append(name).append("<br>");
+    sb.append("Location: ").append(locationString).append("<br>");
+    sb.append("Latitude: ").append(df2.format(latitude)).append("<br>");
+    sb.append("Longitude: ").append(df2.format(longitude)).append("<br>");
+    sb.append("Distance: ").append(df.format(distance)).append(" ").append(Constants.LUNIT)
+        .append("<br>");
+    sb.append("Number of Reviews: ").append(numReviews).append("<br>");
+    sb.append("Rating: ").append(rating).append("/5.0<br>");
+    sb.append("Hotel Class: ").append(hotelClass).append(" stars<br>");
+    sb.append("Price Level: ").append(priceLevel).append("<br>");
+    sb.append("Price: ").append(price).append("<br>");
+    sb.append("Ranking: ").append(rankingString).append("<br>");
+
+    if (isClosed) {
+      sb.append("Closed");
+    } else {
+      sb.append("Open");
+    }
+
+    return sb.toString();
+  }
 }

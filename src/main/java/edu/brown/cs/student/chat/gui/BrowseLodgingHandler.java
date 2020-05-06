@@ -37,13 +37,13 @@ public class BrowseLodgingHandler implements Route {
 
     // options: "Any", "Hotel", "Bed and breakfast", "Specialty"
     String subcategory = qm.value("type").toLowerCase();
-    if (subcategory.equals("any")) {
+    if (subcategory.contains("any")) {
       subcategory = "all";
     } else if (subcategory.contains("bed and breakfast")) {
       subcategory = subcategory.replace("bed and breakfast", "bb");
     }
 
-    // format: "2020-05-15" (year-month in two digits-day number in two digits)
+    // format: "2020-05-15"
     String checkIn = qm.value("check-in");
     String checkOut = qm.value("check-out");
     String nights = "";
@@ -62,7 +62,7 @@ public class BrowseLodgingHandler implements Route {
 
     // min rating; options: "Any", "1 star", "2 star", "3 star", "4 star", or "5
     // star"
-    String hotelClass = qm.value("rating").replaceAll("[^1-5,]", "");
+    String hotelClass = qm.value("rating").replaceAll("[^1-5.,]", "");
     if (hotelClass.equals("")) {
       hotelClass = "all";
     }
@@ -99,7 +99,7 @@ public class BrowseLodgingHandler implements Route {
       sb.append("No matching result.");
     } else {
       for (Hotel hotel : hotels) {
-        sb.append(hotel.toString()).append("<br>" + "-----------------------------" + "<br>");
+        sb.append(hotel.toStringHTML()).append(Constants.SEPARATOR_HTML);
       }
     }
 

@@ -152,4 +152,26 @@ public class Attraction implements Item {
 
     return sb.toString();
   }
+
+  @Override
+  public String toStringHTML() {
+    DecimalFormat df = new DecimalFormat("#.##");
+    DecimalFormat df2 = new DecimalFormat("#.####");
+
+    StringBuilder sb = new StringBuilder();
+    sb.append("Name: " + name + "<br>");
+    sb.append("Location: " + locationString + "<br>");
+    sb.append("Latitude: " + df2.format(latitude) + "<br>");
+    sb.append("Longitude: " + df2.format(longitude) + "<br>");
+    sb.append("Distance: " + df.format(distance) + " " + Constants.LUNIT + "<br>");
+    sb.append("Number of Reviews: " + numReviews + "<br>");
+
+    if (isClosed) {
+      sb.append("Closed");
+    } else {
+      sb.append("Open");
+    }
+
+    return sb.toString();
+  }
 }
