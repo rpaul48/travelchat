@@ -7,6 +7,21 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+/**
+ * Used to post a new event to the calendar. When making a post, pass in an object
+ * with the string parameters:
+ *
+ *      "chatID" = id of the chat
+ *      "id" = a unique event id
+ *      "title" = title of the event
+ *      "start" = start time in ISO format (i.e. 2020-05-22T21:38:00)
+ *      "end" = end time in ISO format
+ *      "location" = location of the event
+ *      "price" = price of the event in USD (i.e. 50.00)
+ *      "description" = other details of the event. It may be good to include the
+ *          link to the website of certain events, such as flights
+ *
+ */
 public class PostCalendarEventHandler implements Route {
 
   @Override
@@ -15,8 +30,8 @@ public class PostCalendarEventHandler implements Route {
 
     try {
       QueryParamsMap qm = request.queryMap();
-      String uniqueEventID = qm.value("id");
       String chatID = qm.value("chatID");
+      String uniqueEventID = qm.value("id");
       String title = qm.value("title");
       String startTime = qm.value("start");
       String endTime = qm.value("end");
