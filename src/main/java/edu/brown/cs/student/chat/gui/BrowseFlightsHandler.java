@@ -18,8 +18,8 @@ import spark.Route;
  */
 public class BrowseFlightsHandler implements Route {
   /**
-   * Returns an array of JSON objects, one for each flight. Each object will contain the booking URL, carrier, and
-   * price of the flight.
+   * Returns an array of JSON objects, one for each flight. Each object will contain
+   * the booking URL, carrier, and price of the flight.
    * @param request
    * @param response
    * @return An array of flights, as JSONs.
