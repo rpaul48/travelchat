@@ -128,7 +128,7 @@ public class PlanMyDayHandler implements Route {
     } else {
       sb.append("ATTRACTIONS:<br><br>");
       for (Attraction attraction : attractionsMap.values()) {
-        sb.append(attraction.toStringHTML() + Constants.SEPARATOR_HTML);
+        sb.append(attraction.toStringHTML() + "<hr>");
       }
     }
 
@@ -159,7 +159,7 @@ public class PlanMyDayHandler implements Route {
     } else {
       sb.append("<br><br>RESTAURANTS:<br><br>");
       for (Restaurant restaurant : restaurants) {
-        sb.append(restaurant.toStringHTML() + Constants.SEPARATOR_HTML);
+        sb.append(restaurant.toStringHTML() + "<hr>");
       }
     }
 
