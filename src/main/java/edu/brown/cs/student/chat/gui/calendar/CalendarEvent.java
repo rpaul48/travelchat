@@ -5,13 +5,13 @@ package edu.brown.cs.student.chat.gui.calendar;
  */
 public class CalendarEvent {
 
-  public String id;
-  public String title;
-  public String startTimeISO;
-  public String endTimeISO;
-  public String location;
-  public String price;
-  public String description;
+  private String id;
+  private String title;
+  private String startTimeISO;
+  private String endTimeISO;
+  private String location;
+  private String price;
+  private String description;
 
   /**
    * Constructs a calendar event.
@@ -33,10 +33,6 @@ public class CalendarEvent {
     this.location = location;
     this.price = price;
     this.description = description;
-
-  }
-
-  public CalendarEvent() {
 
   }
 
@@ -75,5 +71,29 @@ public class CalendarEvent {
    */
   public String getId() {
     return id;
+  }
+
+  /**
+   * Gets location.
+   * @return location
+   */
+  public String getLocation() {
+    return location;
+  }
+
+  /**
+   * Gets price.
+   * @return price
+   */
+  public String getPrice() {
+    return price;
+  }
+
+  /**
+   * Gets description.
+   * @return description
+   */
+  public String getDescription() {
+    return description;
   }
 }
