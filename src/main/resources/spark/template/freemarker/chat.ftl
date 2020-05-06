@@ -28,7 +28,7 @@
 
     <div id="settings-div" class="popup-div">
         <h2>Settings</h2>
-        <input type="text" placeholder="Display Name" id="update-display-name-field"/>
+        <input type="text" aria-label="Display Name" placeholder="Display Name" id="update-display-name-field"/>
         <button onclick="editProfile()" class="large-green-button">Save Changes</button>
         <button onclick="leaveChat()" id="leave-chat" class="large-red-button">Leave Chat</button>
         <button onclick="closePopup('settings-div')" class="small-black-button">Back</button>
@@ -37,7 +37,7 @@
     <div id="budget-div" class="popup-div">
         <h2>Budget</h2>
         <div id="your-budget"></div>
-        <input type="number" step="0.01" placeholder="Amount to Log/Add" id="update-budget-field"/>
+        <input type="number" step="0.01" aria-label="Amount to Log/Add" placeholder="Amount to Log/Add" id="update-budget-field"/>
         <button onclick="updateBudget('log')" class="large-blue-button">Log Payment</button>
         <button onclick="updateBudget('add')" id="add-funds" class="large-green-button">Add Funds</button>
         <button onclick="closePopup('budget-div')" class="small-black-button">Back</button>
@@ -52,8 +52,8 @@
         <h2>Plan My Day</h2>
         <div class="form-container">
             <form id="plan-my-day-form">
-                <label>Date: <input type="date" id="date-to-plan"></label>
-                <label>Max distance from current location (miles): <input type="number" min="1" id="max-distance"> </label>
+                <label for="date-to-plan">Date: <input type="date" id="date-to-plan"></label>
+                <label for="max-distance">Max distance from current location (miles): <input type="number" min="1" id="max-distance"> </label>
                 <label>Preferred cuisines: </label>
                 <div class="checkboxes">
                     <label><input type="checkbox" name="pmd-cuisine" value="Any" checked>Any</label>
@@ -93,8 +93,8 @@
         <h2>Browse Restaurants</h2>
         <div class="form-container">
             <form id="restaurants-form">
-                <label>Within </label>
-                <select id="restaurant-miles-sel">
+                <label for="restaurant-miles-sel">Within </label>
+                <select aria-label="Restaurant Miles Within" id="restaurant-miles-sel">
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">5</option>
@@ -118,16 +118,16 @@
                     <label><input type="checkbox" name="browse-cuisine" value="Thai">Thai</label>
                 </div>
 
-                <label>Price</label>
-                <select id="restaurant-price-sel">
+                <label for="restaurant-price-sel">Price</label>
+                <select aria-label="Restaurant Price" id="restaurant-price-sel">
                     <option value="1" selected="selected">Any</option>
                     <option value="2" >$</option>
                     <option value="3" >$$-$$$</option>
                     <option value="4" >$$$$</option>
                 </select>
 
-                <label>Minimum rating</label>
-                <select id="restaurant-rating-sel">
+                <label for="restaurant-rating-sel">Minimum rating</label>
+                <select aria-label="Restaurant Minimum Rating" id="restaurant-rating-sel">
                     <option value="1" selected="selected">Any</option>
                     <option value="2" >2 stars</option>
                     <option value="3" >3 stars</option>
@@ -135,8 +135,8 @@
                     <option value="5" >5 stars</option>
                 </select>
 
-                <label>Dietary restrictions</label>
-                <select id="diet-sel">
+                <label for="diet-sel">Dietary restrictions</label>
+                <select aria-label="Dietary Restrictions" id="diet-sel">
                     <option value="1" selected="selected">None</option>
                     <option value="2" >Vegetarian friendly</option>
                     <option value="3" >Vegan options</option>
@@ -154,8 +154,8 @@
         <h2>Browse Activities</h2>
         <div class="form-container">
             <form id="activities-form">
-                <label>Within </label>
-                <select id="activities-miles-sel">
+                <label for="activities-miles-sel">Within </label>
+                <select aria-label="Activities Miles Within" id="activities-miles-sel">
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">5</option>
@@ -191,23 +191,23 @@
         <h2>Browse Lodging</h2>
         <div class="form-container">
             <form id="lodging-form">
-                <label>Type</label>
-                <select id="hotel-type-sel">
+                <label for="hotel-type-sel">Type</label>
+                <select aria-label="Lodging Type" id="hotel-type-sel">
                     <option value="1" selected="selected">Any</option>
                     <option value="2" >Hotel</option>
                     <option value="3" >Bed and breakfast</option>
                     <option value="4" >Specialty</option>
                 </select>
-                <label>Check-in date:</label>
-                <input type="date" id="check-in"
+                <label for="check-in">Check-in date:</label>
+                <input aria-label="Check-in date" type="date" id="check-in"
                        value="2020-05-15"
                        min="2020-05-06">
-                <label>Check-out date:</label>
-                <input type="date" id="check-out"
+                <label for="check-out">Check-out date:</label>
+                <input aria-label="Check-out date" type="date" id="check-out"
                        value="2020-05-16"
                 min="2020-05-03">
-                <label>Minimum rating:</label>
-                <select id="hotel-rating-sel">
+                <label for="hotel-rating-sel">Minimum rating:</label>
+                <select aria-label="Minimum Hotel Rating" id="hotel-rating-sel">
                     <option value="1" selected="selected">Any</option>
                     <option value="2" >1 star</option>
                     <option value="3" >2 star</option>
@@ -215,8 +215,8 @@
                     <option value="5" >4 star</option>
                     <option value="6" >5 star</option>
                 </select>
-                <label>Number of rooms</label>
-                <input type="number" id="num-rooms" value="1">
+                <label for="num-rooms">Number of rooms</label>
+                <input aria-label="Number of rooms" type="number" id="num-rooms" value="1">
                 <button onclick="browseLodging()" type="button" class="small-green-button">Search</button>
             </form>
         </div>
@@ -228,28 +228,28 @@
         <h2>Browse Flights</h2>
         <div class="form-container">
             <form id="flights-form">
-                <label>Departure date:</label>
+                <label for="departure-date">Departure date:</label>
                 <input type="date" id="departure-date"
                        value="2020-05-15"
                        min="2020-05-06">
-                <label>Departure airport code: </label>
-                <input type="text" maxlength="3" id="depart">
-                <label>Destination airport code: </label>
-                <input type="text" maxlength="3" id="destination">
-                <label>Adults: </label>
+                <label for="depart">Departure airport code: </label>
+                <input aria-label="Departure airport code" type="text" maxlength="3" id="depart">
+                <label for="destination">Destination airport code: </label>
+                <input aria-label="Destination airport code" type="text" maxlength="3" id="destination">
+                <label for="num-adults">Adults: </label>
                 <input type="number" step="1" value="1" id="num-adults"></input>
-                <label>Children: </label>
+                <label for="num-children">Children: </label>
                 <input type="number" step="1" value="0" id="num-children"></input>
-                <label>Seniors: </label>
+                <label for="num-seniors">Seniors: </label>
                 <input type="number" step="1" value="0" id="num-seniors"></input>
-                <label>Max number of stops:</label>
+                <label for="max-stops-sel">Max number of stops:</label>
                 <select id="max-stops-sel">
                     <option value="1" selected="selected">Any</option>
                     <option value="2" >0</option>
                     <option value="3" >1</option>
                     <option value="4" >2+</option>
                 </select>
-                <label>Class: </label>
+                <label for="flight-class-sel">Class: </label>
                 <select id="flight-class-sel">
                     <option value="1" selected="selected">Any</option>
                     <option value="2" >Economy</option>

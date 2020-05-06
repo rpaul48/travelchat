@@ -1,4 +1,6 @@
 <html lang='en'>
+<title>TravelChat Calendar</title>
+<link rel="icon" href="/images/TravelChat.png">
     <head>
         <meta charset='utf-8' />
 
@@ -34,18 +36,19 @@
                         <label for="event-location">Location:</label>
                         <input type="text" id="event-location" name="event-location" class="event-input">
                         <br>
-                        <label for="start-time">Start time:</label>
+                        <label for="event-start-time">Start time:</label>
                         <input type="datetime-local" id="event-start-time" class="event-input"
                            name="start-time">
                         <br>
-                        <label for="end-time">End time:</label>
+                        <label for="event-end-time">End time:</label>
                         <input type="datetime-local" id="event-end-time" class="event-input"
                            name="end-time">
                         <br>
                         <label for="event-description">Description:</label>
                         <textarea name="event-description" id="event-description" class="event-input" cols="35" rows="5" ></textarea>
                         <br>
-                        $ <input type="number" id="event-price" class="event-input" min="0.00" max="10000.00" step="0.01" value="0.00" />
+                        <label for="event-price">Cost: </label>
+                        $ <input aria-label="Event Price" type="number" id="event-price" class="event-input" min="0.00" max="10000.00" step="0.01" value="0.00" />
                         <button class="submit large-green-button" type="submit"> Add Event </button>
                     </form>
             </div>

@@ -2,6 +2,7 @@
 <#assign content>
     <img class="logo" onclick="logout()" src="/images/TravelChat-Banner.png" alt="TravelChat">
 
+    <main>
     <div id="chats-div" class="main-div">
         <h2>Manage Chats</h2>
         <div id="user-rooms"></div>
@@ -11,8 +12,8 @@
 
     <div id="create-chat-div" class="popup-div">
         <h2>Create New Chat</h2>
-        <input type="text" placeholder="Group Name" id="group-name-field"/>
-        <input placeholder="Comma-separated invitee emails" id="add-user-field"/>
+        <input type="text" aria-label="Group Name" placeholder="Group Name" id="group-name-field"/>
+        <input aria-label="Comma-separated invitee emails" placeholder="Comma-separated invitee emails" id="add-user-field"/>
         <p id="room-id"></p>
         <button onclick="createChat()" class="large-green-button">Create</button>
         <button onclick="closeCreateChat()" class="large-black-button">Back</button>
@@ -20,7 +21,7 @@
 
     <div id="add-chat-div" class="popup-div">
         <h2>Add Existing Chat</h2>
-        <input type="text" placeholder="Group Id" id="group-id-field"/>
+        <input type="text" aria-label="Group Id" placeholder="Group Id" id="group-id-field"/>
         <button onclick="addChat()" class="large-green-button">Add</button>
         <button onclick="closeAddChat()" class="large-black-button">Back</button>
     </div>
@@ -28,5 +29,6 @@
 
     <script src="/js/login.js"></script>
     <script src="/js/manage-chats.js"></script>
+    </main>
 </#assign>
 <#include "main.ftl">
