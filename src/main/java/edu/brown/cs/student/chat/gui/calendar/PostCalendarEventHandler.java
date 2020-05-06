@@ -14,7 +14,6 @@ import java.util.UUID;
  * with the string parameter (i.e. data = {"title": Kayaking, "location": Miami,...})
  *
  *      "chatID" = id of the chat
- *      "id" = a unique event id
  *      "title" = title of the event
  *      "start" = start time in ISO format (i.e. 2020-05-22T21:38:00)
  *      "end" = end time in ISO format
