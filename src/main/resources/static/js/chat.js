@@ -312,6 +312,7 @@ function browseFlights() {
         var numStops = numStops_sel.options[numStops_sel.selectedIndex].text;
         var flightClass_sel = document.getElementById("flight-class-sel");
         var flightClass = flightClass_sel.options[flightClass_sel.selectedIndex].text;
+        document.getElementById("flights-results").innerHTML = "Loading...";
 
         // returns a list of flight options which match the query parameters
         $.ajax({
@@ -329,7 +330,7 @@ function browseFlights() {
             async: false,
             success: function (data) {
                 var result = JSON.parse(data);
-
+                document.getElementById("flights-results").innerHTML = "";
                 if (result.length === 0) {
                     document.getElementById("flights-results").innerHTML = "No results found.";
                 } else {

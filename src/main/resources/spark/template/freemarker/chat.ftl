@@ -45,6 +45,7 @@
 
     <div id="trip-details-div" class="big-popup-div">
         <h2>Trip Details</h2>
+        <form id="trip-details-form">
         <label>Start date: <input type="date" id="trip-start-date" min="2020-01-01" class="date-class"></label>
         <label>End date: <input type="date" id="trip-end-date" min="2020-01-01" class="date-class"></label>
         <button onclick="closePopup('trip-details-div')" class="small-black-button">Back</button>
