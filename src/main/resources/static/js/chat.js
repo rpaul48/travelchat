@@ -200,9 +200,6 @@ function planMyDay() {
 
 // returns search results for restaurants
 function browseRestaurants() {
-    if ((coordinates === "Geolocation is not supported by this browser.") || (coordinates == null)) {
-        window.alert("Please allow your browser to access your location.");
-    } else {
         var miles_sel = document.getElementById("restaurant-miles-sel");
         var miles = miles_sel.options[miles_sel.selectedIndex].text;
         var price_sel = document.getElementById("restaurant-price-sel");
@@ -217,12 +214,16 @@ function browseRestaurants() {
             cuisines.push($(this).val());
         });
 
+        var address = document.getElementById("restaurant-address").value;
+        // TODO: find coordinates of input address
+        loc = coordinates;
+
         // returns a list of restaurant options which match the query parameters
         $.ajax({
             url: "/browseRestaurants",
             type: "get",
             data: {"miles": miles,
-                "location": coordinates,
+                "location": loc,
                 "cuisines": cuisines.toString(),
                 "rating": rating,
                 "price": price,
@@ -233,7 +234,6 @@ function browseRestaurants() {
                 var recs = Object.values(result)[0];
                 document.getElementById("restaurants-results").innerHTML = recs;
             }});
-    }
 }
 
 // returns search results for activities

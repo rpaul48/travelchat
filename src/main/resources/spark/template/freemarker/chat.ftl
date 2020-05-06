@@ -103,8 +103,7 @@
                     <option value="3">5</option>
                     <option value="4" selected="selected">10</option>
                 </select>
-                <label> miles from current location </label>
-
+                <label> miles from <input type="text" placeholder="input address" id="restaurant-address"></label>
                 <br>
 
                 <label>Preferred cuisines: </label>
