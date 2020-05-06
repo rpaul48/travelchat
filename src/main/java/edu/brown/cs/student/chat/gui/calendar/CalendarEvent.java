@@ -24,7 +24,8 @@ public class CalendarEvent {
    * @param description description of the event
    */
 
-  public CalendarEvent(String id, String title, String startTimeISO, String endTimeISO, String location,  String price, String description) {
+  public CalendarEvent(String id, String title, String startTimeISO, String endTimeISO,
+                       String location,  String price, String description) {
 
     this.id = id;
     this.title = title;
