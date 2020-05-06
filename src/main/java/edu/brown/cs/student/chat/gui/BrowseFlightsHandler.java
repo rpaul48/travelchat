@@ -32,7 +32,7 @@ public class BrowseFlightsHandler implements Route {
       // Get parameters from front-end
       QueryParamsMap qm = request.queryMap();
       if (!paramsAreValid(qm)) {
-        System.out.println("ERROR: At least one invalid argument was passed as a flight parameter.");
+        System.err.println("ERROR: >=1 invalid argument was passed as a flight parameter.");
         return null;
       }
 
