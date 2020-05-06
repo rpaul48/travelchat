@@ -121,7 +121,7 @@ public class PlanMyDayHandler implements Route {
       sb.append("No matching result.");
     } else {
       for (Attraction attraction : attractionsMap.values()) {
-        sb.append(attraction.toString() + "\n-----------------------------\n");
+        sb.append(attraction.toString() + "<br>" + "-----------------------------" + "<br>");
       }
     }
 
