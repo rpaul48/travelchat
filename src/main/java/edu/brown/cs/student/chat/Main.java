@@ -128,12 +128,6 @@ public final class Main {
 
 
     // Calendar management
-    Map<String, List<CalendarEvent>> calendarEvents = new HashMap<>();
-    // For testing
-//    calendarEvents.put("chat_id1", new ArrayList<>());
-//    calendarEvents.get("chat_id1").add(new CalendarEvent("eventTitle1", "2020-05-02T14:30:00", "2020-05-02T16:30:00"));
-//    calendarEvents.get("chat_id1").add(new CalendarEvent("eventTitle2", "2020-05-02T17:30:00", "2020-05-02T19:30:00"));
-
     Spark.get("/calendar/:roomId/:userId", new CalendarFrontHandler(), freeMarker);
     Spark.get("/getCalendarEvents", new GetCalendarEventsHandler());
     Spark.post("/postCalendarEvent", new PostCalendarEventHandler());

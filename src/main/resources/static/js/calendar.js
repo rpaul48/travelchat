@@ -1,8 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 
 
-    //TODO: Take into account timezone. Calendar should be able to switch between time-zones.
-
+    // Calendar properties.
     const pathSplit = window.location.pathname.split("/");
     const userID = pathSplit[pathSplit.length - 1];
     const chatID = pathSplit[pathSplit.length - 2];
@@ -15,33 +14,28 @@ document.addEventListener('DOMContentLoaded', function() {
     let maxTime = endDate + 'T23:59';
 
 
+    // Elements of the add event modal.
     const modal = $("#add-event-modal");
-    const exitButton = $(".close").first();
+    const modalExitButton = $("#modal-close")
+    const eventTitleEl = $("#event-title");
+    const eventLocationEl = $("#event-location");
     const eventStartEl = $("#event-start-time");
     const eventEndEl = $("#event-end-time");
-    const eventTitleEl = $("#event-title");
+    const eventDescriptionEl = $("#event-description");
     const eventPriceEl = $("#event-price");
 
-    /**
-     * Set up the addEvent modal
-     */
-
-    // When the user clicks on (x), close the modal
-    exitButton.click(function() {
+    // Set up the modal.
+    modalExitButton.click(function() {
         modal.hide();
     });
-
     eventStartEl.attr({
         "min" : minTime,
         "max" : maxTime
     });
-
     eventEndEl.attr({
         "min" : minTime,
         "max" : maxTime
     });
-
-
     function resetModal() {
         eventTitleEl.val("");
         eventStartEl.val(startDate + 'T12:30');
@@ -50,8 +44,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
+    // Elements of the event info pop-up.
+    const eventPopup = $("#event-popup");
+    const eventPopupExitButton = $("#event-popup-close");
 
-
+    // Set up the pop-up.
+    eventPopupExitButton.click(function() {
+        eventPopup.hide();
+    });
 
     /**
      * Set up calendar
@@ -86,14 +86,21 @@ document.addEventListener('DOMContentLoaded', function() {
             start: startDate,
             end: endDate
         },
-        defaultDate: startDate
+        defaultDate: startDate,
+        eventClick: function(info) {
+            eventPopup.fadeIn();
+            info.el.style.borderColor = 'red';
+        }
     });
 
     calendar.render();
     $.get("/getCalendarEvents", { chatID: chatID }, function( data ) {
 
         for (const event of data) {
-            const eventObject = generateEventObject(event.id, event.title, event.startTimeISO, event.endTimeISO);
+            const eventObject = generateEventObject(
+                event.id, event.title, event.location,
+                event.startTimeISO, event.endTimeISO,
+                event.description, event.price);
             calendar.addEvent(eventObject);
         }
 
@@ -108,14 +115,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const startTime = eventStartEl.val();
         const endTime = eventEndEl.val();
-        const price = eventPriceEl.val();
+
 
         // Check validity of input
         if (moment(endTime).isBefore(startTime) || moment(endTime).isSame(startTime)){
             alert("Error: End time must be greater than start time.");
         } else {
             const title = eventTitleEl.val();
-            const eventObject = generateEventObject(getUUID(), title, startTime, endTime, price);
+            const location = eventLocationEl.val();
+            const description = eventDescriptionEl.val();
+            const price = eventPriceEl.val();
+            const eventObject = generateEventObject(getUUID(), title, location, startTime, endTime, description, price);
             // Add event to database
             $.post("/postCalendarEvent", eventObject, null, 'json');
             // Update the budget of the adding user
@@ -130,7 +140,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     });
 
-    function generateEventObject(id, title, startTimeISO, endTimeISO, price) {
+    function generateEventObject(id, title, location, startTimeISO, endTimeISO, description, price) {
+
 
         title = title ? title : "Untitled Event";
 
@@ -146,12 +157,14 @@ document.addEventListener('DOMContentLoaded', function() {
         return {
             id: id,
             title: title,
+            location: location,
             start: startTimeISO,
             end: endTimeISO,
+            description: description,
+            price: price,
             editable: true,
             allDay: alldayBoolean,
-            chatID: chatID,
-            price: price
+            chatID: chatID
         };
     }
 
