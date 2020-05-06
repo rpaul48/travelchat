@@ -9,14 +9,14 @@
                 <!-- <h2><a id="back" href="/manage-chats">TravelChat</a></h2> -->
                 <a id="back" href="/manage-chats"> <img src="/images/TravelChat-Banner.png" alt="TravelChat"> </a>
                 <ul>
-                    <li><a onclick="openPopup('settings-div')"><i class="fas fa-cog"></i>Settings</a></li>
-                    <li><a onclick="openPopup('trip-details-div')"><i class="fas fa-route"></i>Trip Details</a></li>
+                    <li><a href="#settings-div" onclick="openPopup('settings-div')"><i class="fas fa-cog"></i>Settings</a></li>
+                    <li><a href="#trip-details-div" onclick="openPopup('trip-details-div')"><i class="fas fa-route"></i>Trip Details</a></li>
                     <li><a id="calendar-link"><i class="fas fa-calendar-alt"></i>Calendar</a></li>
-                    <li><a onclick="openPopup('plan-my-day-div')"><i class="fas fa-list"></i>Plan My Day</a></li>
-                    <li><a onclick="openPopup('restaurants-div')"><i class="fas fa-utensils"></i>Browse Restaurants</a></li>
-                    <li><a onclick="openPopup('activities-div')"><i class="fas fa-hiking"></i>Browse Activities</a></li>
-                    <li><a onclick="openPopup('lodging-div')"><i class="fas fa-hotel"></i>Browse Lodging</a></li>
-                    <li><a onclick="openPopup('flights-div')"><i class="fas fa-plane"></i>Browse Flights</a></li>
+                    <li><a href="#plan-my-day-div" onclick="openPopup('plan-my-day-div')"><i class="fas fa-list"></i>Plan My Day</a></li>
+                    <li><a href="#restaurants-div" onclick="openPopup('restaurants-div')"><i class="fas fa-utensils"></i>Browse Restaurants</a></li>
+                    <li><a href="#activities-div" onclick="openPopup('activities-div')"><i class="fas fa-hiking"></i>Browse Activities</a></li>
+                    <li><a href="#lodging-div" onclick="openPopup('lodging-div')"><i class="fas fa-hotel"></i>Browse Lodging</a></li>
+                    <li><a href="#flights-div" onclick="openPopup('flights-div')"><i class="fas fa-plane"></i>Browse Flights</a></li>
                 </ul>
             </div>
         </div>
@@ -199,15 +199,13 @@
                     <option value="4" >Specialty</option>
                 </select>
                 <label>Check-in date:</label>
-                <!--TODO constrain this by trip date-->
                 <input type="date" id="check-in"
                        value="2020-05-15"
-                       min="2020-05-02" max="2020-12-31">
+                       min="2020-05-06">
                 <label>Check-out date:</label>
-                <!--TODO constrain this by trip date and check-in date-->
                 <input type="date" id="check-out"
                        value="2020-05-16"
-                min="2020-05-03" max="2021-01-01">
+                min="2020-05-03">
                 <label>Minimum rating:</label>
                 <select id="hotel-rating-sel">
                     <option value="1" selected="selected">Any</option>
@@ -230,12 +228,16 @@
         <h2>Browse Flights</h2>
         <div class="form-container">
             <form id="flights-form">
+                <label>Departure date:</label>
+                <input type="date" id="departure-date"
+                       value="2020-05-15"
+                       min="2020-05-06">
                 <label>Departure airport code: </label>
                 <input type="text" maxlength="3" id="depart">
                 <label>Destination airport code: </label>
                 <input type="text" maxlength="3" id="destination">
                 <label>Adults: </label>
-                <input type="number" step="1" value="0" id="num-adults"></input>
+                <input type="number" step="1" value="1" id="num-adults"></input>
                 <label>Children: </label>
                 <input type="number" step="1" value="0" id="num-children"></input>
                 <label>Seniors: </label>

@@ -183,13 +183,13 @@ public class PlanMyDayHandler implements Route {
       return "ERROR: Latitude or longitude is missing.";
     }
 
-    double tr_latitude = ((Double) params.get("tr_latitude"));
-    double tr_longitude = ((Double) params.get("tr_longitude"));
-    double bl_latitude = ((Double) params.get("bl_latitude"));
-    double bl_longitude = ((Double) params.get("bl_longitude"));
+    double trLatitude = ((Double) params.get("tr_latitude"));
+    double trLongitude = ((Double) params.get("tr_longitude"));
+    double blLatitude = ((Double) params.get("bl_latitude"));
+    double blLongitude = ((Double) params.get("bl_longitude"));
 
-    if (!(bl_latitude >= Constants.MIN_LATITUDE && tr_latitude <= Constants.MAX_LATITUDE
-        && bl_longitude >= Constants.MIN_LONGITUDE && tr_longitude <= Constants.MAX_LONGITUDE)) {
+    if (!(blLatitude >= Constants.MIN_LATITUDE && trLatitude <= Constants.MAX_LATITUDE
+        && blLongitude >= Constants.MIN_LONGITUDE && trLongitude <= Constants.MAX_LONGITUDE)) {
       return "ERROR: Latitude or longitude is out of range.";
     }
 

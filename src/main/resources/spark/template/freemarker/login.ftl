@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="/css/travelchat.css">
 <#assign content>
-    <img class="logo" onclick="logout()" src="images/TravelChat-Banner.png" alt="TravelChat">
+    <img class="logo" onclick="logout()" src="images/TravelChat-Banner.png" alt="TravelChat Banner Logo">
 
     <div id="login-div" class="main-div">
         <h2>Welcome to TravelChat</h2>
