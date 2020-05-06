@@ -54,13 +54,8 @@
         <h2>Plan My Day</h2>
         <div class="form-container">
             <form id="plan-my-day-form">
-<<<<<<< HEAD
-                <label>Date: <input type="date" class="date-class" min="2020-01-01" id="date-to-plan"></label>
-                <label>Max distance from current location (miles): <input type="number" min="1" id="max-distance"> </label>
-=======
                 <label for="date-to-plan">Date: <input type="date" id="date-to-plan"></label>
                 <label for="max-distance">Max distance from current location (miles): <input type="number" min="1" id="max-distance"> </label>
->>>>>>> 10847571449c40fe9e2ae5e342242d79c02fda90
                 <label>Preferred cuisines: </label>
                 <div class="checkboxes">
                     <label><input type="checkbox" name="pmd-cuisine" value="Any" checked>Any</label>
@@ -233,21 +228,6 @@
         <h2>Browse Flights</h2>
         <div class="form-container">
             <form id="flights-form">
-<<<<<<< HEAD
-                <label>Departure date:</label>
-                <input type="date" id="departure-date" value="2020-05-15" min="2020-01-01" class="date-class">
-                <label>Departure airport code: </label>
-                <input type="text" maxlength="3" id="depart">
-                <label>Destination airport code: </label>
-                <input type="text" maxlength="3" id="destination">
-                <label>Adults: </label>
-                <input type="number" step="1" value="1" min="0" id="num-adults"></input>
-                <label>Children: </label>
-                <input type="number" step="1" value="0" min="0" id="num-children"></input>
-                <label>Seniors: </label>
-                <input type="number" step="1" value="0" min="0" id="num-seniors"></input>
-                <label>Max number of stops:</label>
-=======
                 <label for="departure-date">Departure date:</label>
                 <input type="date" id="departure-date"
                        value="2020-05-15"
@@ -263,7 +243,6 @@
                 <label for="num-seniors">Seniors: </label>
                 <input type="number" step="1" value="0" id="num-seniors"></input>
                 <label for="max-stops-sel">Max number of stops:</label>
->>>>>>> 10847571449c40fe9e2ae5e342242d79c02fda90
                 <select id="max-stops-sel">
                     <option value="1" selected="selected">Any</option>
                     <option value="2" >0</option>
