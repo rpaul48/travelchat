@@ -23,10 +23,9 @@ public class BrowseFlightsHandler implements Route {
    * @param request
    * @param response
    * @return An array of flights, as JSONs.
-   * @throws Exception
    */
   @Override
-  public JSONArray handle(Request request, Response response) throws Exception {
+  public JSONArray handle(Request request, Response response) {
     // Querier for flights
     TripAdvisorQuerier querier = new TripAdvisorQuerier();
     // Get parameters from front-end
@@ -82,9 +81,11 @@ public class BrowseFlightsHandler implements Route {
     }
     // NOT CURRENTLY QUERYING WITH THIS... BUT WILL PROBABLY ADD BACK IN, SO LEAVING
     // THIS HERE.
-    if (Integer.parseInt(maxStops) < 0) {
-      System.out.println("ERROR: An invalid number of stops was passed in.");
-      return false;
+    if (!maxStops.equals("Any")) {
+      if (Integer.parseInt(maxStops) < 0) {
+        System.out.println("ERROR: An invalid number of stops was passed in.");
+        return false;
+      }
     }
 
     // Format: YYYY-MM-DD

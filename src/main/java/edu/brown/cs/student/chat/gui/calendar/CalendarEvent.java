@@ -1,14 +1,11 @@
 package edu.brown.cs.student.chat.gui.calendar;
 
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class CalendarEvent {
-  public String title;
-  public String startTimeISO;
-  public String endTimeISO;
-  public String id;
+  private String title;
+  private String startTimeISO;
+  private String endTimeISO;
+  private String id;
 
 
   public CalendarEvent(String id, String title, String startTimeISO, String endTimeISO) {
@@ -16,10 +13,6 @@ public class CalendarEvent {
     this.title = title;
     this.startTimeISO = startTimeISO;
     this.endTimeISO = endTimeISO;
-
-  }
-
-  public CalendarEvent() {
   }
 
   @Override

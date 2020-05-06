@@ -1,6 +1,7 @@
 package edu.brown.cs.student.chat.gui.calendar;
 
-import com.google.firebase.database.*;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;

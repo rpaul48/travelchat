@@ -199,15 +199,13 @@
                     <option value="4" >Specialty</option>
                 </select>
                 <label>Check-in date:</label>
-                <!--TODO constrain this by trip date-->
                 <input type="date" id="check-in"
                        value="2020-05-15"
-                       min="2020-05-02" max="2020-12-31">
+                       min="2020-05-06">
                 <label>Check-out date:</label>
-                <!--TODO constrain this by trip date and check-in date-->
                 <input type="date" id="check-out"
                        value="2020-05-16"
-                min="2020-05-03" max="2021-01-01">
+                min="2020-05-03">
                 <label>Minimum rating:</label>
                 <select id="hotel-rating-sel">
                     <option value="1" selected="selected">Any</option>
@@ -230,12 +228,16 @@
         <h2>Browse Flights</h2>
         <div class="form-container">
             <form id="flights-form">
+                <label>Departure date:</label>
+                <input type="date" id="departure-date"
+                       value="2020-05-15"
+                       min="2020-05-06">
                 <label>Departure airport code: </label>
                 <input type="text" maxlength="3" id="depart">
                 <label>Destination airport code: </label>
                 <input type="text" maxlength="3" id="destination">
                 <label>Adults: </label>
-                <input type="number" step="1" value="0" id="num-adults"></input>
+                <input type="number" step="1" value="1" id="num-adults"></input>
                 <label>Children: </label>
                 <input type="number" step="1" value="0" id="num-children"></input>
                 <label>Seniors: </label>

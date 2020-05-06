@@ -100,23 +100,22 @@ public class TripAdvisorQuerier extends Querier {
    * @param flightRequest The object containing all parameters/constraints needed
    *                      for the query.
    * @return A JSONArray of flights matching the given parameters.
-   * @throws UnirestException - thrown if query fails to run.
    */
-  public JSONArray getFlights(FlightRequest flightRequest) throws UnirestException {
+  public JSONArray getFlights(FlightRequest flightRequest) {
     LOGGER.log(Level.INFO, LOGGER_PREFIX + "Querying flights.");
     // Create Session -> Poll -> Returned parsed response
     FlightResponse flightResponse = new FlightResponse(flightRequest);
     // Query, re-querying if necessary.
-    int curr_retries = 0;
+    int currRetries = 0;
     List<Flight> data = null;
-    while (curr_retries < MAX_RETRIES) {
-      curr_retries++;
+    while (currRetries < MAX_RETRIES) {
+      currRetries++;
       try {
         data = flightResponse.getData();
         if (data != null) {
           break;
         }
-      } catch(Exception e) {
+      } catch (Exception e) {
         LOGGER.log(Level.INFO,
                 LOGGER_PREFIX + "Query failure. Trying again.");
       }
@@ -131,7 +130,7 @@ public class TripAdvisorQuerier extends Querier {
       json.put("price", flight.getPrice());
       json.put("carrier", flight.getCarrier());
       flightArray.put(json);
-      // We can submit more fields but may not be worth the trouble... this should informative enough.
+      // We can submit more fields but may not be worth the trouble; this should informative enough.
     }
 
     return flightArray;

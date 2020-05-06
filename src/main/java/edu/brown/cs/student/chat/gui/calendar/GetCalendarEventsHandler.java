@@ -1,6 +1,10 @@
 package edu.brown.cs.student.chat.gui.calendar;
 
-import com.google.firebase.database.*;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import org.json.JSONArray;
 import spark.QueryParamsMap;
 import spark.Request;
@@ -8,7 +12,6 @@ import spark.Response;
 import spark.Route;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -51,7 +54,7 @@ public class GetCalendarEventsHandler implements Route {
       while (!done[0]) {
         Thread.sleep(1);
       }
-    } catch(InterruptedException ex) {
+    } catch (InterruptedException ex) {
       ex.printStackTrace();
       Thread.currentThread().interrupt();
     }

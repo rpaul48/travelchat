@@ -38,10 +38,10 @@ public class AttractionResponse {
   /**
    * Setter of attraction request.
    *
-   * @param attractionRequest to newly set to.
+   * @param request to newly set to.
    */
-  public void setattractionRequest(AttractionRequest attractionRequest) {
-    this.attractionRequest = attractionRequest;
+  public void setattractionRequest(AttractionRequest request) {
+    this.attractionRequest = request;
   }
 
   /**

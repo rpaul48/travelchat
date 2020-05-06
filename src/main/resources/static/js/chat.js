@@ -260,13 +260,6 @@ function browseLodging() {
         var rating = rating_sel.options[rating_sel.selectedIndex].text;
         var num_rooms = document.getElementById("num-rooms").value;
 
-        console.log(coordinates);
-        console.log(type);
-        console.log(checkin);
-        console.log(checkout);
-        console.log(rating);
-        console.log(num_rooms);
-
         // returns a list of lodging options which match the query parameters
         $.ajax({
             url: "/browseLodging",
@@ -291,6 +284,7 @@ function browseFlights() {
     if ((coordinates === "Geolocation is not supported by this browser.") || (coordinates == null)) {
         window.alert("Please allow your browser to access your location.");
     } else {
+        var departure_date = document.getElementById("departure-date").value;
         var depart = document.getElementById("depart").value;
         var destination = document.getElementById("destination").value;
         var adults = document.getElementById("num-adults").value;
@@ -306,7 +300,8 @@ function browseFlights() {
             url: "/browseFlights",
             type: "get",
             data: {"location": coordinates,
-                "depart": depart,
+                "departure_date": departure_date,
+                "origin": depart,
                 "destination": destination,
                 "adults": adults,
                 "children": children,
@@ -316,8 +311,31 @@ function browseFlights() {
             async: false,
             success: function (data) {
                 var result = JSON.parse(data);
-                var recs = Object.values(result)[1];
-                document.getElementById("flights-results").innerHTML = recs;
+
+                if (result.length === 0) {
+                    document.getElementById("flights-results").innerHTML = "No results found.";
+                } else {
+                    var i;
+                    for (i = 0; i < result.length; i++) {
+                        var html = [];
+                        html.push(
+                            "<p>",
+                            "carrier: ",
+                            result[i].carrier,
+                            "<br>",
+                            "price: ",
+                            result[i].price,
+                            "<br>",
+                            "book your flight: ",
+                            "<a href=",
+                            result[i].booking_url,
+                            ">here</a>",
+                            "<hr>",
+                            "</p>",
+                        );
+                        document.getElementById("flights-results").innerHTML += html.join("");
+                    }
+                }
             }});
     }
 }
