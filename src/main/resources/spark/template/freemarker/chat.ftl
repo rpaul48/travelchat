@@ -237,7 +237,7 @@
                 <label>Destination airport code: </label>
                 <input type="text" maxlength="3" id="destination">
                 <label>Adults: </label>
-                <input type="number" step="1" value="0" id="num-adults"></input>
+                <input type="number" step="1" value="1" id="num-adults"></input>
                 <label>Children: </label>
                 <input type="number" step="1" value="0" id="num-children"></input>
                 <label>Seniors: </label>

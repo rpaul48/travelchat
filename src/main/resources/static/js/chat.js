@@ -312,23 +312,29 @@ function browseFlights() {
             success: function (data) {
                 var result = JSON.parse(data);
 
-                var i;
-                for (i = 0; i < result.length; i++) {
-                    var html = [];
-                    html.push(
-                        "<p>",
-                        "carrier: ",
-                        result[i].carrier,
-                        "<br>",
-                        "price: ",
-                        result[i].price,
-                        "<br>",
-                        "booking url: ",
-                        result[i].booking_url,
-                        "<hr>",
-                        "</p>",
-                    );
-                    document.getElementById("flights-results").innerHTML += html.join("");
+                if (result.length === 0) {
+                    document.getElementById("flights-results").innerHTML = "No results found.";
+                } else {
+                    var i;
+                    for (i = 0; i < result.length; i++) {
+                        var html = [];
+                        html.push(
+                            "<p>",
+                            "carrier: ",
+                            result[i].carrier,
+                            "<br>",
+                            "price: ",
+                            result[i].price,
+                            "<br>",
+                            "book your flight: ",
+                            "<a href=",
+                            result[i].booking_url,
+                            ">here</a>",
+                            "<hr>",
+                            "</p>",
+                        );
+                        document.getElementById("flights-results").innerHTML += html.join("");
+                    }
                 }
             }});
     }
