@@ -1,6 +1,7 @@
 package edu.brown.cs.student.api.tripadvisor.objects;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.brown.cs.student.chat.gui.Constants;
@@ -26,47 +27,24 @@ public class Restaurant implements Item {
   private List<String> cuisineTypes;
 
   /**
-   * Default constructor.
+   * Default constructor, initializing all instance variables.
    */
   public Restaurant() {
-  }
-
-  /**
-   * Constructor with all fields.
-   *
-   * @param name           - name of Restaurant
-   * @param latitude       - latitude of Restaurant
-   * @param longitude      - longitude of Restaurant
-   * @param numReviews     - number of reviews for Restaurant
-   * @param locationString - location string of Restaurant indicating region
-   * @param photoUrl       - url for an image of Restaurant
-   * @param distance       - distance from specified location to Restaurant
-   * @param priceLevel     - price level (ex. $$$) of Restaurant
-   * @param rating         - rating for Restaurant
-   * @param isClosed       - whether Restaurant is closed
-   * @param ranking        - ranking number of Restaurant within its category
-   * @param rankingString  - ranking string of Restaurant within its category
-   * @param address        - address of Restaurant
-   * @param cuisineTypes   - cuisine types that Restaurant has
-   */
-  public Restaurant(String name, double latitude, double longitude, int numReviews,
-      String locationString, String photoUrl, double distance, String priceLevel, double rating,
-      boolean isClosed, int ranking, String rankingString, String address,
-      List<String> cuisineTypes) {
-    this.name = name;
-    this.latitude = latitude;
-    this.longitude = longitude;
-    this.numReviews = numReviews;
-    this.locationString = locationString;
-    this.photoUrl = photoUrl;
-    this.distance = distance;
-    this.priceLevel = priceLevel;
-    this.rating = rating;
-    this.isClosed = isClosed;
-    this.ranking = ranking;
-    this.rankingString = rankingString;
-    this.address = address;
-    this.cuisineTypes = cuisineTypes;
+    name = "";
+    latitude = Constants.INIT_NUM_VALUE;
+    longitude = Constants.INIT_NUM_VALUE;
+    numReviews = Constants.INIT_NUM_VALUE;
+    locationString = "";
+    photoUrl = "";
+    distance = Constants.INIT_NUM_VALUE;
+    priceLevel = "";
+    rating = Constants.INIT_NUM_VALUE;
+    isClosed = false;
+    ranking = Constants.INIT_NUM_VALUE;
+    rankingString = "";
+    address = "";
+    cuisineTypes = new ArrayList<String>();
+    photoUrl = "";
   }
 
   @Override
@@ -197,69 +175,78 @@ public class Restaurant implements Item {
     this.rankingString = rankingString;
   }
 
-  @Override
-  public String toString() {
-    DecimalFormat df = new DecimalFormat("#.##");
-    DecimalFormat df2 = new DecimalFormat("#.####");
-
-    StringBuilder sb = new StringBuilder();
-    sb.append("Name: ").append(name).append("\n");
-    sb.append("Location: ").append(locationString).append("\n");
-    sb.append("Latitude: ").append(df2.format(latitude)).append("\n");
-    sb.append("Longitude: ").append(df2.format(longitude)).append("\n");
-    sb.append("Distance: ").append(df.format(distance)).append(" ").append(Constants.LUNIT);
-    if (cuisineTypes != null && cuisineTypes.size() > 0) {
-      sb.append("\nCuisine Types: ");
-      for (String cuisine : cuisineTypes) {
-        sb.append(cuisine).append(", ");
-      }
-      sb.delete(sb.length() - 2, sb.length());
-    }
-    sb.append("\nNumber of Reviews: ").append(numReviews).append("\n");
-    sb.append("Rating: ").append(rating).append("/5.0\n");
-    sb.append("Price Level: ").append(priceLevel).append("\n");
-    sb.append("Ranking: ").append(rankingString).append("\n");
-    sb.append("Address: ").append(address).append("\n");
-//    sb.append("Photo Url: " + photoUrl + "\n");
-
-    if (isClosed) {
-      sb.append("Closed");
-    } else {
-      sb.append("Open");
-    }
-
-    return sb.toString();
-  }
-
+  /*
+   * Checks if each variable has an assigned information and builds an HTML string
+   * using meaningful variables with info assigned.
+   */
   @Override
   public String toStringHTML() {
     DecimalFormat df = new DecimalFormat("#.##");
     DecimalFormat df2 = new DecimalFormat("#.####");
-
     StringBuilder sb = new StringBuilder();
-    sb.append("Name: ").append(name).append("<br>");
-    sb.append("Location: ").append(locationString).append("<br>");
-    sb.append("Latitude: ").append(df2.format(latitude)).append("<br>");
-    sb.append("Longitude: ").append(df2.format(longitude)).append("<br>");
-    sb.append("Distance: ").append(df.format(distance)).append(" ").append(Constants.LUNIT);
-    if (cuisineTypes != null && cuisineTypes.size() > 0) {
-      sb.append("<br>Cuisine Types: ");
+
+    // If name is not assigned, do not show this Restaurant in HTML string.
+    if (name.equals("")) {
+      return "";
+    }
+
+    sb.append("<br>Name: ").append(name).append("<br>");
+
+    if (!locationString.equals("")) {
+      sb.append("Location: ").append(locationString).append("<br>");
+    }
+
+    // Means it has been updated and has an actual value for that number variable.
+    if (!(latitude == Constants.INIT_NUM_VALUE || longitude == Constants.INIT_NUM_VALUE)) {
+      sb.append("Latitude: ").append(df2.format(latitude)).append("<br>");
+      sb.append("Longitude: ").append(df2.format(longitude)).append("<br>");
+    }
+
+    if (!(distance == Constants.INIT_NUM_VALUE)) {
+      sb.append("Distance: ").append(df.format(distance)).append(" ").append(Constants.LUNIT)
+          .append("<br>");
+    }
+
+    if (cuisineTypes.size() > 0) {
+      sb.append("Cuisine Types: ");
       for (String cuisine : cuisineTypes) {
         sb.append(cuisine).append(", ");
       }
       sb.delete(sb.length() - 2, sb.length());
+      sb.append("<br>");
     }
-    sb.append("<br>Number of Reviews: ").append(numReviews).append("<br>");
-    sb.append("Rating: ").append(rating).append("/5.0<br>");
-    sb.append("Price Level: ").append(priceLevel).append("<br>");
-    sb.append("Ranking: ").append(rankingString).append("<br>");
-    sb.append("Address: ").append(address).append("<br>");
+
+    if (!(numReviews == Constants.INIT_NUM_VALUE)) {
+      sb.append("Number of Reviews: ").append(numReviews).append("<br>");
+    }
+
+    if (!(rating == Constants.INIT_NUM_VALUE)) {
+      sb.append("Rating: ").append(rating).append("/5.0<br>");
+    }
+
+    if (!priceLevel.equals("")) {
+      sb.append("Price Level: ").append(priceLevel).append("<br>");
+    }
+
+    if (!rankingString.equals("")) {
+      sb.append("Ranking: ").append(rankingString).append("<br>");
+    }
+
+    if (!address.equals("")) {
+      sb.append("Address: ").append(address).append("<br>");
+    }
 
     if (isClosed) {
       sb.append("Closed");
     } else {
       sb.append("Open");
     }
+
+    if (!photoUrl.equals("")) {
+      sb.append("<br><img src=\"" + photoUrl + "\" width = \"300\" height=\"200\">");
+    }
+
+    sb.append("<br><br>");
 
     return sb.toString();
   }

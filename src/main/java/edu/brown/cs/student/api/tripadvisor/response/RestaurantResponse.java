@@ -48,7 +48,8 @@ public class RestaurantResponse {
    * Parses all relevant fields from the raw HTTP response for restaurant.
    *
    * @return List of restaurants matching query parameters.
-   * @throws UnirestException - thrown if JSONArray mapped by "data" cannot be obtained.
+   * @throws UnirestException - thrown if JSONArray mapped by "data" cannot be
+   *                          obtained.
    */
   public List<Restaurant> getData() throws UnirestException {
     List<Restaurant> restaurantsList = new ArrayList<>();
@@ -68,31 +69,74 @@ public class RestaurantResponse {
         JSONObject restaurantObj = (JSONObject) restaurantsArr.get(i);
 
         try {
-          JSONObject photoObj = (JSONObject) restaurantObj.get("photo");
-          JSONObject imagesObj = (JSONObject) photoObj.get("images");
-          JSONObject smallObj = (JSONObject) imagesObj.get("small");
-          restaurant.setPhotoUrl(smallObj.getString("url"));
-
-          restaurant.setName(restaurantObj.getString("name"));
-          restaurant.setLatitude(restaurantObj.getDouble("latitude"));
-          restaurant.setLongitude(restaurantObj.getDouble("longitude"));
-          restaurant.setDistance(restaurantObj.getDouble("distance"));
-          restaurant.setNumReviews(restaurantObj.getInt("num_reviews"));
-          restaurant.setLocationString(restaurantObj.getString("location_string"));
-          restaurant.setRating(restaurantObj.getDouble("rating"));
-          restaurant.setPriceLevel(restaurantObj.getString("price_level"));
-          restaurant.setRankingString(restaurantObj.getString("ranking"));
-          restaurant.setRanking(restaurantObj.getInt("ranking_position"));
-          restaurant.setClosed(restaurantObj.getBoolean("is_closed"));
-          restaurant.setAddress(restaurantObj.getString("address"));
-
-          List<String> cuisines = new ArrayList<String>();
-          JSONArray cuisineArr = (JSONArray) restaurantObj.get("cuisine");
-          for (int j = 0; j < cuisineArr.length(); j++) {
-            JSONObject cuisineObj = (JSONObject) cuisineArr.get(j);
-            cuisines.add(cuisineObj.getString("name"));
+          if (restaurantObj.isNull("name")) {
+            continue;
           }
-          restaurant.setCuisineTypes(cuisines);
+          restaurant.setName(restaurantObj.getString("name"));
+
+          if (!restaurantObj.isNull("latitude") && !restaurantObj.isNull("longitude")) {
+            restaurant.setLatitude(restaurantObj.getDouble("latitude"));
+            restaurant.setLongitude(restaurantObj.getDouble("longitude"));
+          }
+
+          if (!restaurantObj.isNull("distance")) {
+            restaurant.setDistance(restaurantObj.getDouble("distance"));
+          }
+
+          if (!restaurantObj.isNull("num_reviews")) {
+            restaurant.setNumReviews(restaurantObj.getInt("num_reviews"));
+          }
+
+          if (!restaurantObj.isNull("location_string")) {
+            restaurant.setLocationString(restaurantObj.getString("location_string"));
+          }
+
+          if (!restaurantObj.isNull("rating")) {
+            restaurant.setRating(restaurantObj.getDouble("rating"));
+          }
+
+          if (!restaurantObj.isNull("price_level")) {
+            restaurant.setPriceLevel(restaurantObj.getString("price_level"));
+          }
+
+          if (!restaurantObj.isNull("ranking")) {
+            restaurant.setRankingString(restaurantObj.getString("ranking"));
+          }
+
+          if (!restaurantObj.isNull("ranking_position")) {
+            restaurant.setRanking(restaurantObj.getInt("ranking_position"));
+          }
+
+          if (!restaurantObj.isNull("is_closed")) {
+            restaurant.setClosed(restaurantObj.getBoolean("is_closed"));
+          }
+
+          if (!restaurantObj.isNull("address")) {
+            restaurant.setAddress(restaurantObj.getString("address"));
+          }
+
+          if (!restaurantObj.isNull("cuisine")) {
+            List<String> cuisines = new ArrayList<String>();
+            JSONArray cuisineArr = (JSONArray) restaurantObj.get("cuisine");
+            for (int j = 0; j < cuisineArr.length(); j++) {
+              JSONObject cuisineObj = (JSONObject) cuisineArr.get(j);
+              cuisines.add(cuisineObj.getString("name"));
+            }
+            restaurant.setCuisineTypes(cuisines);
+          }
+
+          if (!restaurantObj.isNull("photo")) {
+            JSONObject photoObj = (JSONObject) restaurantObj.get("photo");
+            if (!photoObj.isNull("images")) {
+              JSONObject imagesObj = (JSONObject) photoObj.get("images");
+              if (!imagesObj.isNull("small")) {
+                JSONObject smallObj = (JSONObject) imagesObj.get("small");
+                if (!smallObj.isNull("url")) {
+                  restaurant.setPhotoUrl(smallObj.getString("url"));
+                }
+              }
+            }
+          }
         } catch (org.json.JSONException exception) {
           continue;
         }

@@ -1,5 +1,6 @@
 package edu.brown.cs.student.chat.gui;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,7 @@ public class BrowseActivitiesHandler implements Route {
 
   @Override
   public JSONObject handle(Request request, Response response)
-          throws JSONException, UnirestException {
+      throws JSONException, UnirestException {
     TripAdvisorQuerier querier = new TripAdvisorQuerier();
     QueryParamsMap qm = request.queryMap();
     String errorMsg = "";
@@ -44,6 +45,18 @@ public class BrowseActivitiesHandler implements Route {
       Map<String, String> variables = ImmutableMap.of("activities_result", "", "activities_errors",
           errorMsg);
       return new JSONObject(variables);
+    }
+
+    double boundaryOffset = 0.0;
+    int maxDist = Integer.parseInt(qm.value("miles"));
+    if (maxDist == 1) {
+      boundaryOffset = Constants.LAT_LON_BOUNDARY_OFFSET_1_MILES;
+    } else if (maxDist == 2) {
+      boundaryOffset = Constants.LAT_LON_BOUNDARY_OFFSET_2_MILES;
+    } else if (maxDist == 5) {
+      boundaryOffset = Constants.LAT_LON_BOUNDARY_OFFSET_5_MILES;
+    } else if (maxDist == 10) {
+      boundaryOffset = Constants.LAT_LON_BOUNDARY_OFFSET_10_MILES;
     }
 
     /*
@@ -76,10 +89,10 @@ public class BrowseActivitiesHandler implements Route {
       params.put("currency", Constants.CURRENCY);
       params.put("lunit", Constants.LUNIT);
       // Defined lat-lon boundary to search from using the predetermined offset.
-      params.put("tr_latitude", lat + Constants.BOUNDARYOFFSET);
-      params.put("tr_longitude", lon + Constants.BOUNDARYOFFSET);
-      params.put("bl_latitude", lat - Constants.BOUNDARYOFFSET);
-      params.put("bl_longitude", lon - Constants.BOUNDARYOFFSET);
+      params.put("tr_latitude", lat + boundaryOffset);
+      params.put("tr_longitude", lon + boundaryOffset);
+      params.put("bl_latitude", lat - boundaryOffset);
+      params.put("bl_longitude", lon - boundaryOffset);
       params.put("subcategory", activity);
 
       errorMsg = paramsAreValid(params);
@@ -103,14 +116,19 @@ public class BrowseActivitiesHandler implements Route {
       }
     }
 
-
     StringBuilder sb = new StringBuilder();
     if (attractionsMap.isEmpty()) {
       sb.append("No matching result.");
     } else {
-      for (Attraction attraction : attractionsMap.values()) {
-        sb.append(attraction.toStringHTML() + Constants.SEPARATOR_HTML);
+      List<Attraction> attractionsList = new ArrayList<Attraction>(attractionsMap.values());
+      for (int i = 0; i < attractionsList.size() - 1; i++) {
+        // Skip this attraction if it has distance greater than specified max distance.
+        if (attractionsList.get(i).getDistance() > maxDist) {
+          continue;
+        }
+        sb.append(attractionsList.get(i).toStringHTML() + "<hr>");
       }
+      sb.append(attractionsList.get(attractionsList.size() - 1).toStringHTML());
     }
 
     Map<String, String> variables = ImmutableMap.of("activities_result", sb.toString(),
@@ -133,11 +151,13 @@ public class BrowseActivitiesHandler implements Route {
       return "ERROR: Latitude or longitude is missing.";
     }
 
-    double latitude = ((Double) params.get("tr_latitude")) - Constants.BOUNDARYOFFSET;
-    double longitude = ((Double) params.get("tr_longitude")) - Constants.BOUNDARYOFFSET;
+    double tr_latitude = ((Double) params.get("tr_latitude"));
+    double tr_longitude = ((Double) params.get("tr_longitude"));
+    double bl_latitude = ((Double) params.get("bl_latitude"));
+    double bl_longitude = ((Double) params.get("bl_longitude"));
 
-    if (!(latitude >= Constants.MIN_LATITUDE && latitude <= Constants.MAX_LATITUDE
-        && longitude >= Constants.MIN_LONGITUDE && longitude <= Constants.MAX_LONGITUDE)) {
+    if (!(bl_latitude >= Constants.MIN_LATITUDE && tr_latitude <= Constants.MAX_LATITUDE
+        && bl_longitude >= Constants.MIN_LONGITUDE && tr_longitude <= Constants.MAX_LONGITUDE)) {
       return "ERROR: Latitude or longitude is out of range.";
     }
 

@@ -17,6 +17,14 @@ import spark.Route;
  * Class that handles requests for flights.
  */
 public class BrowseFlightsHandler implements Route {
+  /**
+   * Returns an array of JSON objects, one for each flight. Each object will contain the booking URL, carrier, and
+   * price of the flight.
+   * @param request
+   * @param response
+   * @return An array of flights, as JSONs.
+   * @throws Exception
+   */
   @Override
   public JSONArray handle(Request request, Response response) throws Exception {
     // Querier for flights

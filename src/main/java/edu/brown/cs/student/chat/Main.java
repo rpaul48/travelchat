@@ -1,5 +1,11 @@
 package edu.brown.cs.student.chat;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -12,7 +18,6 @@ import edu.brown.cs.student.chat.gui.ChatFrontHandler;
 import edu.brown.cs.student.chat.gui.LoginFrontHandler;
 import edu.brown.cs.student.chat.gui.ManageChatsFrontHandler;
 import edu.brown.cs.student.chat.gui.PlanMyDayHandler;
-import edu.brown.cs.student.chat.gui.calendar.CalendarEvent;
 import edu.brown.cs.student.chat.gui.calendar.CalendarFrontHandler;
 import edu.brown.cs.student.chat.gui.calendar.GetCalendarEventsHandler;
 import edu.brown.cs.student.chat.gui.calendar.PostCalendarEventHandler;
@@ -30,15 +35,6 @@ import spark.Request;
 import spark.Response;
 import spark.Spark;
 import spark.template.freemarker.FreeMarkerEngine;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public final class Main {
   private static final int DEFAULT_PORT = 4567;
@@ -64,8 +60,7 @@ public final class Main {
     // Parse command line arguments
     OptionParser parser = new OptionParser();
     parser.accepts("gui");
-    parser.accepts("port").withRequiredArg().ofType(Integer.class)
-            .defaultsTo(DEFAULT_PORT);
+    parser.accepts("port").withRequiredArg().ofType(Integer.class).defaultsTo(DEFAULT_PORT);
     OptionSet options = parser.parse(args);
 
     try {
@@ -82,8 +77,7 @@ public final class Main {
     try {
       config.setDirectoryForTemplateLoading(templates);
     } catch (IOException ioe) {
-      System.out.printf("ERROR: Unable to use %s for template loading.%n",
-              templates);
+      System.out.printf("ERROR: Unable to use %s for template loading.%n", templates);
       System.exit(1);
     }
     return new FreeMarkerEngine(config);
@@ -97,19 +91,17 @@ public final class Main {
     FreeMarkerEngine freeMarker = createEngine();
 
     // setup connection to Firebase
-    FileInputStream serviceAccount =
-          new FileInputStream("travelchat-3120c-firebase-adminsdk-rar2p-3d1e24dc48.json");
+    FileInputStream serviceAccount = new FileInputStream(
+        "travelchat-3120c-firebase-adminsdk-rar2p-3d1e24dc48.json");
     FirebaseOptions options = new FirebaseOptions.Builder()
-          .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-          .setDatabaseUrl("https://travelchat-3120c.firebaseio.com")
-          .build();
+        .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+        .setDatabaseUrl("https://travelchat-3120c.firebaseio.com").build();
     FirebaseApp.initializeApp(options);
 
     // Setup Spark Routes
     Spark.get("/login", new LoginFrontHandler(), freeMarker);
     Spark.get("/manage-chats", new ManageChatsFrontHandler(), freeMarker);
     Spark.get("/chat/:roomId", new ChatFrontHandler(), freeMarker);
-
 
     // Handlers for firebase management
     Spark.post("/createRoom", new CreateRoomHandler());
@@ -125,7 +117,6 @@ public final class Main {
     Spark.get("/browseLodging", new BrowseLodgingHandler());
     Spark.get("/browseFlights", new BrowseFlightsHandler());
     Spark.get("/planMyDay", new PlanMyDayHandler());
-
 
     // Calendar management
     Spark.get("/calendar/:roomId/:userId", new CalendarFrontHandler(), freeMarker);

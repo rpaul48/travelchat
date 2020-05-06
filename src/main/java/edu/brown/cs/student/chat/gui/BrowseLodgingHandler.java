@@ -30,7 +30,7 @@ public class BrowseLodgingHandler implements Route {
     QueryParamsMap qm = request.queryMap();
     String errorMsg = "";
 
-    // of the form "[lat], [lon]"
+    // of the form "[lat] [lon]"
     String[] locationStrings = qm.value("location").split(" ");
     String lat = locationStrings[0];
     String lon = locationStrings[1];
@@ -98,9 +98,10 @@ public class BrowseLodgingHandler implements Route {
     if (hotels.isEmpty()) {
       sb.append("No matching result.");
     } else {
-      for (Hotel hotel : hotels) {
-        sb.append(hotel.toStringHTML()).append(Constants.SEPARATOR_HTML);
+      for (int i = 0; i < hotels.size() - 1; i++) {
+        sb.append(hotels.get(i).toStringHTML() + "<hr>");
       }
+      sb.append(hotels.get(hotels.size() - 1).toStringHTML());
     }
 
     Map<String, String> variables = ImmutableMap.of("lodging_result", sb.toString(),

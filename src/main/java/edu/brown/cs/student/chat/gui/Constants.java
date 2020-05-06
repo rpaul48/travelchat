@@ -23,10 +23,10 @@ public class Constants {
 
   public static final Map<String, String> DIETARY_RESTRICTION_TO_CODE = ImmutableMap
       .<String, String>builder().put("vegetarian friendly", "10665").put("vegan options", "10697")
-      .put("halal", "10751").put("gluten free options", "10992").put("none", "all").build();
+      .put("halal", "10751").put("gluten-free options", "10992").put("none", "all").build();
 
   public static final Map<String, String> RESTAURANT_PRICE_TO_CODE = ImmutableMap
-      .<String, String>builder().put("$", "10953").put("$$", "10955").put("$$$", "10955")
+      .<String, String>builder().put("$", "10953").put("$$-$$$", "10955").put("$$$$", "10954")
       .put("Any", "all").build();
 
   public static final int LIMIT = 30;
@@ -35,14 +35,27 @@ public class Constants {
   public static final String LUNIT = "mi";
   public static final String SORT = "recommended";
   /*
-   * 1 degree is approximately 69 mi; thus, 0.01 degree lat/lon offset will give
-   * reasonable boundary.
+   * 1 degree is approximately 69 mi; thus, this lat/lon offset will give
+   * approximately reasonable boundary for corresponding number of miles.
    */
-  public static final double BOUNDARYOFFSET = 0.01;
+  public static final double LAT_LON_BOUNDARY_OFFSET_1_MILES = 0.01449275362;
+  public static final double LAT_LON_BOUNDARY_OFFSET_2_MILES = 0.02898550724;
+  public static final double LAT_LON_BOUNDARY_OFFSET_5_MILES = 0.07246376811;
+  public static final double LAT_LON_BOUNDARY_OFFSET_10_MILES = 0.1449275362;
 
   public static final int MIN_LATITUDE = -90;
   public static final int MAX_LATITUDE = 90;
   public static final int MIN_LONGITUDE = -180;
   public static final int MAX_LONGITUDE = 180;
-  public static final String SEPARATOR_HTML = "<br>" + "-----------------------------" + "<br>";
+  // This will separate different items in browse restaurants/hotels/attractions.
+  public static final String SEPARATOR_HTML = "<br>"
+      + "----------------------------------------------------------"
+      + "----------------------------------------------------------"
+      + "------------------------------------------------------" + "<br>";
+
+  /*
+   * Each integer/double field in Restaurant/Hotel/Attractions' info is
+   * initialized with this value.
+   */
+  public static final int INIT_NUM_VALUE = -1000000000;
 }

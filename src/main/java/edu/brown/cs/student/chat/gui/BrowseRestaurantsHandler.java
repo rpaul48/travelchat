@@ -61,13 +61,14 @@ public class BrowseRestaurantsHandler implements Route {
       cuisines = cuisines.substring(0, cuisines.length() - 1);
     }
 
+    // options: any, $, $$-$$$, $$$$
     String price = Constants.RESTAURANT_PRICE_TO_CODE.get(qm.value("price"));
 
     /*
      * dietary restrictions; options: "None", "Vegetarian friendly",
      * "Vegan options", "Halal", "Gluten-free options
      */
-    String[] dietArr = qm.value("diet").replaceAll("-", " ").toLowerCase().split(",");
+    String[] dietArr = qm.value("diet").toLowerCase().split(",");
     String dietStr = "";
     if (dietArr.length != 0) {
       for (int i = 0; i < dietArr.length; i++) {
@@ -106,9 +107,10 @@ public class BrowseRestaurantsHandler implements Route {
     if (restaurants.isEmpty()) {
       sb.append("No matching result.");
     } else {
-      for (Restaurant restaurant : restaurants) {
-        sb.append(restaurant.toStringHTML() + Constants.SEPARATOR_HTML);
+      for (int i = 0; i < restaurants.size() - 1; i++) {
+        sb.append(restaurants.get(i).toStringHTML() + "<hr>");
       }
+      sb.append(restaurants.get(restaurants.size() - 1).toStringHTML());
     }
 
     Map<String, String> variables = ImmutableMap.of("restaurants_result", sb.toString(),

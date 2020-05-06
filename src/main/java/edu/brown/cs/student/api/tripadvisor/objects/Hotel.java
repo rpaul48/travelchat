@@ -22,48 +22,27 @@ public class Hotel implements Item {
   private int ranking; // field "ranking_position"
   private String rankingString; // field "ranking"
   private boolean isClosed; // field "is_closed"
-  private String hotelClass; // field "hotel_class"
+  private double hotelClass; // field "hotel_class"
 
   /**
-   * Default constructor.
+   * Default constructor, initializing all instance variables.
    */
   public Hotel() {
-  }
-
-  /**
-   * Constructor with all fields.
-   *
-   * @param name           - name of Hotel
-   * @param latitude       - latitude of Hotel
-   * @param longitude      - longitude of Hotel
-   * @param distance       - distance from specified location to Hotel
-   * @param numReviews     - number of reviews for Hotel
-   * @param locationString - location String of Hotel indicating region
-   * @param photoUrl       - url for an image of Hotel
-   * @param rating         - rating of Hotel
-   * @param priceLevel     - price level (ex. $$$) of Hotel
-   * @param price          - number representing price of Hotel
-   * @param ranking        - ranking number of Hotel in its category
-   * @param rankingString  - ranking string of Hotel in its category
-   * @param isClosed       - whether Hotel is closed
-   */
-  public Hotel(String name, double latitude, double longitude, double distance, int numReviews,
-      String locationString, String photoUrl, double rating, String priceLevel, String price,
-      int ranking, String rankingString, boolean isClosed) {
-    super();
-    this.name = name;
-    this.latitude = latitude;
-    this.longitude = longitude;
-    this.distance = distance;
-    this.numReviews = numReviews;
-    this.locationString = locationString;
-    this.photoUrl = photoUrl;
-    this.rating = rating;
-    this.priceLevel = priceLevel;
-    this.price = price;
-    this.ranking = ranking;
-    this.rankingString = rankingString;
-    this.isClosed = isClosed;
+    name = "";
+    latitude = Constants.INIT_NUM_VALUE;
+    longitude = Constants.INIT_NUM_VALUE;
+    numReviews = Constants.INIT_NUM_VALUE;
+    locationString = "";
+    photoUrl = "";
+    distance = Constants.INIT_NUM_VALUE;
+    priceLevel = "";
+    price = "";
+    rating = Constants.INIT_NUM_VALUE;
+    isClosed = false;
+    ranking = Constants.INIT_NUM_VALUE;
+    rankingString = "";
+    photoUrl = "";
+    hotelClass = Constants.INIT_NUM_VALUE;
   }
 
   @Override
@@ -186,67 +165,78 @@ public class Hotel implements Item {
     this.isClosed = closed;
   }
 
-  public String getHotelClass() {
+  public double getHotelClass() {
     return hotelClass;
   }
 
-  public void setHotelClass(String hotelClass) {
+  public void setHotelClass(double hotelClass) {
     this.hotelClass = hotelClass;
-  }
-
-  @Override
-  public String toString() {
-    DecimalFormat df = new DecimalFormat("#.##");
-    DecimalFormat df2 = new DecimalFormat("#.####");
-
-    StringBuilder sb = new StringBuilder();
-    sb.append("Name: ").append(name).append("\n");
-    sb.append("Location: ").append(locationString).append("\n");
-    sb.append("Latitude: ").append(df2.format(latitude)).append("\n");
-    sb.append("Longitude: ").append(df2.format(longitude)).append("\n");
-    sb.append("Distance: ").append(df.format(distance)).append(" ").append(Constants.LUNIT)
-        .append("\n");
-    sb.append("Number of Reviews: ").append(numReviews).append("\n");
-    sb.append("Rating: ").append(rating).append("/5.0\n");
-    sb.append("Hotel Class: ").append(hotelClass).append(" stars\n");
-    sb.append("Price Level: ").append(priceLevel).append("\n");
-    sb.append("Price: ").append(price).append("\n");
-    sb.append("Ranking: ").append(rankingString).append("\n");
-//    sb.append("Photo Url: " + photoUrl + "\n");
-
-    if (isClosed) {
-      sb.append("Closed");
-    } else {
-      sb.append("Open");
-    }
-
-    return sb.toString();
   }
 
   @Override
   public String toStringHTML() {
     DecimalFormat df = new DecimalFormat("#.##");
     DecimalFormat df2 = new DecimalFormat("#.####");
-
     StringBuilder sb = new StringBuilder();
-    sb.append("Name: ").append(name).append("<br>");
-    sb.append("Location: ").append(locationString).append("<br>");
-    sb.append("Latitude: ").append(df2.format(latitude)).append("<br>");
-    sb.append("Longitude: ").append(df2.format(longitude)).append("<br>");
-    sb.append("Distance: ").append(df.format(distance)).append(" ").append(Constants.LUNIT)
-        .append("<br>");
-    sb.append("Number of Reviews: ").append(numReviews).append("<br>");
-    sb.append("Rating: ").append(rating).append("/5.0<br>");
-    sb.append("Hotel Class: ").append(hotelClass).append(" stars<br>");
-    sb.append("Price Level: ").append(priceLevel).append("<br>");
-    sb.append("Price: ").append(price).append("<br>");
-    sb.append("Ranking: ").append(rankingString).append("<br>");
+
+    // If name is not assigned, do not show this Restaurant in HTML string.
+    if (name.equals("")) {
+      return "";
+    }
+
+    sb.append("<br>Name: ").append(name).append("<br>");
+
+    if (!locationString.equals("")) {
+      sb.append("Location: ").append(locationString).append("<br>");
+    }
+
+    // Means it has been updated and has an actual value for that number variable.
+    if (!(latitude == Constants.INIT_NUM_VALUE || longitude == Constants.INIT_NUM_VALUE)) {
+      sb.append("Latitude: ").append(df2.format(latitude)).append("<br>");
+      sb.append("Longitude: ").append(df2.format(longitude)).append("<br>");
+    }
+
+    if (!(distance == Constants.INIT_NUM_VALUE)) {
+      sb.append("Distance: ").append(df.format(distance)).append(" ").append(Constants.LUNIT)
+          .append("<br>");
+    }
+
+    // Means it has been updated and has an actual value for that variable.
+    if (!(numReviews == Constants.INIT_NUM_VALUE)) {
+      sb.append("Number of Reviews: ").append(numReviews).append("<br>");
+    }
+
+    if (!(rating == Constants.INIT_NUM_VALUE)) {
+      sb.append("Rating: ").append(rating).append("/5.0<br>");
+    }
+
+    if (!(hotelClass == Constants.INIT_NUM_VALUE)) {
+      sb.append("Hotel Class: ").append(hotelClass).append(" stars<br>");
+    }
+
+    if (!priceLevel.equals("")) {
+      sb.append("Price Level: ").append(priceLevel).append("<br>");
+    }
+
+    if (!price.equals("")) {
+      sb.append("Price: ").append(price).append("<br>");
+    }
+
+    if (!rankingString.equals("")) {
+      sb.append("Ranking: ").append(rankingString).append("<br>");
+    }
 
     if (isClosed) {
       sb.append("Closed");
     } else {
       sb.append("Open");
     }
+
+    if (!photoUrl.equals("")) {
+      sb.append("<br><img src=\"" + photoUrl + "\" width = \"300\" height=\"200\">");
+    }
+
+    sb.append("<br><br>");
 
     return sb.toString();
   }

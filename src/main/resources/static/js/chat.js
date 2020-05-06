@@ -235,7 +235,7 @@ function browseActivities() {
         $.ajax({
             url: "/browseActivities",
             type: "get",
-            data: {"location": "40.7580 -73.9855",
+            data: {"location": coordinates,
                 "miles": miles,
                 "activityTypes": activities.toString()},
             async: false,
