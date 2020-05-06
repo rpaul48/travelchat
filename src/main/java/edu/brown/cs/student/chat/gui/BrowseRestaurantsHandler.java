@@ -17,6 +17,9 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+/**
+ * Class that handles requests for restaurants.
+ */
 public class BrowseRestaurantsHandler implements Route {
 
   @Override
@@ -94,7 +97,7 @@ public class BrowseRestaurantsHandler implements Route {
       sb.append("No matching result.");
     } else {
       for (Restaurant restaurant : restaurants) {
-        sb.append(restaurant.toString() + "\n-----------------------------\n");
+        sb.append(restaurant.toString() + "<br>" + "-----------------------------" + "<br>");
       }
     }
 

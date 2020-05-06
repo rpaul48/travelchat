@@ -20,6 +20,9 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+/**
+ * Class that handles requests for lodging.
+ */
 public class BrowseLodgingHandler implements Route {
   @Override
   public JSONObject handle(Request request, Response response) throws Exception {
@@ -52,8 +55,8 @@ public class BrowseLodgingHandler implements Route {
     } catch (DateTimeParseException e) {
       errorMsg = "ERROR: Invalid date format.";
       System.out.println(errorMsg);
-      Map<String, String> variables = ImmutableMap.of("restaurants_result", "",
-          "restaurants_errors", errorMsg);
+      Map<String, String> variables = ImmutableMap.of("lodging_result", "", "lodging_errors",
+          errorMsg);
       return new JSONObject(variables);
     }
 
@@ -84,8 +87,8 @@ public class BrowseLodgingHandler implements Route {
     // Parameters are invalid.
     if (!errorMsg.equals("")) {
       System.out.println(errorMsg);
-      Map<String, String> variables = ImmutableMap.of("restaurants_result", "",
-          "restaurants_errors", errorMsg);
+      Map<String, String> variables = ImmutableMap.of("lodging_result", "", "lodging_errors",
+          errorMsg);
       return new JSONObject(variables);
     }
 
@@ -96,7 +99,7 @@ public class BrowseLodgingHandler implements Route {
       sb.append("No matching result.");
     } else {
       for (Hotel hotel : hotels) {
-        sb.append(hotel.toString()).append("\n-----------------------------\n");
+        sb.append(hotel.toString()).append("<br>" + "-----------------------------" + "<br>");
       }
     }
 

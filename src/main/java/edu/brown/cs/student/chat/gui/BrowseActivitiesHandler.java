@@ -18,6 +18,9 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+/**
+ * Class that handles requests for activities.
+ */
 public class BrowseActivitiesHandler implements Route {
 
   @Override
@@ -70,8 +73,8 @@ public class BrowseActivitiesHandler implements Route {
       // Parameters are invalid.
       if (!errorMsg.equals("")) {
         System.out.println(errorMsg);
-        Map<String, String> variables = ImmutableMap.of("restaurants_result", "",
-            "restaurants_errors", errorMsg);
+        Map<String, String> variables = ImmutableMap.of("activities_result", "",
+            "activities_errors", errorMsg);
         return new JSONObject(variables);
       }
 
@@ -90,7 +93,7 @@ public class BrowseActivitiesHandler implements Route {
       sb.append("No matching result.");
     } else {
       for (Attraction attraction : attractionsMap.values()) {
-        sb.append(attraction.toString() + "\n-----------------------------\n");
+        sb.append(attraction.toString() + "<br>" + "-----------------------------" + "<br>");
       }
     }
 

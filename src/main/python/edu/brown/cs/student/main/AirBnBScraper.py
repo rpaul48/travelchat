@@ -2,6 +2,7 @@ from main.AirBnBStay import AirBnBStay
 from main.WebScraper import WebScraper
 from bs4 import BeautifulSoup as soup
 import re
+from time import sleep
 
 
 class AirBnBScraper(WebScraper):
@@ -9,6 +10,7 @@ class AirBnBScraper(WebScraper):
     A scraper for AirBnB data. Specifically, retrieves the first page of a queried stays and filters results.
 
     author: Joshua Nathan Mugerwa
+    version: 5/5/20
     """
 
     def __init__(self):
@@ -20,10 +22,16 @@ class AirBnBScraper(WebScraper):
         """ dict: A map of filters to apply to the queried stays."""
         self.date_regex = re.compile(".{4}-.{2}-.{2}")
         """ regex: A regex mask for date inputs"""
+        self.sleep_timer = 6
+        """ int: Cooldown before re-querying, if runtime error. This is to avoid being banned from site."""
+        self.max_retries = 3
+        """ int: Number of times to retry a query before giving up."""
 
     def scrape(self, max_price, checkin, checkout, location, num_rooms):
         """
-        Scrapes AirBnB.com for stays with the given parameters then filters the results using the scrapers filter map.
+        Scrapes AirBnB.com for stays with the given parameters then filters the results using the scraper's filter map.
+        Will re-try if the scrape was unsuccessful, up to "self.max_retries" times with a "self.sleep_timer" cooldown.
+
         :param max_price: float
             The maximum price-per-night of a stay (added to filter then used to filter, after query)
         :param checkin: string
@@ -31,7 +39,7 @@ class AirBnBScraper(WebScraper):
         :param checkout: string
             Check-out date
         :param location: tuple(string)
-            Location of stay; **the form is (city, state) and must be in USA**
+            Location of stay; **the form is (city, state) and must be in the United States**
         :param num_rooms: int
             Number of rooms required (specifically, the number of adults who will stay)
         :return: A set of stays which match the query and filter params
@@ -44,44 +52,52 @@ class AirBnBScraper(WebScraper):
             return None
 
         if not self.params_are_valid(max_price, checkin, checkout, location, num_rooms):
-            # Error message will be printed in method, no need to print here -- just return None.
+            # Error message will be printed through method, no need to print here -- just return None.
             return None
 
         self.filter["max_price"] = max_price  # Adding filter
 
         url = self.build_search_url(checkin, checkout, location, num_rooms)
-        response = super().get(url)  # Get first 20 stay options (number of stays on first page)
-        page_soup = soup(response, "html.parser")
-        all_stays_div = page_soup.find("div", {"class": "_fhph4u"}).contents  # Grab all divs in HTML body
-
-        if not all_stays_div:
-            print("No AirBnB's matched the given preferences.")
-            return None
-
+        num_retries = 0
         stays = []
-        for stay_div in all_stays_div:
-            try:
-                booking_url = self.get_booking_url(stay_div)
-            except AttributeError:
-                booking_url = None
-            try:
-                photo_url = self.get_photo_url(stay_div)
-            except AttributeError:
-                photo_url = None
-            try:
-                description = self.get_description(stay_div)
-            except AttributeError:
-                description = None
-            try:
-                price = self.get_price(stay_div)
-            except AttributeError:
-                price = None
-            try:
-                rating = self.get_rating(stay_div)
-            except AttributeError:
-                rating = None
+        while (len(stays) == 0 or not stays) and num_retries <= self.max_retries:
+            sleep(self.sleep_timer)  # To ensure we don't get banned by the host URL, pause before each scrape.
+            num_retries += 1
 
-            stays.append(AirBnBStay(booking_url, photo_url, description, price, rating))  # Add stay to query results
+            response = super().get(url)  # Get first k stay options (number of stays on first page)
+            page_soup = soup(response, "html.parser")
+            all_stays_div = page_soup.find("div", {"class": "_fhph4u"}).contents  # Grab all divs in HTML body
+
+            if not all_stays_div:
+                print("ERROR: No AirBnB's matched the given preferences.")
+                return None
+
+            stays = []  # Reset
+            for stay_div in all_stays_div:
+                try:
+                    booking_url = self.get_booking_url(stay_div)
+                except AttributeError:
+                    booking_url = None
+                try:
+                    photo_url = self.get_photo_url(stay_div)
+                except AttributeError:
+                    photo_url = None
+                try:
+                    description = self.get_description(stay_div)
+                except AttributeError:
+                    description = None
+                try:
+                    price = self.get_price(stay_div)
+                except AttributeError:
+                    price = None
+                try:
+                    rating = self.get_rating(stay_div)
+                except AttributeError:
+                    rating = None
+
+                stays.append(AirBnBStay(booking_url, photo_url, description, price, rating))  # Add stay to query results
+            if len(stays) == 0:
+                pass
 
         stays = self.filter_stays(stays)  # Filter queried results
         return stays
@@ -89,6 +105,7 @@ class AirBnBScraper(WebScraper):
     def params_are_valid(self, max_price, checkin, checkout, location, num_rooms):
         """
         Validates scraping parameters.
+
         :param max_price: float
             The maximum price-per-night of a stay (added to filter then used to filter, after query)
         :param checkin: string
@@ -104,20 +121,22 @@ class AirBnBScraper(WebScraper):
         if max_price <= 0:
             print("ERROR: Invalid max price.")
             return False
-        if type(location) != tuple or len(location) != 2:
+        elif type(location) != tuple or len(location) != 2:
             print("ERROR: The location must be a tuple of size 2.")
             return False
-        if num_rooms <= 0:
+        elif num_rooms <= 0:
             print("ERROR: The number of rooms must be a positive, non-zero integer.")
             return False
-        if not (self.date_regex.match(checkin) and len(checkin) == 10 and self.date_regex.match(checkout)
+        elif not (self.date_regex.match(checkin) and len(checkin) == 10 and self.date_regex.match(checkout)
                 and len(checkout) == 10):
             return False
-        return True
+        else:
+            return True
 
     def build_search_url(self, checkin, checkout, location, num_rooms):
         """
         Builds the URL that we will scrape from.
+
         :param checkin: string
             Check-in date
         :param checkout: string
@@ -128,7 +147,7 @@ class AirBnBScraper(WebScraper):
             Number of rooms required (specifically, the number of adults who will stay)
         :return:
         """
-        if type(num_rooms) != str:
+        if type(num_rooms) != str:  # Type enforcing
             num_rooms = str(num_rooms)
         city, state = location
         base = "https://www.airbnb.com/s/homes?tab_id=all_tab&refinement_paths%5B%5D=%2Fhomes&query="
@@ -138,6 +157,8 @@ class AirBnBScraper(WebScraper):
     def filter_stays(self, stays):
         """
         Filters queried stays via the scraper's filter map (here, we simply filter based on max price).
+        *TO-DO: Generify this method s.t. arbitrary filters can be applied (probably need a Filter object plus
+                                                                            lambda attributes).
         :param stays: list[AirBnBStay]
             The set of scraped stays
         :return: filtered_stays: list[AirBnBStay]
@@ -147,8 +168,12 @@ class AirBnBScraper(WebScraper):
         for filter in self.filter:
             if filter == "max_price":
                 for stay in stays:
-                    if stay._price:
-                        stay_price = float(stay._price)
+                    if not stay.price:
+                        # For seemingly random reasons, we sometimes can't parse price out. In this case we should
+                        # just append the stay, as it may or may not need to be filtered.
+                        filtered_stays.append(stay)
+                    else:
+                        stay_price = float(stay.price)
                         if stay_price <= self.filter[filter]:
                             filtered_stays.append(stay)
         return filtered_stays
@@ -156,6 +181,7 @@ class AirBnBScraper(WebScraper):
     def get_booking_url(self, stay_div):
         """
         Retrieves booking URL from scraped page.
+
         :param stay_div: List[BeautifulSoup Div]
             The stay's list of div's
         :return: url: string
@@ -169,6 +195,7 @@ class AirBnBScraper(WebScraper):
     def get_photo_url(self, stay_div):
         """
         Retrieves photo URL from the scraped page.
+
         :param stay_div: List[BeautifulSoup Div]
             The stay's list of div's
         :return: parsed_photo_url: string
@@ -184,6 +211,7 @@ class AirBnBScraper(WebScraper):
     def get_description(self, stay_div):
         """
         Retrieves description from the scraped page.
+
         :param stay_div: List[BeautifulSoup Div]
             The stay's list of div's
         :return: parsed_description: string
@@ -198,6 +226,7 @@ class AirBnBScraper(WebScraper):
     def get_price(self, stay_div):
         """
         Retrieves price-per-night from the scraped page.
+
         :param stay_div: List[BeautifulSoup Div]
             The stay's list of div's
         :return: parsed_price: string
@@ -213,6 +242,7 @@ class AirBnBScraper(WebScraper):
     def get_rating(self, stay_div):
         """
         Retrieves rating from the scraped page.
+
         :param stay_div: List[BeautifulSoup Div]
             The stay's list of div's
         :return: rating: string
