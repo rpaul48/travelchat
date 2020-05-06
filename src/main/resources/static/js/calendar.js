@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const pathSplit = window.location.pathname.split("/");
     const userID = pathSplit[pathSplit.length - 1];
     const chatID = pathSplit[pathSplit.length - 2];
+    const currentTimeZone = "EDT";
+    const tripTimeZone = "PST";
 
     let year = '2020';
     // convert to ISO. Create a function for this later!
@@ -16,42 +18,62 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Elements of the add event modal.
     const modal = $("#add-event-modal");
-    const modalExitButton = $("#modal-close")
-    const eventTitleEl = $("#event-title");
-    const eventLocationEl = $("#event-location");
-    const eventStartEl = $("#event-start-time");
-    const eventEndEl = $("#event-end-time");
-    const eventDescriptionEl = $("#event-description");
-    const eventPriceEl = $("#event-price");
+    const modalExitButton = $("#modal-close");
+    const eventTitleInputEl = $("#event-title-input");
+    const eventLocationInputEl = $("#event-location-input");
+    const eventStartInputEl = $("#event-start-time-input");
+    const eventEndInputEl = $("#event-end-time-input");
+    const eventPriceInputEl = $("#event-price-input");
+    const eventDescriptionInputEl = $("#event-description-input");
 
     // Set up the modal.
     modalExitButton.click(function() {
         modal.hide();
     });
-    eventStartEl.attr({
+    eventStartInputEl.attr({
         "min" : minTime,
         "max" : maxTime
     });
-    eventEndEl.attr({
+    eventEndInputEl.attr({
         "min" : minTime,
         "max" : maxTime
     });
     function resetModal() {
-        eventTitleEl.val("");
-        eventStartEl.val(startDate + 'T12:30');
-        eventEndEl.val(startDate + 'T13:30');
-        eventPriceEl.val(0.00);
+        eventTitleInputEl.val("");
+        eventStartInputEl.val(startDate + 'T12:30');
+        eventEndInputEl.val(startDate + 'T13:30');
+        eventPriceInputEl.val(0.00);
     }
 
 
     // Elements of the event info pop-up.
     const eventPopup = $("#event-popup");
     const eventPopupExitButton = $("#event-popup-close");
+    const eventTitleEl = $("#event-title");
+    const eventTimeEl = $("#event-time");
+    const eventLocationEl = $("#event-location");
+    const eventPriceEl = $("#event-price");
+    const eventDescriptionEl = $("#event-description");
+    let clickedEventEl;
 
     // Set up the pop-up.
     eventPopupExitButton.click(function() {
+        clickedEventEl.style.borderColor = "white";
         eventPopup.hide();
     });
+
+    function populateEventPopup(event) {
+        eventTitleEl.text(event.title);
+        eventTimeEl.text(getNeatTimeDetails(event.start, event.end));
+        eventLocationEl.text(event.extendedProps.location);
+        eventPriceEl.text("$ " + event.extendedProps.price);
+        eventDescriptionEl.text(event.extendedProps.description);
+
+    }
+
+    function getNeatTimeDetails(startISO, endISO) {
+        return moment(startISO).format("dddd, MMMM Do, h:mma") + "- " + moment(endISO).format("h:mma")
+    }
 
     /**
      * Set up calendar
@@ -88,8 +110,11 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         defaultDate: startDate,
         eventClick: function(info) {
+            clickedEventEl = info.el;
+            console.log(info.event);
+            clickedEventEl.style.borderColor = 'red';
+            populateEventPopup(info.event);
             eventPopup.fadeIn();
-            info.el.style.borderColor = 'red';
         }
     });
 
@@ -98,9 +123,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         for (const event of data) {
             const eventObject = generateEventObject(
-                event.id, event.title, event.location,
-                event.startTimeISO, event.endTimeISO,
-                event.description, event.price);
+                event.id, event.title, event.startTimeISO,
+                event.endTimeISO, event.location, event.price,
+                event.description);
             calendar.addEvent(eventObject);
         }
 
@@ -113,19 +138,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const addEventForm = $("#add-event-form");
     addEventForm.submit(function() {
 
-        const startTime = eventStartEl.val();
-        const endTime = eventEndEl.val();
+        const startTime = eventStartInputEl.val();
+        const endTime = eventEndInputEl.val();
 
 
         // Check validity of input
         if (moment(endTime).isBefore(startTime) || moment(endTime).isSame(startTime)){
             alert("Error: End time must be greater than start time.");
         } else {
-            const title = eventTitleEl.val();
-            const location = eventLocationEl.val();
-            const description = eventDescriptionEl.val();
-            const price = eventPriceEl.val();
-            const eventObject = generateEventObject(getUUID(), title, location, startTime, endTime, description, price);
+            const title = eventTitleInputEl.val();
+            const location = eventLocationInputEl.val();
+            const description = eventDescriptionInputEl.val();
+            const price = eventPriceInputEl.val();
+            const eventObject = generateEventObject(getUUID(), title, startTime, endTime, location, price, description);
             // Add event to database
             $.post("/postCalendarEvent", eventObject, null, 'json');
             // Update the budget of the adding user
@@ -140,8 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     });
 
-    function generateEventObject(id, title, location, startTimeISO, endTimeISO, description, price) {
-
+    function generateEventObject(id, title, startTimeISO, endTimeISO, location, price, description) {
 
         title = title ? title : "Untitled Event";
 
@@ -157,12 +181,12 @@ document.addEventListener('DOMContentLoaded', function() {
         return {
             id: id,
             title: title,
-            location: location,
             start: startTimeISO,
             end: endTimeISO,
-            description: description,
+            location: location,
             price: price,
-            editable: true,
+            description: description,
+            editable: false,
             allDay: alldayBoolean,
             chatID: chatID
         };

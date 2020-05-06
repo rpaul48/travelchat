@@ -2,6 +2,15 @@
     font-family: 'Source Sans Pro', sans-serif;
 }
 
+h3 {
+    font-size: 18px;
+    font-weight: lighter;
+}
+
+p {
+    font-style: italic;
+}
+
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
@@ -19,10 +28,10 @@
 .modal-content {
     background-color: #fefefe;
     margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
+    padding: 50px;
     border: 1px solid #888;
     width: 40%; /* Could be more or less, depending on screen size */
-    text-size: 16px;
+    font-size: 16px;
 }
 
 
