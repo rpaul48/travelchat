@@ -15,33 +15,38 @@ document.addEventListener('DOMContentLoaded', function() {
     let maxTime = endDate + 'T23:59';
 
 
+    const modal = $("#add-event-modal");
+    const exitButton = $(".close").first();
+    const eventStartEl = $("#event-start-time");
+    const eventEndEl = $("#event-end-time");
+    const eventTitleEl = $("#event-title");
+    const eventPriceEl = $("#event-price");
+
     /**
      * Set up the addEvent modal
      */
 
-    const modal = $("#add-event-modal");
-    const exitButton = $(".close").first();
     // When the user clicks on (x), close the modal
     exitButton.click(function() {
         modal.hide();
     });
 
-    const eventStartEl = $("#event-start-time");
     eventStartEl.attr({
         "min" : minTime,
         "max" : maxTime
     });
 
-    const eventEndEl = $("#event-end-time");
     eventEndEl.attr({
         "min" : minTime,
         "max" : maxTime
     });
 
+
     function resetModal() {
-        $("#event-title").val("");
+        eventTitleEl.val("");
         eventStartEl.val(startDate + 'T12:30');
         eventEndEl.val(startDate + 'T13:30');
+        eventPriceEl.val(0.00);
     }
 
 
@@ -68,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
             goBack: {
                 text: 'Go Back',
                 click: function() {
-                    window.history.back();
+                    window.location.href = '/chat/' + chatID;
                 }
             }
         },
@@ -101,19 +106,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const addEventForm = $("#add-event-form");
     addEventForm.submit(function() {
 
-        const startTime = $("#event-start-time").val();
-        const endTime = $("#event-end-time").val();
+        const startTime = eventStartEl.val();
+        const endTime = eventEndEl.val();
+        const price = eventPriceEl.val();
 
         // Check validity of input
         if (moment(endTime).isBefore(startTime) || moment(endTime).isSame(startTime)){
             alert("Error: End time must be greater than start time.");
         } else {
-            const title = $("#event-title").val();
-            const price = $("#event-price").val();
-            const eventObject = generateEventObject(getUUID(), title, startTime, endTime);
+            const title = eventTitleEl.val();
+            const eventObject = generateEventObject(getUUID(), title, startTime, endTime, price);
             // Add event to database
             $.post("/postCalendarEvent", eventObject, null, 'json');
-            // Load visually
+            // Update the budget of the adding user
+            updateBudget(price, "log");
+            // Load event visually
             calendar.addEvent(eventObject);
             modal.hide();
         }
@@ -123,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     });
 
-    function generateEventObject(id, title, startTimeISO, endTimeISO) {
+    function generateEventObject(id, title, startTimeISO, endTimeISO, price) {
 
         title = title ? title : "Untitled Event";
 
@@ -143,11 +150,27 @@ document.addEventListener('DOMContentLoaded', function() {
             end: endTimeISO,
             editable: true,
             allDay: alldayBoolean,
-            chatID: chatID
+            chatID: chatID,
+            price: price
         };
     }
 
-    function updateBudget(amount) {
+    function updateBudget(price, type) {
+
+        $.ajax({
+            url: "/updateUserBudgetInRoom",
+            type: "post",
+            data: {
+                "auth": userID,
+                "roomId": chatID,
+                "type": type,
+                "amount": price
+            },
+            async: false,
+            success: function () {
+
+            }
+        });
 
     }
 
