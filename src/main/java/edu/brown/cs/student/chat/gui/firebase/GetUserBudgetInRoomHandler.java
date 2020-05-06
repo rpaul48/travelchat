@@ -10,9 +10,6 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class GetUserBudgetInRoomHandler implements Route {
 
   @Override

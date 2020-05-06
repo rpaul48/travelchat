@@ -23,10 +23,9 @@ public class BrowseFlightsHandler implements Route {
    * @param request
    * @param response
    * @return An array of flights, as JSONs.
-   * @throws Exception
    */
   @Override
-  public JSONArray handle(Request request, Response response) throws Exception {
+  public JSONArray handle(Request request, Response response) {
     // Querier for flights
     TripAdvisorQuerier querier = new TripAdvisorQuerier();
     // Get parameters from front-end
