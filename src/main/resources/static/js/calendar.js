@@ -150,9 +150,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const location = eventLocationInputEl.val();
             const description = eventDescriptionInputEl.val();
             const price = eventPriceInputEl.val();
-            const eventObject = generateEventObject(getUUID(), title, startTime, endTime, location, price, description);
+            const eventObject = generateEventObject("placeholderID", title, startTime, endTime, location, price, description);
             // Add event to database
-            $.post("/postCalendarEvent", eventObject, null, 'json');
+            $.post("/postCalendarEvent", eventObject, function(data) {
+                eventObject.id = data;
+            }, 'json');
             // Update the budget of the adding user
             updateBudget(price, "log");
             // Load event visually
@@ -211,13 +213,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     }
 
-    function getUUID() {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        });
-
-    }
+    // function getUUID() {
+    //     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    //         var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+    //         return v.toString(16);
+    //     });
+    //
+    // }
 
 
 });

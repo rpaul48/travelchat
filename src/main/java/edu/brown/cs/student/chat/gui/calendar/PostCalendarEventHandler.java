@@ -7,12 +7,13 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+import java.util.UUID;
+
 /**
  * Used to post a new event to the calendar. When making a post, pass in an object
- * with the string parameters:
+ * with the string parameter (i.e. data = {"title": Kayaking, "location": Miami,...})
  *
  *      "chatID" = id of the chat
- *      "id" = a unique event id
  *      "title" = title of the event
  *      "start" = start time in ISO format (i.e. 2020-05-22T21:38:00)
  *      "end" = end time in ISO format
@@ -28,10 +29,10 @@ public class PostCalendarEventHandler implements Route {
   public String handle(Request request, Response response) {
 
 
+    String uniqueEventID = UUID.randomUUID().toString();
     try {
       QueryParamsMap qm = request.queryMap();
       String chatID = qm.value("chatID");
-      String uniqueEventID = qm.value("id");
       String title = qm.value("title");
       String startTime = qm.value("start");
       String endTime = qm.value("end");
@@ -51,6 +52,6 @@ public class PostCalendarEventHandler implements Route {
       ex.printStackTrace();
     }
 
-    return "";
+    return uniqueEventID;
   }
 }
