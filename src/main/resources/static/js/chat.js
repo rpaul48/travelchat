@@ -151,11 +151,8 @@ function planMyDay() {
     if (coordinates === "Geolocation is not supported by this browser.") {
         window.alert("Please allow your browser to access your location.");
     } else {
-        var costPerPerson = document.getElementById("cost-per-person").value;
-        var startTime = document.getElementById("start-time").value;
-        var endTime = document.getElementById("end-time").value;
+        var date = document.getElementById("date-to-plan").value;
         var maxDist = document.getElementById("max-distance").value;
-        var numMeals = document.getElementById("num-meals").value;
         var cuisines = [];
         $("input:checkbox[name=pmd-cuisine]:checked").each(function(){
             cuisines.push($(this).val());
@@ -165,18 +162,15 @@ function planMyDay() {
             activities.push($(this).val());
         });
 
-        console.log(startTime);
+        console.log(date);
 
         // returns an ordered schedule of events which satisfy the query parameters
         $.ajax({
             url: "/planMyDay",
             type: "get",
             data: {"location": coordinates,
-                "costPerPerson": costPerPerson,
-                "startTime": startTime,
-                "endTime": endTime,
+                "date": date,
                 "maxDist": maxDist,
-                "numMeals": numMeals,
                 "cuisineTypes": cuisines,
                 "activityTypes": activities},
             async: false,

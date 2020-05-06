@@ -52,11 +52,8 @@
         <h2>Plan My Day</h2>
         <div class="form-container">
             <form id="restaurants-form">
-                <label>Cost per person (USD): <input type="number" id="cost-per-person" min="0.01" step="0.01" value="100.00"> </label>
-                <label>Start time: <input type="time" id="start-time"></label>
-                <label>End time: <input type="time" id="end-time"></label>
+                <label>Date: <input type="date" id="date-to-plan"></label>
                 <label>Max distance from current location (miles): <input type="number" min="1" id="max-distance"> </label>
-                <label>Number of meals: <input type="number" min="0" id="num-meals"> </label>
                 <label>Preferred cuisines: </label>
                 <div class="checkboxes">
                     <label><input type="checkbox" name="pmd-cuisine" value="Any" checked>Any</label>
