@@ -45,6 +45,9 @@
 
     <div id="trip-details-div" class="big-popup-div">
         <h2>Trip Details</h2>
+        <form id="trip-details-form">
+        <label>Start date: <input type="date" id="trip-start-date" min="2020-01-01" class="date-class"></label>
+        <label>End date: <input type="date" id="trip-end-date" min="2020-01-01" class="date-class"></label>
         <button onclick="closePopup('trip-details-div')" class="small-black-button">Back</button>
     </div>
 
@@ -52,7 +55,7 @@
         <h2>Plan My Day</h2>
         <div class="form-container">
             <form id="plan-my-day-form">
-                <label for="date-to-plan">Date: <input type="date" id="date-to-plan"></label>
+                <label for="date-to-plan">Date: <input type="date" class="date-class" min="2020-01-01" id="date-to-plan"></label>
                 <label for="max-distance">Max distance from current location (miles): <input type="number" min="1" id="max-distance"> </label>
                 <label>Preferred cuisines: </label>
                 <div class="checkboxes">
@@ -200,12 +203,10 @@
                 </select>
                 <label for="check-in">Check-in date:</label>
                 <input aria-label="Check-in date" type="date" id="check-in"
-                       value="2020-05-15"
-                       min="2020-05-06">
+                       value="2020-05-15" min="2020-01-01" class="date-class">
                 <label for="check-out">Check-out date:</label>
                 <input aria-label="Check-out date" type="date" id="check-out"
-                       value="2020-05-16"
-                min="2020-05-03">
+                       value="2020-05-16" min="2020-01-01" class="date-class">
                 <label for="hotel-rating-sel">Minimum rating:</label>
                 <select aria-label="Minimum Hotel Rating" id="hotel-rating-sel">
                     <option value="1" selected="selected">Any</option>
@@ -229,9 +230,7 @@
         <div class="form-container">
             <form id="flights-form">
                 <label for="departure-date">Departure date:</label>
-                <input type="date" id="departure-date"
-                       value="2020-05-15"
-                       min="2020-05-06">
+                <input type="date" id="departure-date" value="2020-05-15" min="2020-01-01" class="date-class">
                 <label for="depart">Departure airport code: </label>
                 <input aria-label="Departure airport code" type="text" maxlength="3" id="depart">
                 <label for="destination">Destination airport code: </label>
