@@ -31,7 +31,7 @@ public class BrowseLodgingHandler implements Route {
     String errorMsg = "";
 
     // of the form "[lat], [lon]"
-    String[] locationStrings = qm.value("location").split(",");
+    String[] locationStrings = qm.value("location").split(" ");
     String lat = locationStrings[0];
     String lon = locationStrings[1];
 

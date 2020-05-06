@@ -25,7 +25,7 @@ public class BrowseActivitiesHandler implements Route {
 
   @Override
   public JSONObject handle(Request request, Response response)
-      throws JSONException, UnirestException {
+          throws JSONException, UnirestException {
     TripAdvisorQuerier querier = new TripAdvisorQuerier();
     QueryParamsMap qm = request.queryMap();
     String errorMsg = "";
@@ -34,7 +34,8 @@ public class BrowseActivitiesHandler implements Route {
     double lat;
     double lon;
     try {
-      String[] locationStrings = qm.value("location").split(",");
+      String[] locationStrings = qm.value("location").split(" ");
+
       lat = Double.parseDouble(locationStrings[0]);
       lon = Double.parseDouble(locationStrings[1]);
     } catch (NumberFormatException nfe) {
@@ -101,6 +102,7 @@ public class BrowseActivitiesHandler implements Route {
         }
       }
     }
+
 
     StringBuilder sb = new StringBuilder();
     if (attractionsMap.isEmpty()) {
