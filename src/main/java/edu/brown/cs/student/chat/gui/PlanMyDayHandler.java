@@ -46,20 +46,11 @@ public class PlanMyDayHandler implements Route {
       return new JSONObject(variables);
     }
 
-    // format: nonnegative double
-    String costPerPerson = qm.value("costPerPerson");
-
-    // format: time in military format: (00:00 to 23:59)
-    String startTime = qm.value("startTime");
-
-    // format: time in military format: (00:00 to 23:59)
-    String endTime = qm.value("endTime");
+    //format: 2020-05-30 (year-month-day)
+    String date = qm.value("date");
 
     // max distance in miles; nonnegative integer
     String maxDist = qm.value("maxDist");
-
-    // nonnegative integer
-    String numMeals = qm.value("numMeals");
 
     /*
      * a string of cuisine categories of the form "type1,type2,type3"; (there are no

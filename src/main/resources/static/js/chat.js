@@ -151,11 +151,8 @@ function planMyDay() {
     if (coordinates === "Geolocation is not supported by this browser.") {
         window.alert("Please allow your browser to access your location.");
     } else {
-        var costPerPerson = document.getElementById("cost-per-person").value;
-        var startTime = document.getElementById("start-time").value;
-        var endTime = document.getElementById("end-time").value;
+        var date = document.getElementById("date-to-plan").value;
         var maxDist = document.getElementById("max-distance").value;
-        var numMeals = document.getElementById("num-meals").value;
         var cuisines = [];
         $("input:checkbox[name=pmd-cuisine]:checked").each(function(){
             cuisines.push($(this).val());
@@ -165,18 +162,15 @@ function planMyDay() {
             activities.push($(this).val());
         });
 
-        console.log(startTime);
+        console.log(date);
 
         // returns an ordered schedule of events which satisfy the query parameters
         $.ajax({
             url: "/planMyDay",
             type: "get",
             data: {"location": coordinates,
-                "costPerPerson": costPerPerson,
-                "startTime": startTime,
-                "endTime": endTime,
+                "date": date,
                 "maxDist": maxDist,
-                "numMeals": numMeals,
                 "cuisineTypes": cuisines,
                 "activityTypes": activities},
             async: false,
@@ -188,13 +182,11 @@ function planMyDay() {
 
 // returns search results for restaurants
 function browseRestaurants() {
-    if (coordinates === "Geolocation is not supported by this browser.") {
+    if ((coordinates === "Geolocation is not supported by this browser.") || (coordinates == null)) {
         window.alert("Please allow your browser to access your location.");
     } else {
         var miles_sel = document.getElementById("restaurant-miles-sel");
         var miles = miles_sel.options[miles_sel.selectedIndex].text;
-        var cuisine_sel = document.getElementById("cuisine-sel");
-        var cuisine = cuisine_sel.options[cuisine_sel.selectedIndex].text;
         var price_sel = document.getElementById("restaurant-price-sel");
         var price = price_sel.options[price_sel.selectedIndex].text;
         var rating_sel = document.getElementById("restaurant-rating-sel");
@@ -219,14 +211,16 @@ function browseRestaurants() {
                 "diet": diet},
             async: false,
             success: function (data) {
-                var recs = JSON.parse(data);
+                var result = JSON.parse(data);
+                var recs = Object.values(result)[0];
+                document.getElementById("restaurants-results").innerHTML = recs;
             }});
     }
 }
 
 // returns search results for activities
 function browseActivities() {
-    if (coordinates === "Geolocation is not supported by this browser.") {
+    if ((coordinates === "Geolocation is not supported by this browser.") || (coordinates == null)) {
         window.alert("Please allow your browser to access your location.");
     } else {
         var miles_sel = document.getElementById("activities-miles-sel");
@@ -241,31 +235,37 @@ function browseActivities() {
         $.ajax({
             url: "/browseActivities",
             type: "get",
-            data: {"location": coordinates,
+            data: {"location": "40.7580 -73.9855",
                 "miles": miles,
                 "activityTypes": activities.toString()},
             async: false,
             success: function (data) {
-                var recs = JSON.parse(data);
+                var result = JSON.parse(data);
+                var recs = Object.values(result)[1];
+                document.getElementById("activities-results").innerHTML = recs;
             }});
     }
 }
 
 // returns search results for lodging
 function browseLodging() {
-    if (coordinates === "Geolocation is not supported by this browser.") {
+    if ((coordinates === "Geolocation is not supported by this browser.") || (coordinates == null)) {
         window.alert("Please allow your browser to access your location.");
     } else {
         var type_sel = document.getElementById("hotel-type-sel");
         var type = type_sel.options[type_sel.selectedIndex].text;
-        var checkin_sel = document.getElementById("check-in");
-        var checkin = checkin_sel.options[checkin_sel.selectedIndex].text;
-        var checkout_sel = document.getElementById("check-out");
-        var checkout = checkout_sel.options[checkout_sel.selectedIndex].text;
+        var checkin = document.getElementById("check-in").value;
+        var checkout = document.getElementById("check-out").value;
         var rating_sel = document.getElementById("hotel-rating-sel");
         var rating = rating_sel.options[rating_sel.selectedIndex].text;
-        var num_rooms_sel = document.getElementById("num-rooms");
-        var num_rooms = num_rooms_sel.options[num_rooms_sel.selectedIndex].text;
+        var num_rooms = document.getElementById("num-rooms").value;
+
+        console.log(coordinates);
+        console.log(type);
+        console.log(checkin);
+        console.log(checkout);
+        console.log(rating);
+        console.log(num_rooms);
 
         // returns a list of lodging options which match the query parameters
         $.ajax({
@@ -279,14 +279,16 @@ function browseLodging() {
                 "num-rooms": num_rooms},
             async: false,
             success: function (data) {
-                var recs = JSON.parse(data);
+                var result = JSON.parse(data);
+                var recs = Object.values(result)[1];
+                document.getElementById("lodging-results").innerHTML = recs;
             }});
     }
 }
 
 // returns search results for flights
 function browseFlights() {
-    if (coordinates === "Geolocation is not supported by this browser.") {
+    if ((coordinates === "Geolocation is not supported by this browser.") || (coordinates == null)) {
         window.alert("Please allow your browser to access your location.");
     } else {
         var depart = document.getElementById("depart").value;
@@ -313,7 +315,9 @@ function browseFlights() {
                 "flightClass": flightClass},
             async: false,
             success: function (data) {
-                var recs = JSON.parse(data);
+                var result = JSON.parse(data);
+                var recs = Object.values(result)[1];
+                document.getElementById("flights-results").innerHTML = recs;
             }});
     }
 }

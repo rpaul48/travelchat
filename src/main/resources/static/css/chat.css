@@ -91,4 +91,9 @@ li {
     width: 20px;
 }
 
+.results-container {
+    font-family: 'Source Sans Pro', sans-serif;
+    overflow-y: scroll;
+}
+
 

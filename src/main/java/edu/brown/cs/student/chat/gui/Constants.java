@@ -27,7 +27,7 @@ public class Constants {
 
   public static final Map<String, String> RESTAURANT_PRICE_TO_CODE = ImmutableMap
       .<String, String>builder().put("$", "10953").put("$$-$$$", "10955").put("$$$$", "10954")
-      .put("any", "all").build();
+      .put("Any", "all").build();
 
   public static final int LIMIT = 30;
   public static final String LANG = "en_US";

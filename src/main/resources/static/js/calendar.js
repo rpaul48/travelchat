@@ -1,8 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 
 
-    //TODO: Take into account timezone. Calendar should be able to switch between time-zones.
-
+    // Calendar properties.
     const pathSplit = window.location.pathname.split("/");
     const userID = pathSplit[pathSplit.length - 1];
     const chatID = pathSplit[pathSplit.length - 2];
@@ -15,38 +14,44 @@ document.addEventListener('DOMContentLoaded', function() {
     let maxTime = endDate + 'T23:59';
 
 
-    /**
-     * Set up the addEvent modal
-     */
-
+    // Elements of the add event modal.
     const modal = $("#add-event-modal");
-    const exitButton = $(".close").first();
-    // When the user clicks on (x), close the modal
-    exitButton.click(function() {
+    const modalExitButton = $("#modal-close")
+    const eventTitleEl = $("#event-title");
+    const eventLocationEl = $("#event-location");
+    const eventStartEl = $("#event-start-time");
+    const eventEndEl = $("#event-end-time");
+    const eventDescriptionEl = $("#event-description");
+    const eventPriceEl = $("#event-price");
+
+    // Set up the modal.
+    modalExitButton.click(function() {
         modal.hide();
     });
-
-    const eventStartEl = $("#event-start-time");
     eventStartEl.attr({
         "min" : minTime,
         "max" : maxTime
     });
-
-    const eventEndEl = $("#event-end-time");
     eventEndEl.attr({
         "min" : minTime,
         "max" : maxTime
     });
-
     function resetModal() {
-        $("#event-title").val("");
+        eventTitleEl.val("");
         eventStartEl.val(startDate + 'T12:30');
         eventEndEl.val(startDate + 'T13:30');
+        eventPriceEl.val(0.00);
     }
 
 
+    // Elements of the event info pop-up.
+    const eventPopup = $("#event-popup");
+    const eventPopupExitButton = $("#event-popup-close");
 
-
+    // Set up the pop-up.
+    eventPopupExitButton.click(function() {
+        eventPopup.hide();
+    });
 
     /**
      * Set up calendar
@@ -68,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
             goBack: {
                 text: 'Go Back',
                 click: function() {
-                    window.history.back();
+                    window.location.href = '/chat/' + chatID;
                 }
             }
         },
@@ -81,14 +86,21 @@ document.addEventListener('DOMContentLoaded', function() {
             start: startDate,
             end: endDate
         },
-        defaultDate: startDate
+        defaultDate: startDate,
+        eventClick: function(info) {
+            eventPopup.fadeIn();
+            info.el.style.borderColor = 'red';
+        }
     });
 
     calendar.render();
     $.get("/getCalendarEvents", { chatID: chatID }, function( data ) {
 
         for (const event of data) {
-            const eventObject = generateEventObject(event.id, event.title, event.startTimeISO, event.endTimeISO);
+            const eventObject = generateEventObject(
+                event.id, event.title, event.location,
+                event.startTimeISO, event.endTimeISO,
+                event.description, event.price);
             calendar.addEvent(eventObject);
         }
 
@@ -101,19 +113,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const addEventForm = $("#add-event-form");
     addEventForm.submit(function() {
 
-        const startTime = $("#event-start-time").val();
-        const endTime = $("#event-end-time").val();
+        const startTime = eventStartEl.val();
+        const endTime = eventEndEl.val();
+
 
         // Check validity of input
         if (moment(endTime).isBefore(startTime) || moment(endTime).isSame(startTime)){
             alert("Error: End time must be greater than start time.");
         } else {
-            const title = $("#event-title").val();
-            const price = $("#event-price").val();
-            const eventObject = generateEventObject(getUUID(), title, startTime, endTime);
+            const title = eventTitleEl.val();
+            const location = eventLocationEl.val();
+            const description = eventDescriptionEl.val();
+            const price = eventPriceEl.val();
+            const eventObject = generateEventObject(getUUID(), title, location, startTime, endTime, description, price);
             // Add event to database
             $.post("/postCalendarEvent", eventObject, null, 'json');
-            // Load visually
+            // Update the budget of the adding user
+            updateBudget(price, "log");
+            // Load event visually
             calendar.addEvent(eventObject);
             modal.hide();
         }
@@ -123,7 +140,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     });
 
-    function generateEventObject(id, title, startTimeISO, endTimeISO) {
+    function generateEventObject(id, title, location, startTimeISO, endTimeISO, description, price) {
+
 
         title = title ? title : "Untitled Event";
 
@@ -139,15 +157,33 @@ document.addEventListener('DOMContentLoaded', function() {
         return {
             id: id,
             title: title,
+            location: location,
             start: startTimeISO,
             end: endTimeISO,
+            description: description,
+            price: price,
             editable: true,
             allDay: alldayBoolean,
             chatID: chatID
         };
     }
 
-    function updateBudget(amount) {
+    function updateBudget(price, type) {
+
+        $.ajax({
+            url: "/updateUserBudgetInRoom",
+            type: "post",
+            data: {
+                "auth": userID,
+                "roomId": chatID,
+                "type": type,
+                "amount": price
+            },
+            async: false,
+            success: function () {
+
+            }
+        });
 
     }
 

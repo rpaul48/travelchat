@@ -51,12 +51,9 @@
     <div id="plan-my-day-div" class="big-popup-div">
         <h2>Plan My Day</h2>
         <div class="form-container">
-            <form id="restaurants-form">
-                <label>Cost per person (USD): <input type="number" id="cost-per-person" min="0.01" step="0.01" value="100.00"> </label>
-                <label>Start time: <input type="time" id="start-time"></label>
-                <label>End time: <input type="time" id="end-time"></label>
+            <form id="plan-my-day-form">
+                <label>Date: <input type="date" id="date-to-plan"></label>
                 <label>Max distance from current location (miles): <input type="number" min="1" id="max-distance"> </label>
-                <label>Number of meals: <input type="number" min="0" id="num-meals"> </label>
                 <label>Preferred cuisines: </label>
                 <div class="checkboxes">
                     <label><input type="checkbox" name="pmd-cuisine" value="Any" checked>Any</label>
@@ -132,9 +129,10 @@
                 <label>Minimum rating</label>
                 <select id="restaurant-rating-sel">
                     <option value="1" selected="selected">Any</option>
-                    <option value="2" >3 stars</option>
-                    <option value="3" >4 stars</option>
-                    <option value="4" >5 stars</option>
+                    <option value="2" >2 stars</option>
+                    <option value="3" >3 stars</option>
+                    <option value="4" >4 stars</option>
+                    <option value="5" >5 stars</option>
                 </select>
 
                 <label>Dietary restrictions</label>
@@ -148,7 +146,7 @@
                 <button onclick="browseRestaurants()" type="button" class="small-green-button">Search</button>
             </form>
         </div>
-        <div class="results-container"></div>
+        <div id="restaurants-results" class="results-container"></div>
         <button onclick="closePopup('restaurants-div')" class="small-black-button">Back</button>
     </div>
 
@@ -166,7 +164,7 @@
                 <label> miles from current location </label>
                 <br>
                 <label>Type of activity: </label>
-                <div class="activities">
+                <div class="checkboxes">
                     <label><input type="checkbox" name="browse-activity" value="All" checked/>All</label>
                     <label><input type="checkbox" name="browse-activity" value="Boat Tours & Water Sports">Boat Tours & Water Sports</label>
                     <label><input type="checkbox" name="browse-activity" value="Fun & Game">Fun & Game</label>
@@ -185,7 +183,7 @@
                 <button onclick="browseActivities()" type="button" class="small-green-button">Search</button>
             </form>
         </div>
-        <div class="results-container"></div>
+        <div id="activities-results" class="results-container"></div>
         <button onclick="closePopup('activities-div')" class="small-black-button">Back</button>
     </div>
 
@@ -224,7 +222,7 @@
                 <button onclick="browseLodging()" type="button" class="small-green-button">Search</button>
             </form>
         </div>
-        <div class="results-container"></div>
+        <div id="lodging-results" class="results-container"></div>
         <button onclick="closePopup('lodging-div')" class="small-black-button">Back</button>
     </div>
 
@@ -260,7 +258,7 @@
                 <button onclick="browseFlights()" type="button" class="small-green-button">Search</button>
             </form>
         </div>
-        <div class="results-container"></div>
+        <div id="flights-results" class="results-container"></div>
         <button onclick="closePopup('flights-div')" class="small-black-button">Back</button>
     </div>
 

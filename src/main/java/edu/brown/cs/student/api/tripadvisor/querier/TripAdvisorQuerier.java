@@ -44,6 +44,7 @@ public class TripAdvisorQuerier extends Querier {
   private static final String LOGGER_PREFIX = "TripAdvisor API: ";
   private static final String X_RAPIDAPI_KEY = "aaf4f074c6msh0940f8b6e880750p1f240bjsne42d7f349197";
   private static final String X_RAPIDAPI_HOST = "tripadvisor1.p.rapidapi.com";
+  private static final int MAX_RETRIES = 3;
 
   /**
    * Constructor; assigns a key and host and logs initialization.
@@ -98,15 +99,28 @@ public class TripAdvisorQuerier extends Querier {
    *
    * @param flightRequest The object containing all parameters/constraints needed
    *                      for the query.
-   * @return A list of flights matching the given parameters.
+   * @return A JSONArray of flights matching the given parameters.
    * @throws UnirestException - thrown if query fails to run.
    */
   public JSONArray getFlights(FlightRequest flightRequest) throws UnirestException {
     LOGGER.log(Level.INFO, LOGGER_PREFIX + "Querying flights.");
     // Create Session -> Poll -> Returned parsed response
     FlightResponse flightResponse = new FlightResponse(flightRequest);
-    // Serialize and return results
-    List<Flight> data = flightResponse.getData();
+    // Query, re-querying if necessary.
+    int curr_retries = 0;
+    List<Flight> data = null;
+    while (curr_retries < MAX_RETRIES) {
+      curr_retries++;
+      try {
+        data = flightResponse.getData();
+        if (data != null) {
+          break;
+        }
+      } catch(Exception e) {
+        LOGGER.log(Level.INFO,
+                LOGGER_PREFIX + "Query failure. Trying again.");
+      }
+    }
     LOGGER.log(Level.INFO,
         LOGGER_PREFIX + String.format("Successfully queried %d flights.", data.size()));
 
@@ -117,8 +131,7 @@ public class TripAdvisorQuerier extends Querier {
       json.put("price", flight.getPrice());
       json.put("carrier", flight.getCarrier());
       flightArray.put(json);
-      // We can submit more fields but may not be worth the trouble... this should be
-      // informative enough.
+      // We can submit more fields but may not be worth the trouble... this should informative enough.
     }
 
     return flightArray;
