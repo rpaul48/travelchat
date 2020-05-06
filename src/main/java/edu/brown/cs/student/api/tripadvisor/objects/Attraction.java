@@ -19,35 +19,17 @@ public class Attraction implements Item {
   private boolean isClosed; // field "is_closed"
 
   /**
-   * Default constructor.
+   * Default constructor, initializing all instance variables.
    */
   public Attraction() {
-  }
-
-  /**
-   * Constructor with all fields.
-   *
-   * @param name           - name of Attraction
-   * @param latitude       - latitude of Attraction
-   * @param longitude      - longitude of Attraction
-   * @param distance       - distance from specified location used in query to
-   *                       Attraction
-   * @param numReviews     - number of reviews for Attraction
-   * @param locationString - location string of Attraction
-   * @param photoUrl       - url for an image of Attraction
-   * @param priceRange     - price range for Attraction
-   * @param isClosed       - whether Attraction is closed
-   */
-  public Attraction(String name, double latitude, double longitude, double distance, int numReviews,
-      String locationString, String photoUrl, String priceRange, boolean isClosed) {
-    this.name = name;
-    this.latitude = latitude;
-    this.longitude = longitude;
-    this.distance = distance;
-    this.numReviews = numReviews;
-    this.locationString = locationString;
-    this.photoUrl = photoUrl;
-    this.isClosed = isClosed;
+    name = "";
+    latitude = Constants.INIT_NUM_VALUE;
+    longitude = Constants.INIT_NUM_VALUE;
+    distance = Constants.INIT_NUM_VALUE;
+    numReviews = Constants.INIT_NUM_VALUE;
+    locationString = "";
+    photoUrl = "";
+    isClosed = false;
   }
 
   @Override
@@ -131,46 +113,49 @@ public class Attraction implements Item {
   }
 
   @Override
-  public String toString() {
-    DecimalFormat df = new DecimalFormat("#.##");
-    DecimalFormat df2 = new DecimalFormat("#.####");
-
-    StringBuilder sb = new StringBuilder();
-    sb.append("Name: " + name + "\n");
-    sb.append("Location: " + locationString + "\n");
-    sb.append("Latitude: " + df2.format(latitude) + "\n");
-    sb.append("Longitude: " + df2.format(longitude) + "\n");
-    sb.append("Distance: " + df.format(distance) + " " + Constants.LUNIT + "\n");
-    sb.append("Number of Reviews: " + numReviews + "\n");
-//    sb.append("Photo Url: " + photoUrl + "\n");
-
-    if (isClosed) {
-      sb.append("Closed");
-    } else {
-      sb.append("Open");
-    }
-
-    return sb.toString();
-  }
-
-  @Override
   public String toStringHTML() {
     DecimalFormat df = new DecimalFormat("#.##");
     DecimalFormat df2 = new DecimalFormat("#.####");
-
     StringBuilder sb = new StringBuilder();
-    sb.append("Name: " + name + "<br>");
-    sb.append("Location: " + locationString + "<br>");
-    sb.append("Latitude: " + df2.format(latitude) + "<br>");
-    sb.append("Longitude: " + df2.format(longitude) + "<br>");
-    sb.append("Distance: " + df.format(distance) + " " + Constants.LUNIT + "<br>");
-    sb.append("Number of Reviews: " + numReviews + "<br>");
+
+    // If name is not assigned, do not show this Restaurant in HTML string.
+    if (name.equals("")) {
+      return "";
+    }
+
+    sb.append("<br>Name: ").append(name).append("<br>");
+
+    if (!locationString.equals("")) {
+      sb.append("Location: ").append(locationString).append("<br>");
+    }
+
+    // Means it has been updated and has an actual value for that number variable.
+    if (!(latitude == Constants.INIT_NUM_VALUE || longitude == Constants.INIT_NUM_VALUE)) {
+      sb.append("Latitude: ").append(df2.format(latitude)).append("<br>");
+      sb.append("Longitude: ").append(df2.format(longitude)).append("<br>");
+    }
+
+    if (!(distance == Constants.INIT_NUM_VALUE)) {
+      sb.append("Distance: ").append(df.format(distance)).append(" ").append(Constants.LUNIT)
+          .append("<br>");
+    }
+
+    // Means it has been updated and has an actual value for that variable.
+    if (!(numReviews == Constants.INIT_NUM_VALUE)) {
+      sb.append("Number of Reviews: ").append(numReviews).append("<br>");
+    }
 
     if (isClosed) {
       sb.append("Closed");
     } else {
       sb.append("Open");
     }
+
+    if (!photoUrl.equals("")) {
+      sb.append("<br><img src=\"" + photoUrl + "\" width = \"300\" height=\"200\">");
+    }
+
+    sb.append("<br><br>");
 
     return sb.toString();
   }

@@ -69,20 +69,44 @@ public class AttractionResponse {
         JSONObject attractionObj = (JSONObject) attractionsArr.get(i);
 
         try {
-          JSONObject photoObj = (JSONObject) attractionObj.get("photo");
-          JSONObject imagesObj = (JSONObject) photoObj.get("images");
-          JSONObject smallObj = (JSONObject) imagesObj.get("small");
-          attraction.setPhotoUrl(smallObj.getString("url")); // "https://media-cdn.tripadvisor.com/media/photo-l/15/19/d6/c1/the-jouney-begins-kaan.jpg"
+          if (attractionObj.isNull("name")) {
+            continue;
+          }
+          attraction.setName(attractionObj.getString("name"));
 
-          attraction.setName(attractionObj.getString("name")); // "Performances"
-          attraction.setLatitude(attractionObj.getDouble("latitude")); // 12.906674
-          attraction.setLongitude(attractionObj.getDouble("longitude")); // 100.87785
-          attraction.setDistance(attractionObj.getDouble("distance")); // 1.0886330230315118
-          attraction.setNumReviews(attractionObj.getInt("num_reviews")); // 120
-          attraction.setLocationString(attractionObj.getString("location_string")); // "Pattaya,
-                                                                                    // Chonburi
-          // Province"
-          attraction.setClosed(attractionObj.getBoolean("is_closed")); // false
+          if (!attractionObj.isNull("latitude") && !attractionObj.isNull("longitude")) {
+            attraction.setLatitude(attractionObj.getDouble("latitude"));
+            attraction.setLongitude(attractionObj.getDouble("longitude"));
+          }
+
+          if (!attractionObj.isNull("distance")) {
+            attraction.setDistance(attractionObj.getDouble("distance"));
+          }
+
+          if (!attractionObj.isNull("num_reviews")) {
+            attraction.setNumReviews(attractionObj.getInt("num_reviews"));
+          }
+
+          if (!attractionObj.isNull("location_string")) {
+            attraction.setLocationString(attractionObj.getString("location_string"));
+          }
+
+          if (!attractionObj.isNull("is_closed")) {
+            attraction.setClosed(attractionObj.getBoolean("is_closed"));
+          }
+
+          if (!attractionObj.isNull("photo")) {
+            JSONObject photoObj = (JSONObject) attractionObj.get("photo");
+            if (!photoObj.isNull("images")) {
+              JSONObject imagesObj = (JSONObject) photoObj.get("images");
+              if (!imagesObj.isNull("small")) {
+                JSONObject smallObj = (JSONObject) imagesObj.get("small");
+                if (!smallObj.isNull("url")) {
+                  attraction.setPhotoUrl(smallObj.getString("url"));
+                }
+              }
+            }
+          }
         } catch (org.json.JSONException exception) {
           continue;
         }

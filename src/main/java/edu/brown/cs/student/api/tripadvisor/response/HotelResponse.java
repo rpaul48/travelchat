@@ -69,24 +69,68 @@ public class HotelResponse {
         JSONObject hotelObj = (JSONObject) hotelsArr.get(i);
 
         try {
-          JSONObject photoObj = (JSONObject) hotelObj.get("photo");
-          JSONObject imagesObj = (JSONObject) photoObj.get("images");
-          JSONObject smallObj = (JSONObject) imagesObj.get("small");
-
-          hotel.setPhotoUrl(smallObj.getString("url"));
+          if (hotelObj.isNull("name")) {
+            continue;
+          }
           hotel.setName(hotelObj.getString("name"));
-          hotel.setLatitude(hotelObj.getDouble("latitude"));
-          hotel.setLongitude(hotelObj.getDouble("longitude"));
-          hotel.setDistance(hotelObj.getDouble("distance"));
-          hotel.setNumReviews(hotelObj.getInt("num_reviews"));
-          hotel.setLocationString(hotelObj.getString("location_string"));
-          hotel.setRating(hotelObj.getDouble("rating"));
-          hotel.setPriceLevel(hotelObj.getString("price_level"));
-          hotel.setPrice(hotelObj.getString("price"));
-          hotel.setRanking(hotelObj.getInt("ranking_position"));
-          hotel.setRankingString(hotelObj.getString("ranking"));
-          hotel.setClosed(hotelObj.getBoolean("is_closed"));
-          hotel.setHotelClass(hotelObj.getString("hotel_class"));
+
+          if (!hotelObj.isNull("latitude") && !hotelObj.isNull("longitude")) {
+            hotel.setLatitude(hotelObj.getDouble("latitude"));
+            hotel.setLongitude(hotelObj.getDouble("longitude"));
+          }
+
+          if (!hotelObj.isNull("distance")) {
+            hotel.setDistance(hotelObj.getDouble("distance"));
+          }
+
+          if (!hotelObj.isNull("num_reviews")) {
+            hotel.setNumReviews(hotelObj.getInt("num_reviews"));
+          }
+
+          if (!hotelObj.isNull("location_string")) {
+            hotel.setLocationString(hotelObj.getString("location_string"));
+          }
+
+          if (!hotelObj.isNull("rating")) {
+            hotel.setRating(hotelObj.getDouble("rating"));
+          }
+
+          if (!hotelObj.isNull("price_level")) {
+            hotel.setPriceLevel(hotelObj.getString("price_level"));
+          }
+
+          if (!hotelObj.isNull("price")) {
+            hotel.setPriceLevel(hotelObj.getString("price"));
+          }
+
+          if (!hotelObj.isNull("ranking")) {
+            hotel.setRankingString(hotelObj.getString("ranking"));
+          }
+
+          if (!hotelObj.isNull("ranking_position")) {
+            hotel.setRanking(hotelObj.getInt("ranking_position"));
+          }
+
+          if (!hotelObj.isNull("is_closed")) {
+            hotel.setClosed(hotelObj.getBoolean("is_closed"));
+          }
+
+          if (!hotelObj.isNull("hotel_class")) {
+            hotel.setHotelClass(hotelObj.getDouble("hotel_class"));
+          }
+
+          if (!hotelObj.isNull("photo")) {
+            JSONObject photoObj = (JSONObject) hotelObj.get("photo");
+            if (!photoObj.isNull("images")) {
+              JSONObject imagesObj = (JSONObject) photoObj.get("images");
+              if (!imagesObj.isNull("small")) {
+                JSONObject smallObj = (JSONObject) imagesObj.get("small");
+                if (!smallObj.isNull("url")) {
+                  hotel.setPhotoUrl(smallObj.getString("url"));
+                }
+              }
+            }
+          }
         } catch (org.json.JSONException exception) {
           continue;
         }

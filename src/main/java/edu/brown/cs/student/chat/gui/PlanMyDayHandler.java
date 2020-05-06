@@ -46,7 +46,7 @@ public class PlanMyDayHandler implements Route {
       return new JSONObject(variables);
     }
 
-    //format: 2020-05-30 (year-month-day)
+    // format: 2020-05-30 (year-month-day)
     String date = qm.value("date");
 
     // max distance in miles; nonnegative integer
@@ -96,10 +96,10 @@ public class PlanMyDayHandler implements Route {
       params.put("lang", Constants.LANG);
       params.put("currency", Constants.CURRENCY);
       params.put("lunit", Constants.LUNIT);
-      params.put("tr_latitude", lat + Constants.BOUNDARYOFFSET);
-      params.put("tr_longitude", lon + Constants.BOUNDARYOFFSET);
-      params.put("bl_latitude", lat - Constants.BOUNDARYOFFSET);
-      params.put("bl_longitude", lon - Constants.BOUNDARYOFFSET);
+      params.put("tr_latitude", lat + Constants.LAT_LON_BOUNDARY_OFFSET_10_MILES);
+      params.put("tr_longitude", lon + Constants.LAT_LON_BOUNDARY_OFFSET_10_MILES);
+      params.put("bl_latitude", lat - Constants.LAT_LON_BOUNDARY_OFFSET_10_MILES);
+      params.put("bl_longitude", lon - Constants.LAT_LON_BOUNDARY_OFFSET_10_MILES);
       params.put("subcategory", activity);
 
       errorMsg = paramsAreValidAttractions(params);
@@ -183,10 +183,13 @@ public class PlanMyDayHandler implements Route {
       return "ERROR: Latitude or longitude is missing.";
     }
 
-    double latitude = ((Double) params.get("tr_latitude")) - Constants.BOUNDARYOFFSET;
-    double longitude = ((Double) params.get("tr_longitude")) - Constants.BOUNDARYOFFSET;
+    double tr_latitude = ((Double) params.get("tr_latitude"));
+    double tr_longitude = ((Double) params.get("tr_longitude"));
+    double bl_latitude = ((Double) params.get("bl_latitude"));
+    double bl_longitude = ((Double) params.get("bl_longitude"));
 
-    if (!(latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180)) {
+    if (!(bl_latitude >= Constants.MIN_LATITUDE && tr_latitude <= Constants.MAX_LATITUDE
+        && bl_longitude >= Constants.MIN_LONGITUDE && tr_longitude <= Constants.MAX_LONGITUDE)) {
       return "ERROR: Latitude or longitude is out of range.";
     }
 

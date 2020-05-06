@@ -107,9 +107,10 @@ public class BrowseRestaurantsHandler implements Route {
     if (restaurants.isEmpty()) {
       sb.append("No matching result.");
     } else {
-      for (Restaurant restaurant : restaurants) {
-        sb.append(restaurant.toStringHTML() + Constants.SEPARATOR_HTML);
+      for (int i = 0; i < restaurants.size() - 1; i++) {
+        sb.append(restaurants.get(i).toStringHTML() + "<hr>");
       }
+      sb.append(restaurants.get(restaurants.size() - 1).toStringHTML());
     }
 
     Map<String, String> variables = ImmutableMap.of("restaurants_result", sb.toString(),
