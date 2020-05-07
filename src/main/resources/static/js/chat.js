@@ -219,7 +219,8 @@ function planMyDay() {
             "date": date,
             "maxDist": maxDist,
             "cuisineTypes": cuisines.toString(),
-            "activityTypes": activities.toString()},
+            "activityTypes": activities.toString()
+        },
         async: false,
         success: function (data) {
             console.log("received");
@@ -230,6 +231,26 @@ function planMyDay() {
 
 // returns search results for restaurants
 function browseRestaurants() {
+    var loc;
+    var curLoc = document.getElementById("restaurant-cur-loc").checked;
+
+    if (curLoc) {
+        if (coordinates == null) {
+            window.alert("Please allow your browser to access your location or input an address.");
+            return;
+        } else {
+            loc = coordinates;
+        }
+    } else {
+        var address = document.getElementById("restaurant-address").value;
+        if (!(address === "")) {
+            loc = getLatAndLongFromAddress(address);
+        } else {
+            window.alert("Please input an address or use your current location.");
+            return;
+        }
+    }
+
     var miles_sel = document.getElementById("restaurant-miles-sel");
     var miles = miles_sel.options[miles_sel.selectedIndex].text;
     var price_sel = document.getElementById("restaurant-price-sel");
@@ -243,9 +264,6 @@ function browseRestaurants() {
     $("input:checkbox[name=browse-cuisine]:checked").each(function () {
         cuisines.push($(this).val());
     });
-
-    var address = document.getElementById("restaurant-address").value;
-    var loc = getLatAndLongFromAddress(address);
 
     // returns a list of restaurant options which match the query parameters
     $.ajax({
@@ -270,6 +288,26 @@ function browseRestaurants() {
 
 // returns search results for activities
 function browseActivities() {
+    var loc;
+    var curLoc = document.getElementById("activities-cur-loc").checked;
+
+    if (curLoc) {
+        if (coordinates == null) {
+            window.alert("Please allow your browser to access your location or input an address.");
+            return;
+        } else {
+            loc = coordinates;
+        }
+    } else {
+        var address = document.getElementById("activities-address").value;
+        if (!(address === "")) {
+            loc = getLatAndLongFromAddress(address);
+        } else {
+            window.alert("Please input an address or use your current location.");
+            return;
+        }
+    }
+
     var miles_sel = document.getElementById("activities-miles-sel");
     var miles = miles_sel.options[miles_sel.selectedIndex].text;
 
@@ -277,9 +315,6 @@ function browseActivities() {
     $("input:checkbox[name=browse-activity]:checked").each(function () {
         activities.push($(this).val());
     });
-
-    var address = document.getElementById("activities-address").value;
-    var loc = getLatAndLongFromAddress(address);
 
     // returns a list of activities options which match the query parameters
     $.ajax({
@@ -301,6 +336,26 @@ function browseActivities() {
 
 // returns search results for lodging
 function browseLodging() {
+    var loc;
+    var curLoc = document.getElementById("lodging-cur-loc").checked;
+
+    if (curLoc) {
+        if (coordinates == null) {
+            window.alert("Please allow your browser to access your location or input an address.");
+            return;
+        } else {
+            loc = coordinates;
+        }
+    } else {
+        var address = document.getElementById("lodging-address").value;
+        if (!(address === "")) {
+            loc = getLatAndLongFromAddress(address);
+        } else {
+            window.alert("Please input an address or use your current location.");
+            return;
+        }
+    }
+
     var type_sel = document.getElementById("hotel-type-sel");
     var type = type_sel.options[type_sel.selectedIndex].text;
     var checkin = document.getElementById("check-in").value;
@@ -308,9 +363,6 @@ function browseLodging() {
     var rating_sel = document.getElementById("hotel-rating-sel");
     var rating = rating_sel.options[rating_sel.selectedIndex].text;
     var num_rooms = document.getElementById("num-rooms").value;
-
-    var address = document.getElementById("lodging-address").value;
-    var loc = getLatAndLongFromAddress(address);
 
     // returns a list of lodging options which match the query parameters
     $.ajax({
@@ -335,67 +387,62 @@ function browseLodging() {
 
 // returns search results for flights
 function browseFlights() {
-    if ((coordinates === "Geolocation is not supported by this browser.") || (coordinates == null)) {
-        window.alert("Please allow your browser to access your location.");
-    } else {
-        var departure_date = document.getElementById("departure-date").value;
-        var depart = document.getElementById("depart").value;
-        var destination = document.getElementById("destination").value;
-        var adults = document.getElementById("num-adults").value;
-        var children = document.getElementById("num-children").value;
-        var seniors = document.getElementById("num-seniors").value;
-        var numStops_sel = document.getElementById("max-stops-sel");
-        var numStops = numStops_sel.options[numStops_sel.selectedIndex].text;
-        var flightClass_sel = document.getElementById("flight-class-sel");
-        var flightClass = flightClass_sel.options[flightClass_sel.selectedIndex].text;
-        document.getElementById("flights-results").innerHTML = "Loading...";
+    var departure_date = document.getElementById("departure-date").value;
+    var depart = document.getElementById("depart").value;
+    var destination = document.getElementById("destination").value;
+    var adults = document.getElementById("num-adults").value;
+    var children = document.getElementById("num-children").value;
+    var seniors = document.getElementById("num-seniors").value;
+    var numStops_sel = document.getElementById("max-stops-sel");
+    var numStops = numStops_sel.options[numStops_sel.selectedIndex].text;
+    var flightClass_sel = document.getElementById("flight-class-sel");
+    var flightClass = flightClass_sel.options[flightClass_sel.selectedIndex].text;
+    document.getElementById("flights-results").innerHTML = "Loading...";
 
-        // returns a list of flight options which match the query parameters
-        $.ajax({
-            url: "/browseFlights",
-            type: "get",
-            data: {
-                "location": coordinates,
-                "departure_date": departure_date,
-                "origin": depart,
-                "destination": destination,
-                "adults": adults,
-                "children": children,
-                "seniors": seniors,
-                "numStops": numStops,
-                "flightClass": flightClass
-            },
-            async: false,
-            success: function (data) {
-                var result = JSON.parse(data);
-                document.getElementById("flights-results").innerHTML = "";
-                if (result.length === 0) {
-                    document.getElementById("flights-results").innerHTML = "No results found.";
-                } else {
-                    var i;
-                    for (i = 0; i < result.length; i++) {
-                        var html = [];
-                        html.push(
-                            "<p>",
-                            "carrier: ",
-                            result[i].carrier,
-                            "<br>",
-                            "price: ",
-                            result[i].price,
-                            "<br>",
-                            "book your flight: ",
-                            "<a href=",
-                            result[i].booking_url,
-                            ">here</a>",
-                            "<hr>",
-                            "</p>",
-                        );
-                        document.getElementById("flights-results").innerHTML += html.join("");
-                    }
+    // returns a list of flight options which match the query parameters
+    $.ajax({
+        url: "/browseFlights",
+        type: "get",
+        data: {
+            "departure_date": departure_date,
+            "origin": depart,
+            "destination": destination,
+            "adults": adults,
+            "children": children,
+            "seniors": seniors,
+            "numStops": numStops,
+            "flightClass": flightClass
+        },
+        async: false,
+        success: function (data) {
+            var result = JSON.parse(data);
+            document.getElementById("flights-results").innerHTML = "";
+            if (result.length === 0) {
+                document.getElementById("flights-results").innerHTML = "No results found.";
+            } else {
+                var i;
+                for (i = 0; i < result.length; i++) {
+                    var html = [];
+                    html.push(
+                        "<p>",
+                        "carrier: ",
+                        result[i].carrier,
+                        "<br>",
+                        "price: ",
+                        result[i].price,
+                        "<br>",
+                        "book your flight: ",
+                        "<a href=",
+                        result[i].booking_url,
+                        ">here</a>",
+                        "<hr>",
+                        "</p>",
+                    );
+                    document.getElementById("flights-results").innerHTML += html.join("");
                 }
             }
-        });
-    }
+        }
+    });
 }
 
 function updateCalendarLink() {
