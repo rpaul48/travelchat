@@ -1,3 +1,4 @@
+// this piece of code regulates what part of the site the user can visit based on if they are authenticated
 firebase.auth().onAuthStateChanged(function(user) {
     if (window.location.pathname === "/login") {
         if (user) {
@@ -20,6 +21,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     }
 });
 
+// logs user in with their inputted email and password combination
 function login() {
     var userEmail = document.getElementById("email-field").value;
     var userPass = document.getElementById("password-field").value;
@@ -41,6 +43,7 @@ function closeCreateAccount() {
     document.getElementById("create-account-div").style.display = "none";
 }
 
+// creates a new account with the given display name, email, and password
 function createAccount() {
     var name = document.getElementById("display-name-field").value;
     var userEmail = document.getElementById("create-email-field").value;
@@ -54,14 +57,13 @@ function createAccount() {
         window.alert("Error: " + errorMessage);
     });
 
-
-    // bug: i can't get this to execute? no console.log result and displayName stays null.
     firebase.auth().currentUser.updateProfile({displayName: name}).then(function () {
         console.log("set displayName to: " + firebase.auth().currentUser.displayName);
         closeCreateAccount();
     });
 }
 
+// logs the user out, returns them to login page
 function logout() {
     firebase.auth().signOut().then(r =>
         window.location.href = "/login")

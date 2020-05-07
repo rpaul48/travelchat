@@ -35,7 +35,7 @@ public class Constants {
   public static final String LUNIT = "mi";
   public static final String SORT = "recommended";
   /*
-   * 1 degree is approximately 69 mi; thus, this lat/lon offset will give
+   * 1 degree is approximately 69 mi; thus, this lat/lon degree offset will give
    * approximately reasonable boundary for corresponding number of miles.
    */
   public static final double LAT_LON_BOUNDARY_OFFSET_1_MILES = 0.01449275362;
@@ -47,11 +47,6 @@ public class Constants {
   public static final int MAX_LATITUDE = 90;
   public static final int MIN_LONGITUDE = -180;
   public static final int MAX_LONGITUDE = 180;
-  // This will separate different items in browse restaurants/hotels/attractions.
-  public static final String SEPARATOR_HTML = "<br>"
-      + "----------------------------------------------------------"
-      + "----------------------------------------------------------"
-      + "------------------------------------------------------" + "<br>";
 
   /*
    * Each integer/double field in Restaurant/Hotel/Attractions' info is
