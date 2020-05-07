@@ -19,6 +19,7 @@ public class Restaurant implements Item {
   private String photoUrl;
   private double distance;
   private String priceLevel;
+  private String priceRange;
   private double rating;
   private boolean isClosed;
   private int ranking;
@@ -38,6 +39,7 @@ public class Restaurant implements Item {
     photoUrl = "";
     distance = Constants.INIT_NUM_VALUE;
     priceLevel = "";
+    priceRange = "";
     rating = Constants.INIT_NUM_VALUE;
     isClosed = false;
     ranking = Constants.INIT_NUM_VALUE;
@@ -175,6 +177,14 @@ public class Restaurant implements Item {
     this.rankingString = rankingString;
   }
 
+  public String getPriceRange() {
+    return priceRange;
+  }
+
+  public void setPriceRange(String priceRange) {
+    this.priceRange = priceRange;
+  }
+
   /*
    * Checks if each variable has an assigned information and builds an HTML string
    * using meaningful variables with info assigned.
@@ -226,6 +236,10 @@ public class Restaurant implements Item {
 
     if (!priceLevel.equals("")) {
       sb.append("Price Level: ").append(priceLevel).append("<br>");
+    }
+
+    if (!priceRange.equals("")) {
+      sb.append("Price: ").append(priceRange).append("<br>");
     }
 
     if (!rankingString.equals("")) {

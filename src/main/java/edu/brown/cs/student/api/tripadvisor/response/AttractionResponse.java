@@ -107,6 +107,19 @@ public class AttractionResponse {
               }
             }
           }
+
+          if (!attractionObj.isNull("offer_group")) {
+            JSONObject groupObj = (JSONObject) attractionObj.get("offer_group");
+            if (!groupObj.isNull("lowest_price")) {
+              String priceStr = groupObj.getString("lowest_price");
+              try {
+                double lowestPrice = Double.parseDouble(priceStr.substring(1));
+                attraction.setLowestPrice(lowestPrice);
+              } catch (NumberFormatException nfe) {
+              }
+            }
+          }
+
         } catch (org.json.JSONException exception) {
           continue;
         }

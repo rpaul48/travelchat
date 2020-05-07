@@ -17,7 +17,7 @@ public class Attraction implements Item {
   private String locationString; // field "location_string"
   private String photoUrl; // field "photo"-"images"-"small"-"url"
   private boolean isClosed; // field "is_closed"
-  private double lowest_price; // field "lowest_price"
+  private double lowestPrice; // field "lowest_price"
 
   /**
    * Default constructor, initializing all instance variables.
@@ -28,18 +28,18 @@ public class Attraction implements Item {
     longitude = Constants.INIT_NUM_VALUE;
     distance = Constants.INIT_NUM_VALUE;
     numReviews = Constants.INIT_NUM_VALUE;
-    lowest_price = Constants.INIT_NUM_VALUE;
+    lowestPrice = Constants.INIT_NUM_VALUE;
     locationString = "";
     photoUrl = "";
     isClosed = false;
   }
 
-  public double getLowest_price() {
-    return lowest_price;
+  public double getLowestPrice() {
+    return lowestPrice;
   }
 
-  public void setLowest_price(double lowest_price) {
-    this.lowest_price = lowest_price;
+  public void setLowestPrice(double lowestPrice) {
+    this.lowestPrice = lowestPrice;
   }
 
   @Override
@@ -153,6 +153,10 @@ public class Attraction implements Item {
     // Means it has been updated and has an actual value for that variable.
     if (!(numReviews == Constants.INIT_NUM_VALUE)) {
       sb.append("Number of Reviews: ").append(numReviews).append("<br>");
+    }
+
+    if (!(lowestPrice == Constants.INIT_NUM_VALUE)) {
+      sb.append("Lowest Price: $").append(String.format("%.2f", lowestPrice)).append("<br>");
     }
 
     if (isClosed) {

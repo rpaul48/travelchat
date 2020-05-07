@@ -18,7 +18,7 @@ public class Hotel implements Item {
   private String photoUrl; // field "photo"-"images"-"small"-"url"
   private double rating; // field "rating" (out of 5.0)
   private String priceLevel; // field "price_level" (ex. $$)
-  private String price; // field "price" (ex. $141 - $533)
+  private String priceRange; // field "price" (ex. $141 - $533)
   private int ranking; // field "ranking_position"
   private String rankingString; // field "ranking"
   private boolean isClosed; // field "is_closed"
@@ -36,7 +36,7 @@ public class Hotel implements Item {
     photoUrl = "";
     distance = Constants.INIT_NUM_VALUE;
     priceLevel = "";
-    price = "";
+    priceRange = "";
     rating = Constants.INIT_NUM_VALUE;
     isClosed = false;
     ranking = Constants.INIT_NUM_VALUE;
@@ -88,8 +88,8 @@ public class Hotel implements Item {
     return priceLevel;
   }
 
-  public String getPrice() {
-    return price;
+  public String getPriceRange() {
+    return priceRange;
   }
 
   public int getRanking() {
@@ -152,8 +152,8 @@ public class Hotel implements Item {
     this.priceLevel = priceLevel;
   }
 
-  public void setPrice(String price) {
-    this.price = price;
+  public void setPriceRange(String priceRange) {
+    this.priceRange = priceRange;
   }
 
   public void setRanking(int ranking) {
@@ -218,8 +218,8 @@ public class Hotel implements Item {
       sb.append("Price Level: ").append(priceLevel).append("<br>");
     }
 
-    if (!price.equals("")) {
-      sb.append("Price: ").append(price).append("<br>");
+    if (!priceRange.equals("")) {
+      sb.append("Price: ").append(priceRange).append("<br>");
     }
 
     if (!rankingString.equals("")) {
