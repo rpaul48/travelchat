@@ -31,7 +31,7 @@ public class AttractionResponse {
    *
    * @return attraction request.
    */
-  public AttractionRequest getattractionRequest() {
+  public AttractionRequest getAttractionRequest() {
     return attractionRequest;
   }
 
@@ -40,7 +40,7 @@ public class AttractionResponse {
    *
    * @param request to newly set to.
    */
-  public void setattractionRequest(AttractionRequest request) {
+  public void setAttractionRequest(AttractionRequest request) {
     this.attractionRequest = request;
   }
 

@@ -1,5 +1,7 @@
 package edu.brown.cs.student.api.graph;
 
+import edu.brown.cs.student.chat.gui.Constants;
+
 /**
  * A class representing a WayEdge object, which implements the IEdge interface.
  */
@@ -19,7 +21,6 @@ public class WayEdge implements IEdge<GraphNode, WayEdge> {
    */
   private GraphNode startNode;
   private GraphNode endNode;
-  private final double EARTH_RADIUS = 6371.0;
 
   /**
    * This is the constructor for the WayEdge class.
@@ -54,7 +55,7 @@ public class WayEdge implements IEdge<GraphNode, WayEdge> {
 
     double transitory = Math.pow(Math.sin(totalLat / 2.0), 2.0)
         + (Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(totalLon / 2.0), 2.0));
-    double distance = (2.0 * EARTH_RADIUS * Math.asin(Math.sqrt(transitory)));
+    double distance = (2.0 * Constants.EARTH_RADIUS * Math.asin(Math.sqrt(transitory)));
     return distance;
   }
 

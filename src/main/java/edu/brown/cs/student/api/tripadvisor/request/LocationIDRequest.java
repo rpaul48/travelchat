@@ -37,4 +37,22 @@ public class LocationIDRequest {
         .header("x-rapidapi-key", xRapidapiKey).queryString("query", cityName).asString();
     return response.getBody();
   }
+
+  /**
+   * Getter of city name.
+   * 
+   * @return city name String
+   */
+  public String getCityName() {
+    return cityName;
+  }
+
+  /**
+   * Setter of city name.
+   * 
+   * @param cityName to newly set to.
+   */
+  public void setCityName(String cityName) {
+    this.cityName = cityName;
+  }
 }

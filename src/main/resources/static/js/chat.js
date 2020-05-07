@@ -218,9 +218,8 @@ function planMyDay() {
             "location": loc,
             "date": date,
             "maxDist": maxDist,
-            "cuisineTypes": cuisines,
-            "activityTypes": activities
-        },
+            "cuisineTypes": cuisines.toString(),
+            "activityTypes": activities.toString()},
         async: false,
         success: function (data) {
             console.log("received");
