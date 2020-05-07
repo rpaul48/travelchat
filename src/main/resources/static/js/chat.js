@@ -199,7 +199,10 @@ function planMyDay() {
     }
 
     var date = document.getElementById("date-to-plan").value;
+    var distanceRank = document.getElementById("distance-rank").value;
+    var priceRank = document.getElementById("price-rank").value;
     var maxDist = document.getElementById("max-distance").value;
+
     var cuisines = [];
     $("input:checkbox[name=pmd-cuisine]:checked").each(function () {
         cuisines.push($(this).val());
@@ -209,7 +212,6 @@ function planMyDay() {
         activities.push($(this).val());
     });
 
-    console.log("sending");
     // returns an ordered schedule of events which satisfy the query parameters
     $.ajax({
         url: "/planMyDay",
@@ -218,12 +220,13 @@ function planMyDay() {
             "location": loc,
             "date": date,
             "maxDist": maxDist,
+            "distanceRank": distanceRank,
+            "priceRank": priceRank,
             "cuisineTypes": cuisines.toString(),
             "activityTypes": activities.toString()
         },
         async: false,
         success: function (data) {
-            console.log("received");
             console.log(data);
         }
     });
