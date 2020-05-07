@@ -58,7 +58,7 @@ public class AddUserToRoomHandler implements Route {
   }
 
   private void updateUserAddedRooms(DatabaseReference userRef, String groupId, String groupName) {
-    userRef.addValueEventListener(new ValueEventListener() {
+    userRef.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
         if (dataSnapshot.hasChild("added-rooms")) {
@@ -90,7 +90,7 @@ public class AddUserToRoomHandler implements Route {
   }
 
   private void updateRoomAddedRooms(DatabaseReference roomsRef, String roomId, String uid) {
-    roomsRef.addValueEventListener(new ValueEventListener() {
+    roomsRef.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
         DatabaseReference roomsRef = dataSnapshot.getRef();
