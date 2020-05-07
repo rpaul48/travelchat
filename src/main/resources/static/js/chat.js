@@ -166,9 +166,6 @@ function updateBudget(logOrAdd) {
 
 // returns a schedule for the day
 function planMyDay() {
-    if (coordinates === "Geolocation is not supported by this browser.") {
-        window.alert("Please allow your browser to access your location.");
-    } else {
         var date = document.getElementById("date-to-plan").value;
         var maxDist = document.getElementById("max-distance").value;
         var cuisines = [];
@@ -179,14 +176,14 @@ function planMyDay() {
         $("input:checkbox[name=pmd-activity]:checked").each(function(){
             activities.push($(this).val());
         });
-
-        console.log(date);
+        var address = document.getElementById("pmd-address").value;
+        var loc = getLatAndLongFromAddress(address);
 
         // returns an ordered schedule of events which satisfy the query parameters
         $.ajax({
             url: "/planMyDay",
             type: "get",
-            data: {"location": coordinates,
+            data: {"location": loc,
                 "date": date,
                 "maxDist": maxDist,
                 "cuisineTypes": cuisines,
@@ -195,14 +192,10 @@ function planMyDay() {
             success: function (data) {
                 var recs = JSON.parse(data);
             }});
-    }
 }
 
 // returns search results for restaurants
 function browseRestaurants() {
-    if ((coordinates === "Geolocation is not supported by this browser.") || (coordinates == null)) {
-        window.alert("Please allow your browser to access your location.");
-    } else {
         var miles_sel = document.getElementById("restaurant-miles-sel");
         var miles = miles_sel.options[miles_sel.selectedIndex].text;
         var price_sel = document.getElementById("restaurant-price-sel");
@@ -217,12 +210,15 @@ function browseRestaurants() {
             cuisines.push($(this).val());
         });
 
+        var address = document.getElementById("restaurant-address").value;
+        var loc = getLatAndLongFromAddress(address);
+
         // returns a list of restaurant options which match the query parameters
         $.ajax({
             url: "/browseRestaurants",
             type: "get",
             data: {"miles": miles,
-                "location": coordinates,
+                "location": loc,
                 "cuisines": cuisines.toString(),
                 "rating": rating,
                 "price": price,
@@ -233,14 +229,10 @@ function browseRestaurants() {
                 var recs = Object.values(result)[0];
                 document.getElementById("restaurants-results").innerHTML = recs;
             }});
-    }
 }
 
 // returns search results for activities
 function browseActivities() {
-    if ((coordinates === "Geolocation is not supported by this browser.") || (coordinates == null)) {
-        window.alert("Please allow your browser to access your location.");
-    } else {
         var miles_sel = document.getElementById("activities-miles-sel");
         var miles = miles_sel.options[miles_sel.selectedIndex].text;
 
@@ -249,11 +241,14 @@ function browseActivities() {
             activities.push($(this).val());
         });
 
+        var address = document.getElementById("activities-address").value;
+        var loc = getLatAndLongFromAddress(address);
+
         // returns a list of activities options which match the query parameters
         $.ajax({
             url: "/browseActivities",
             type: "get",
-            data: {"location": coordinates,
+            data: {"location": loc,
                 "miles": miles,
                 "activityTypes": activities.toString()},
             async: false,
@@ -262,14 +257,10 @@ function browseActivities() {
                 var recs = Object.values(result)[1];
                 document.getElementById("activities-results").innerHTML = recs;
             }});
-    }
 }
 
 // returns search results for lodging
 function browseLodging() {
-    if ((coordinates === "Geolocation is not supported by this browser.") || (coordinates == null)) {
-        window.alert("Please allow your browser to access your location.");
-    } else {
         var type_sel = document.getElementById("hotel-type-sel");
         var type = type_sel.options[type_sel.selectedIndex].text;
         var checkin = document.getElementById("check-in").value;
@@ -278,11 +269,14 @@ function browseLodging() {
         var rating = rating_sel.options[rating_sel.selectedIndex].text;
         var num_rooms = document.getElementById("num-rooms").value;
 
+        var address = document.getElementById("lodging-address").value;
+        var loc = getLatAndLongFromAddress(address);
+
         // returns a list of lodging options which match the query parameters
         $.ajax({
             url: "/browseLodging",
             type: "get",
-            data: {"location": coordinates,
+            data: {"location": loc,
                 "type": type,
                 "check-in": checkin,
                 "check-out": checkout,
@@ -294,7 +288,6 @@ function browseLodging() {
                 var recs = Object.values(result)[1];
                 document.getElementById("lodging-results").innerHTML = recs;
             }});
-    }
 }
 
 // returns search results for flights
@@ -362,4 +355,18 @@ function browseFlights() {
 function updateCalendarLink() {
     const calendarLinkEl = $("#calendar-link");
     calendarLinkEl.attr("href", "/calendar/" + roomId + "/" + firebase.auth().currentUser.uid);
+}
+
+
+function getLatAndLongFromAddress(address) {
+    var ret = "";
+    $.ajax({url: "https://www.mapquestapi.com/geocoding/v1/address",
+        type: "get",
+        data: {"key": "b7pNYRJpdr0LJw2A7pupccBhMGHHa0fE", "location": address},
+        async: false,
+        success: function(data) {
+        var latLng = data.results[0].locations[0].latLng;
+        ret = String(latLng.lat) + " " + String(latLng.lng);
+    }});
+    return ret;
 }

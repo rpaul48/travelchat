@@ -43,11 +43,12 @@
         <button onclick="closePopup('budget-div')" class="small-black-button">Back</button>
     </div>
 
-    <div id="trip-details-div" class="big-popup-div">
+    <div id="trip-details-div" class="popup-div">
         <h2>Trip Details</h2>
         <form id="trip-details-form">
-        <label>Start date: <input type="date" id="trip-start-date" min="2020-01-01" class="date-class"></label>
-        <label>End date: <input type="date" id="trip-end-date" min="2020-01-01" class="date-class"></label>
+        <label>Start date: <br> <input type="date" id="trip-start-date" min="2020-01-01" class="date-class"></label>
+            <br>
+        <label>End date: <br> <input type="date" id="trip-end-date" min="2020-01-01" class="date-class"></label>
         <button onclick="closePopup('trip-details-div')" class="small-black-button">Back</button>
     </div>
 
@@ -56,7 +57,11 @@
         <div class="form-container">
             <form id="plan-my-day-form">
                 <label for="date-to-plan">Date: <input type="date" class="date-class" min="2020-01-01" id="date-to-plan"></label>
-                <label for="max-distance">Max distance from current location (miles): <input type="number" min="1" id="max-distance"> </label>
+                <br>
+                <label for="max-distance">Max distance willing to travel <input type="number" min="1" value="5" id="max-distance"> </label>
+                <label for="pmd-address"> miles from <input type="text" placeholder="input address"
+                                                             class="address" id="pmd-address"></label>
+                <br><br>
                 <label>Preferred cuisines: </label>
                 <div class="checkboxes">
                     <label><input type="checkbox" name="pmd-cuisine" value="Any" checked>Any</label>
@@ -70,6 +75,7 @@
                     <label><input type="checkbox" name="pmd-cuisine" value="Seafood">Seafood</label>
                     <label><input type="checkbox" name="pmd-cuisine" value="Thai">Thai</label>
                 </div>
+                <br>
                 <label>Preferred activity types: </label>
                 <div class="checkboxes">
                     <label><input type="checkbox" name="pmd-activity" value="All" checked/>All</label>
@@ -86,7 +92,7 @@
                     <label><input type="checkbox" name="pmd-activity" value="Tours">Tours</label>
                     <label><input type="checkbox" name="pmd-activity" value="Nightlife">Nightlife</label>
                 </div>
-                <button onclick="planMyDay()" type="button" class="small-green-button">Plan My Day</button>
+                <button onclick="planMyDay()" type="button" class="small-green-button" id="plan-my-day-button">Plan My Day</button>
             </form>
         </div>
         <button onclick="closePopup('plan-my-day-div')" class="small-black-button">Back</button>
@@ -103,8 +109,7 @@
                     <option value="3">5</option>
                     <option value="4" selected="selected">10</option>
                 </select>
-                <label> miles from current location </label>
-
+                <label> miles from <input type="text" placeholder="input address" class="address" id="restaurant-address"></label>
                 <br>
 
                 <label>Preferred cuisines: </label>
@@ -164,7 +169,7 @@
                     <option value="3">5</option>
                     <option value="4" selected="selected">10</option>
                 </select>
-                <label> miles from current location </label>
+                <label> miles from <input type="text" placeholder="input address" class="address" id="activities-address"></label>
                 <br>
                 <label>Type of activity: </label>
                 <div class="checkboxes">
@@ -194,6 +199,14 @@
         <h2>Browse Lodging</h2>
         <div class="form-container">
             <form id="lodging-form">
+                <label for="check-in">Check-in date:</label>
+                <input aria-label="Check-in date" type="date" id="check-in"
+                       value="2020-05-15" min="2020-01-01" class="date-class">
+                <label for="check-out">Check-out date:</label>
+                <input aria-label="Check-out date" type="date" id="check-out"
+                       value="2020-05-16" min="2020-01-01" class="date-class">
+                <label> Near: <input type="text" placeholder="input address" class="address" id="lodging-address"></label>
+                <br>
                 <label for="hotel-type-sel">Type</label>
                 <select aria-label="Lodging Type" id="hotel-type-sel">
                     <option value="1" selected="selected">Any</option>
@@ -201,12 +214,7 @@
                     <option value="3" >Bed and breakfast</option>
                     <option value="4" >Specialty</option>
                 </select>
-                <label for="check-in">Check-in date:</label>
-                <input aria-label="Check-in date" type="date" id="check-in"
-                       value="2020-05-15" min="2020-01-01" class="date-class">
-                <label for="check-out">Check-out date:</label>
-                <input aria-label="Check-out date" type="date" id="check-out"
-                       value="2020-05-16" min="2020-01-01" class="date-class">
+
                 <label for="hotel-rating-sel">Minimum rating:</label>
                 <select aria-label="Minimum Hotel Rating" id="hotel-rating-sel">
                     <option value="1" selected="selected">Any</option>
@@ -232,9 +240,9 @@
                 <label for="departure-date">Departure date:</label>
                 <input type="date" id="departure-date" value="2020-05-15" min="2020-01-01" class="date-class">
                 <label for="depart">Departure airport code: </label>
-                <input aria-label="Departure airport code" type="text" maxlength="3" id="depart">
+                <input aria-label="Departure airport code" type="text" maxlength="3" class="airport" id="depart">
                 <label for="destination">Destination airport code: </label>
-                <input aria-label="Destination airport code" type="text" maxlength="3" id="destination">
+                <input aria-label="Destination airport code" type="text" maxlength="3" class="airport" id="destination">
                 <label for="num-adults">Adults: </label>
                 <input type="number" step="1" value="1" id="num-adults"></input>
                 <label for="num-children">Children: </label>

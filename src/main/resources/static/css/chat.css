@@ -16,7 +16,6 @@ body {
 
 
 input {
-    width: 100%;
     padding: 5px;
     margin: 5px 0;
 }
@@ -88,24 +87,54 @@ li {
 }
 
 .checkboxes input[type="checkbox"]{
-    width: 20px;
+    width: 10px;
+    margin: 8px;
 }
 
-form input[type="number"]{
-    width: 40px;
+input[type="number"]{
+    width: 60px !important;
 }
 
-form input[type="date"]{
-    width: 120px;
+input[type="date"]{
+    width: 140px !important;
 }
 
-form input[type="text"]{
+.airport-code {
     width: 50px;
 }
 
-.results-container {
-    font-family: 'Source Sans Pro', sans-serif;
-    overflow-y: scroll;
+.address {
+    width: 250px;
 }
+
+#trip-details-div {
+    text-align: center;
+}
+
+.small-black-button {
+    position: absolute;
+    bottom: 10px;
+}
+
+.small-green-button {
+    margin-top: 10px !important;
+}
+
+#settings-div input{
+    margin-top: 50px;
+}
+
+#trip-details-div input {
+    margin-top: 10px;
+}
+
+#trip-details-div form {
+    margin-top: 40px;
+}
+
+#plan-my-day-button {
+    margin-top: 20px;
+}
+
 
 
