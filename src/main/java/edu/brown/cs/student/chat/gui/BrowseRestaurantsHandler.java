@@ -23,99 +23,107 @@ import spark.Route;
 public class BrowseRestaurantsHandler implements Route {
 
   @Override
-  public JSONObject handle(Request request, Response response) throws UnirestException {
-    TripAdvisorQuerier querier = new TripAdvisorQuerier();
-    QueryParamsMap qm = request.queryMap();
+  public JSONObject handle(Request request, Response response) {
+    try {
+      TripAdvisorQuerier querier = new TripAdvisorQuerier();
+      QueryParamsMap qm = request.queryMap();
 
-    // max miles from location; either 1, 2, 5, or 10
-    String miles = qm.value("miles");
-    // of the form "[lat] [lon]"
-    String[] locationStrings = qm.value("location").split(" ");
-    String lat = locationStrings[0];
-    String lon = locationStrings[1];
-    // min rating; options: any, "2 stars", "3 stars", "4 stars", or "5 stars"
-    String rating = qm.value("rating").replaceAll("[^0-5.,]", "");
+      // max miles from location; either 1, 2, 5, or 10
+      String miles = qm.value("miles");
+      // of the form "[lat] [lon]"
+      String[] locationStrings = qm.value("location").split(" ");
+      String lat = locationStrings[0];
+      String lon = locationStrings[1];
+      // min rating; options: any, "2 stars", "3 stars", "4 stars", or "5 stars"
+      String rating = qm.value("rating").replaceAll("[^0-5.,]", "");
 
-    if (rating.equals("")) {
-      rating = "0";
-    }
+      if (rating.equals("")) {
+        rating = "0";
+      }
 
-    /*
-     * format: a string of cuisine categories of the form "type1,type2,type3";
-     * (there are no spaces after commas) options: Any, american, barbecue, chinese,
-     * italian, indian, japanese, mexican, seafood, thai
-     *
-     */
-    String[] cuisinesArr = qm.value("cuisines").toLowerCase().split(",");
-    String cuisines = "";
-    if (cuisinesArr.length != 0) {
-      for (int i = 0; i < cuisinesArr.length; i++) {
-        /*
-         * Can only run query using unique code corresponding to each cuisine type.
-         * Conversion from cuisine type name to code is necessary.
-         */
-        if (Constants.CUISINE_TYPE_TO_CODE.containsKey(cuisinesArr[i])) {
-          cuisines += Constants.CUISINE_TYPE_TO_CODE.get(cuisinesArr[i]) + ",";
+      /*
+       * format: a string of cuisine categories of the form "type1,type2,type3";
+       * (there are no spaces after commas) options: Any, american, barbecue, chinese,
+       * italian, indian, japanese, mexican, seafood, thai
+       *
+       */
+      String[] cuisinesArr = qm.value("cuisines").toLowerCase().split(",");
+      StringBuilder cuisines = new StringBuilder();
+      if (cuisinesArr.length != 0) {
+        for (String s : cuisinesArr) {
+          /*
+           * Can only run query using unique code corresponding to each cuisine type.
+           * Conversion from cuisine type name to code is necessary.
+           */
+          if (Constants.CUISINE_TYPE_TO_CODE.containsKey(s)) {
+            cuisines.append(Constants.CUISINE_TYPE_TO_CODE.get(s)).append(",");
+          }
+        }
+        if (cuisines.length() > 0) {
+          cuisines = new StringBuilder(cuisines.substring(0, cuisines.length() - 1));
         }
       }
-      cuisines = cuisines.substring(0, cuisines.length() - 1);
-    }
 
-    // options: any, $, $$-$$$, $$$$
-    String price = Constants.RESTAURANT_PRICE_TO_CODE.get(qm.value("price"));
+      // options: any, $, $$-$$$, $$$$
+      String price = Constants.RESTAURANT_PRICE_TO_CODE.get(qm.value("price"));
 
-    /*
-     * dietary restrictions; options: "None", "Vegetarian friendly",
-     * "Vegan options", "Halal", "Gluten-free options
-     */
-    String[] dietArr = qm.value("diet").toLowerCase().split(",");
-    String dietStr = "";
-    if (dietArr.length != 0) {
-      for (int i = 0; i < dietArr.length; i++) {
-        if (Constants.DIETARY_RESTRICTION_TO_CODE.containsKey(dietArr[i])) {
-          dietStr += Constants.DIETARY_RESTRICTION_TO_CODE.get(dietArr[i]) + ",";
+      /*
+       * dietary restrictions; options: "None", "Vegetarian friendly",
+       * "Vegan options", "Halal", "Gluten-free options
+       */
+      String[] dietArr = qm.value("diet").toLowerCase().split(",");
+      StringBuilder dietStr = new StringBuilder();
+      if (dietArr.length != 0) {
+        for (String s : dietArr) {
+          if (Constants.DIETARY_RESTRICTION_TO_CODE.containsKey(s)) {
+            dietStr.append(Constants.DIETARY_RESTRICTION_TO_CODE.get(s)).append(",");
+          }
         }
+        dietStr = new StringBuilder(dietStr.substring(0, dietStr.length() - 1));
       }
-      dietStr = dietStr.substring(0, dietStr.length() - 1);
-    }
 
-    Map<String, Object> params = new HashMap<>();
-    params.put("limit", Constants.LIMIT);
-    params.put("lang", Constants.LANG);
-    params.put("currency", Constants.CURRENCY);
-    params.put("lunit", Constants.LUNIT);
-    params.put("latitude", lat);
-    params.put("longitude", lon);
-    params.put("min_rating", rating);
-    params.put("dietary_restrictions", dietStr);
-    params.put("distance", miles);
-    params.put("combined_food", cuisines);
-    params.put("prices_restaurants", price);
+      Map<String, Object> params = new HashMap<>();
+      params.put("limit", Constants.LIMIT);
+      params.put("lang", Constants.LANG);
+      params.put("currency", Constants.CURRENCY);
+      params.put("lunit", Constants.LUNIT);
+      params.put("latitude", lat);
+      params.put("longitude", lon);
+      params.put("min_rating", rating);
+      params.put("dietary_restrictions", dietStr.toString());
+      params.put("distance", miles);
+      params.put("combined_food", cuisines.toString());
+      params.put("prices_restaurants", price);
 
-    String errorMsg = paramsAreValid(params);
-    // Parameters are invalid.
-    if (!errorMsg.equals("")) {
-      System.out.println(errorMsg);
-      Map<String, String> variables = ImmutableMap.of("restaurants_result", "",
-          "restaurants_errors", errorMsg);
+      String errorMsg = paramsAreValid(params);
+      // Parameters are invalid.
+      if (!errorMsg.equals("")) {
+        System.out.println(errorMsg);
+        Map<String, String> variables = ImmutableMap.of("restaurants_result", "",
+              "restaurants_errors", errorMsg);
+        return new JSONObject(variables);
+      }
+
+      List<Restaurant> restaurants = querier.getRestaurants(new RestaurantRequest(params));
+
+      StringBuilder sb = new StringBuilder();
+      if (restaurants.isEmpty()) {
+        sb.append("No matching result.");
+      } else {
+        for (int i = 0; i < restaurants.size() - 1; i++) {
+          sb.append(restaurants.get(i).toStringHTML()).append("<hr>");
+        }
+        sb.append(restaurants.get(restaurants.size() - 1).toStringHTML());
+      }
+
+      Map<String, String> variables = ImmutableMap.of("restaurants_result", sb.toString(),
+            "restaurants_errors", "");
       return new JSONObject(variables);
+    } catch (Exception ex) {
+      System.err.println("ERROR: An error occurred while browsing activities. Printing stack:");
+      ex.printStackTrace();
     }
-
-    List<Restaurant> restaurants = querier.getRestaurants(new RestaurantRequest(params));
-
-    StringBuilder sb = new StringBuilder();
-    if (restaurants.isEmpty()) {
-      sb.append("No matching result.");
-    } else {
-      for (int i = 0; i < restaurants.size() - 1; i++) {
-        sb.append(restaurants.get(i).toStringHTML() + "<hr>");
-      }
-      sb.append(restaurants.get(restaurants.size() - 1).toStringHTML());
-    }
-
-    Map<String, String> variables = ImmutableMap.of("restaurants_result", sb.toString(),
-        "restaurants_errors", "");
-    return new JSONObject(variables);
+    return new JSONObject();
   }
 
   /**

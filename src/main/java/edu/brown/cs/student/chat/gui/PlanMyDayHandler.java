@@ -31,63 +31,69 @@ import spark.Route;
 public class PlanMyDayHandler implements Route {
   @Override
   public JSONObject handle(Request request, Response response) throws Exception {
-    QueryParamsMap qm = request.queryMap();
-    String errorMsg = "";
-    StringBuilder sb = new StringBuilder();
+    try {
+      QueryParamsMap qm = request.queryMap();
+      String errorMsg = "";
+      StringBuilder sb = new StringBuilder();
 
-    List<Restaurant> allRestaurants = queryRestaurants(qm);
-    List<Attraction> allAttractions = queryActivities(qm);
-    if (allRestaurants == null || allAttractions == null) {
-      errorMsg = "ERROR: Cannot find restaurants or activities.";
-      Map<String, String> variables = ImmutableMap.of("activities_result", "", "activities_errors",
-          errorMsg);
+      List<Restaurant> allRestaurants = queryRestaurants(qm);
+      List<Attraction> allAttractions = queryActivities(qm);
+      if (allRestaurants == null || allAttractions == null) {
+        errorMsg = "ERROR: Cannot find restaurants or activities.";
+        Map<String, String> variables = ImmutableMap.of("activities_result", "",
+              "activities_errors", errorMsg);
+        return new JSONObject(variables);
+      }
+
+      // Pick three random Restaurants from all possible Restaurants.
+      List<Restaurant> randomRestaurants = getRandomRestaurants(allRestaurants, 3);
+
+      // Create Graph
+      PlanMyDayGraph graph = new PlanMyDayGraph(randomRestaurants, allAttractions);
+      Map<GraphNode, List<WayEdge>> graphMap = graph.buildGraph();
+
+      /** (TODO) PlanMyDay Algorithm using graphMap here **/
+      // Output of PlanMyDay Algorithm
+      List<Restaurant> restaurantsInOrder = new ArrayList<>(); // CHANGE
+      List<Attraction> attrsInOrder = new ArrayList<>(); // CHANGE
+
+      if (restaurantsInOrder == null || attrsInOrder == null) {
+        errorMsg = "ERROR: Cannot find restaurants or activities.";
+        Map<String, String> variables = ImmutableMap.of("activities_result", "",
+              "activities_errors", errorMsg);
+        return new JSONObject(variables);
+      }
+
+      /*
+       * Order of items recommended for the day: current location -> restaurant for
+       * breakfast -> activity 1 -> restaurant for lunch -> activity 2 -> activity 3
+       * -> restaurant for dinner -> activity 4
+       */
+      sb.append("<br><br>Current Location <br><br><hr><br><br><br>");
+      sb.append("<strong>Restaurant for Breakfast</strong>");
+      sb.append(restaurantsInOrder.get(0).toStringHTML()).append("<hr><br><br><br>");
+      sb.append("<strong>First Activity</strong>");
+      sb.append(attrsInOrder.get(0).toStringHTML()).append("<hr><br><br><br>");
+      sb.append("<strong>Restaurant for Lunch</strong>");
+      sb.append(restaurantsInOrder.get(1).toStringHTML()).append("<hr><br><br><br>");
+      sb.append("<strong>Second Activity</strong>");
+      sb.append(attrsInOrder.get(1).toStringHTML()).append("<hr><br><br><br>");
+      sb.append("<strong>Third Activity</strong>");
+      sb.append(attrsInOrder.get(2).toStringHTML()).append("<hr><br><br><br>");
+      sb.append("<strong>Restaurant for Dinner</strong>");
+      sb.append(restaurantsInOrder.get(2).toStringHTML()).append("<hr><br><br><br>");
+      sb.append("<strong>Fourth Activity</strong>");
+      sb.append(attrsInOrder.get(3).toStringHTML()).append("<hr><br><br><br>");
+      sb.append("Current Location <br><br>");
+
+      Map<String, String> variables = ImmutableMap.of("activities_result", sb.toString(),
+            "activities_errors", "");
       return new JSONObject(variables);
+    } catch (Exception ex) {
+      System.err.println("ERROR: An error occurred planning day. Printing stack trace:");
+      ex.printStackTrace();
     }
-
-    // Pick three random Restaurants from all possible Restaurants.
-    List<Restaurant> randomRestaurants = getRandomRestaurants(allRestaurants, 3);
-
-    // Create Graph
-    PlanMyDayGraph graph = new PlanMyDayGraph(randomRestaurants, allAttractions);
-    Map<GraphNode, List<WayEdge>> graphMap = graph.buildGraph();
-
-    /** (TODO) PlanMyDay Algorithm using graphMap here **/
-    // Output of PlanMyDay Algorithm
-    List<Restaurant> restaurantsInOrder = new ArrayList<>(); // CHANGE
-    List<Attraction> attrsInOrder = new ArrayList<>(); // CHANGE
-
-    if (restaurantsInOrder == null || attrsInOrder == null) {
-      errorMsg = "ERROR: Cannot find restaurants or activities.";
-      Map<String, String> variables = ImmutableMap.of("activities_result", "", "activities_errors",
-          errorMsg);
-      return new JSONObject(variables);
-    }
-
-    /*
-     * Order of items recommended for the day: current location -> restaurant for
-     * breakfast -> activity 1 -> restaurant for lunch -> activity 2 -> activity 3
-     * -> restaurant for dinner -> activity 4
-     */
-    sb.append("<br><br>Current Location <br><br><hr><br><br><br>");
-    sb.append("<strong>Restaurant for Breakfast</strong>");
-    sb.append(restaurantsInOrder.get(0).toStringHTML()).append("<hr><br><br><br>");
-    sb.append("<strong>First Activity</strong>");
-    sb.append(attrsInOrder.get(0).toStringHTML()).append("<hr><br><br><br>");
-    sb.append("<strong>Restaurant for Lunch</strong>");
-    sb.append(restaurantsInOrder.get(1).toStringHTML()).append("<hr><br><br><br>");
-    sb.append("<strong>Second Activity</strong>");
-    sb.append(attrsInOrder.get(1).toStringHTML()).append("<hr><br><br><br>");
-    sb.append("<strong>Third Activity</strong>");
-    sb.append(attrsInOrder.get(2).toStringHTML()).append("<hr><br><br><br>");
-    sb.append("<strong>Restaurant for Dinner</strong>");
-    sb.append(restaurantsInOrder.get(2).toStringHTML()).append("<hr><br><br><br>");
-    sb.append("<strong>Fourth Activity</strong>");
-    sb.append(attrsInOrder.get(3).toStringHTML()).append("<hr><br><br><br>");
-    sb.append("Current Location <br><br>");
-
-    Map<String, String> variables = ImmutableMap.of("activities_result", sb.toString(),
-        "activities_errors", "");
-    return new JSONObject(variables);
+    return new JSONObject();
   }
 
   /*
@@ -117,16 +123,15 @@ public class PlanMyDayHandler implements Route {
    */
   public List<Attraction> queryActivities(QueryParamsMap queryParamsMap) throws UnirestException {
     TripAdvisorQuerier querier = new TripAdvisorQuerier();
-    QueryParamsMap qm = queryParamsMap;
     String errorMsg = "";
     Map<String, Attraction> attractionsMap = new HashMap<>();
 
-    String[] locationStrings = qm.value("location").split(" ");
+    String[] locationStrings = queryParamsMap.value("location").split(" ");
     double lat = Double.parseDouble(locationStrings[0]);
     double lon = Double.parseDouble(locationStrings[1]);
 
     double boundaryOffset = 0.0;
-    int maxDist = Integer.parseInt(qm.value("miles"));
+    int maxDist = Integer.parseInt(queryParamsMap.value("miles"));
     if (maxDist == 1) {
       boundaryOffset = Constants.LAT_LON_BOUNDARY_OFFSET_1_MILES;
     } else if (maxDist == 2) {
@@ -143,7 +148,7 @@ public class PlanMyDayHandler implements Route {
      * Nature & Parks, Sights & Landmarks, Shopping, Transportation, Museums,
      * Outdoor Activities, Spas & Wellness, Classes & Workshops, Tours, Nightlife
      */
-    String activityTypes = qm.value("activityTypes");
+    String activityTypes = queryParamsMap.value("activityTypes");
     String[] activities = activityTypes.split(",");
     for (int i = 0; i < activities.length; i++) {
       /*
@@ -197,15 +202,15 @@ public class PlanMyDayHandler implements Route {
       return null;
     }
 
-    List<Attraction> attractionsList = new ArrayList<Attraction>(attractionsMap.values());
+    List<Attraction> attractionsList = new ArrayList<>(attractionsMap.values());
     List<Attraction> correctAttrs = new ArrayList<>();
-    for (int i = 0; i < attractionsList.size(); i++) {
+    for (Attraction attraction : attractionsList) {
       // Skip this attraction if it has distance greater than specified max distance.
-      if (attractionsList.get(i).getDistance() > maxDist) {
+      if (attraction.getDistance() > maxDist) {
         continue;
       }
 
-      correctAttrs.add(attractionsList.get(i));
+      correctAttrs.add(attraction);
     }
 
     if (correctAttrs.isEmpty()) {
@@ -225,13 +230,12 @@ public class PlanMyDayHandler implements Route {
    */
   public List<Restaurant> queryRestaurants(QueryParamsMap queryParamsMap) throws UnirestException {
     TripAdvisorQuerier querier = new TripAdvisorQuerier();
-    QueryParamsMap qm = queryParamsMap;
 
     // max miles from location; either 1, 2, 5, or 10
-    String miles = qm.value("miles");
+    String miles = queryParamsMap.value("miles");
 
     // of the form "[lat] [lon]"
-    String[] locationStrings = qm.value("location").split(" ");
+    String[] locationStrings = queryParamsMap.value("location").split(" ");
     String lat = locationStrings[0];
     String lon = locationStrings[1];
 
@@ -241,7 +245,7 @@ public class PlanMyDayHandler implements Route {
      * italian, indian, japanese, mexican, seafood, thai
      *
      */
-    String[] cuisinesArr = qm.value("cuisines").toLowerCase().split(",");
+    String[] cuisinesArr = queryParamsMap.value("cuisines").toLowerCase().split(",");
     String cuisines = "";
     if (cuisinesArr.length != 0) {
       for (int i = 0; i < cuisinesArr.length; i++) {

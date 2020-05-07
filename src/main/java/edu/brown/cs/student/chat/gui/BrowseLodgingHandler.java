@@ -26,87 +26,93 @@ import spark.Route;
 public class BrowseLodgingHandler implements Route {
   @Override
   public JSONObject handle(Request request, Response response) throws Exception {
-    TripAdvisorQuerier querier = new TripAdvisorQuerier();
-    QueryParamsMap qm = request.queryMap();
-    String errorMsg = "";
-
-    // of the form "[lat] [lon]"
-    String[] locationStrings = qm.value("location").split(" ");
-    String lat = locationStrings[0];
-    String lon = locationStrings[1];
-
-    // options: "Any", "Hotel", "Bed and breakfast", "Specialty"
-    String subcategory = qm.value("type").toLowerCase();
-    if (subcategory.contains("any")) {
-      subcategory = "all";
-    } else if (subcategory.contains("bed and breakfast")) {
-      subcategory = subcategory.replace("bed and breakfast", "bb");
-    }
-
-    // format: "2020-05-15"
-    String checkIn = qm.value("check-in");
-    String checkOut = qm.value("check-out");
-    String nights = "";
     try {
-      DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-      LocalDate checkInDate = LocalDate.parse(checkIn, dtf);
-      LocalDate checkOutDate = LocalDate.parse(checkOut, dtf);
-      nights = String.valueOf(ChronoUnit.DAYS.between(checkInDate, checkOutDate));
-    } catch (DateTimeParseException e) {
-      errorMsg = "ERROR: Invalid date format.";
-      System.out.println(errorMsg);
-      Map<String, String> variables = ImmutableMap.of("lodging_result", "", "lodging_errors",
-          errorMsg);
-      return new JSONObject(variables);
-    }
+      TripAdvisorQuerier querier = new TripAdvisorQuerier();
+      QueryParamsMap qm = request.queryMap();
+      String errorMsg = "";
 
-    // min rating; options: "Any", "1 star", "2 star", "3 star", "4 star", or "5
-    // star"
-    String hotelClass = qm.value("rating").replaceAll("[^1-5.,]", "");
-    if (hotelClass.equals("")) {
-      hotelClass = "all";
-    }
+      // of the form "[lat] [lon]"
+      String[] locationStrings = qm.value("location").split(" ");
+      String lat = locationStrings[0];
+      String lon = locationStrings[1];
 
-    // format: integer
-    String numRooms = qm.value("num-rooms");
-
-    Map<String, Object> params = new HashMap<>();
-    params.put("limit", Constants.LIMIT);
-    params.put("lang", Constants.LANG);
-    params.put("currency", Constants.CURRENCY);
-    params.put("lunit", Constants.LUNIT);
-    params.put("latitude", lat);
-    params.put("longitude", lon);
-    params.put("checkin", checkIn);
-    params.put("subcategory", subcategory);
-    params.put("nights", nights);
-    params.put("rooms", numRooms);
-    params.put("hotel_class", hotelClass);
-
-    errorMsg = paramsAreValid(params);
-    // Parameters are invalid.
-    if (!errorMsg.equals("")) {
-      System.out.println(errorMsg);
-      Map<String, String> variables = ImmutableMap.of("lodging_result", "", "lodging_errors",
-          errorMsg);
-      return new JSONObject(variables);
-    }
-
-    List<Hotel> hotels = querier.getHotels(new HotelRequest(params));
-
-    StringBuilder sb = new StringBuilder();
-    if (hotels.isEmpty()) {
-      sb.append("No matching result.");
-    } else {
-      for (int i = 0; i < hotels.size() - 1; i++) {
-        sb.append(hotels.get(i).toStringHTML() + "<hr>");
+      // options: "Any", "Hotel", "Bed and breakfast", "Specialty"
+      String subcategory = qm.value("type").toLowerCase();
+      if (subcategory.contains("any")) {
+        subcategory = "all";
+      } else if (subcategory.contains("bed and breakfast")) {
+        subcategory = subcategory.replace("bed and breakfast", "bb");
       }
-      sb.append(hotels.get(hotels.size() - 1).toStringHTML());
-    }
 
-    Map<String, String> variables = ImmutableMap.of("lodging_result", sb.toString(),
-        "lodging_errors", "");
-    return new JSONObject(variables);
+      // format: "2020-05-15"
+      String checkIn = qm.value("check-in");
+      String checkOut = qm.value("check-out");
+      String nights = "";
+      try {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate checkInDate = LocalDate.parse(checkIn, dtf);
+        LocalDate checkOutDate = LocalDate.parse(checkOut, dtf);
+        nights = String.valueOf(ChronoUnit.DAYS.between(checkInDate, checkOutDate));
+      } catch (DateTimeParseException e) {
+        errorMsg = "ERROR: Invalid date format.";
+        System.out.println(errorMsg);
+        Map<String, String> variables = ImmutableMap.of("lodging_result", "", "lodging_errors",
+              errorMsg);
+        return new JSONObject(variables);
+      }
+
+      // min rating; options: "Any", "1 star", "2 star", "3 star", "4 star", or "5
+      // star"
+      String hotelClass = qm.value("rating").replaceAll("[^1-5.,]", "");
+      if (hotelClass.equals("")) {
+        hotelClass = "all";
+      }
+
+      // format: integer
+      String numRooms = qm.value("num-rooms");
+
+      Map<String, Object> params = new HashMap<>();
+      params.put("limit", Constants.LIMIT);
+      params.put("lang", Constants.LANG);
+      params.put("currency", Constants.CURRENCY);
+      params.put("lunit", Constants.LUNIT);
+      params.put("latitude", lat);
+      params.put("longitude", lon);
+      params.put("checkin", checkIn);
+      params.put("subcategory", subcategory);
+      params.put("nights", nights);
+      params.put("rooms", numRooms);
+      params.put("hotel_class", hotelClass);
+
+      errorMsg = paramsAreValid(params);
+      // Parameters are invalid.
+      if (!errorMsg.equals("")) {
+        System.out.println(errorMsg);
+        Map<String, String> variables = ImmutableMap.of("lodging_result", "", "lodging_errors",
+              errorMsg);
+        return new JSONObject(variables);
+      }
+
+      List<Hotel> hotels = querier.getHotels(new HotelRequest(params));
+
+      StringBuilder sb = new StringBuilder();
+      if (hotels.isEmpty()) {
+        sb.append("No matching result.");
+      } else {
+        for (int i = 0; i < hotels.size() - 1; i++) {
+          sb.append(hotels.get(i).toStringHTML() + "<hr>");
+        }
+        sb.append(hotels.get(hotels.size() - 1).toStringHTML());
+      }
+
+      Map<String, String> variables = ImmutableMap.of("lodging_result", sb.toString(),
+            "lodging_errors", "");
+      return new JSONObject(variables);
+    } catch (Exception ex) {
+      System.err.println("ERROR: An error occurred while browsing lodging. Printing stack:");
+      ex.printStackTrace();
+    }
+    return new JSONObject();
   }
 
   /**
