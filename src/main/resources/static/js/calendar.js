@@ -69,6 +69,11 @@ document.addEventListener('DOMContentLoaded', function() {
         eventPriceEl.text("$ " + event.extendedProps.price);
         eventDescriptionEl.text(event.extendedProps.description);
 
+
+        // addSelfToEvent("e83e0d37-2c52-4ea7-bece-5700d76686f7");
+        // console.log(checkIfUserInEvent("e83e0d37-2c52-4ea7-bece-5700d76686f7"));
+        // console.log(userID === event.extendedProps.ownerID);
+
     }
 
     function getNeatTimeDetails(startISO, endISO) {
@@ -119,15 +124,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     calendar.render();
+
     $.get("/getCalendarEvents", { chatID: chatID }, function( data ) {
 
         for (const event of data) {
+            console.log(event);
             calendar.addEvent(event);
         }
 
     }, 'json');
-
-    addToEvent("3e071eeb-4004-43f3-b8fb-55fbcb4a9402");
 
 
     /**
@@ -194,9 +199,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function addToEvent(eventID) {
+    function addSelfToEvent(eventID) {
 
-        console.log("AY");
         $.post("/addRemoveUserFromEventHandler",
             {
                 chatID: chatID,
@@ -205,10 +209,31 @@ document.addEventListener('DOMContentLoaded', function() {
             },
 
             function() {
-            console.log("YO");
             },
             'json');
 
+    }
+
+
+    function checkIfUserInEvent(eventID) {
+
+        $.post("/getUsersFromEventHandler",
+            {
+                chatID: chatID,
+                eventID: eventID
+            },
+
+            function(data) {
+                if (userID in data) {
+                    console.log("AY");
+                    return true;
+                }
+            },
+            'json');
+
+
+
+        return false;
 
     }
 

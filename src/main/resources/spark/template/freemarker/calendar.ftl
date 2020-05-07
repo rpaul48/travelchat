@@ -65,6 +65,11 @@
         <h3 id="event-location"> Location </h3>
         <h3 id="event-price"> Price </h3>
         <p id="event-description"> Description </p>
+        <div id="event-buttons">
+            <button id="join-event" class="submit small-green-button" type="submit"> Join Event </button>
+            <button id="remove-event" class="submit small-red-button" type="submit"> Remove Event </button>
+            <button id="leave-event" class="submit small-red-button" type="submit"> Leave Event </button>
+        </div>
     </div>
 </div>
 
