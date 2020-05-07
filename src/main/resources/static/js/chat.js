@@ -191,9 +191,9 @@ function planMyDay() {
             type: "get",
             data: {"location": loc,
                 "date": date,
-                "maxDist": maxDist,
-                "cuisineTypes": cuisines,
-                "activityTypes": activities},
+                "miles": maxDist,
+                "cuisines": cuisines.toString(),
+                "activityTypes": activities.toString()},
             async: false,
             success: function (data) {
                 var recs = JSON.parse(data);

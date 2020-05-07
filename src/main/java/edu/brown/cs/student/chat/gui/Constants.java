@@ -53,4 +53,7 @@ public class Constants {
    * initialized with this value.
    */
   public static final int INIT_NUM_VALUE = -1000000000;
+
+  // Used to calculate Haversine distance.
+  public static final double EARTH_RADIUS = 6371.0;
 }

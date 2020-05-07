@@ -7,6 +7,7 @@ import java.util.Map;
 
 import edu.brown.cs.student.api.tripadvisor.objects.Attraction;
 import edu.brown.cs.student.api.tripadvisor.objects.Restaurant;
+import edu.brown.cs.student.chat.gui.Constants;
 
 /**
  * This class builds the graph using restaurants and attractions Items that get
@@ -16,8 +17,13 @@ import edu.brown.cs.student.api.tripadvisor.objects.Restaurant;
 public class PlanMyDayGraph {
   private List<Restaurant> restaurants; // containing 3 Restaurants picked
   private List<Attraction> attractions;
-  private final double EARTH_RADIUS = 6371.0;
 
+  /**
+   * Constructor.
+   *
+   * @param restaurants - list of three Restaurants picked
+   * @param attractions - list of all possible Attractions
+   */
   public PlanMyDayGraph(List<Restaurant> restaurants, List<Attraction> attractions) {
     this.restaurants = restaurants;
     this.attractions = attractions;
@@ -55,18 +61,38 @@ public class PlanMyDayGraph {
     return map;
   }
 
+  /**
+   * Getter of List of Restaurants.
+   *
+   * @return List of Restaurants.
+   */
   public List<Restaurant> getRestaurants() {
     return restaurants;
   }
 
+  /**
+   * Getter of List of Attractions.
+   *
+   * @return List of Attractions.
+   */
   public List<Attraction> getAttractions() {
     return attractions;
   }
 
+  /**
+   * Setter of List of Restaurants.
+   *
+   * @param List of Restaurants to newly set to.
+   */
   public void setRestaurants(List<Restaurant> restaurants) {
     this.restaurants = restaurants;
   }
 
+  /**
+   * Setter of List of Attractions.
+   *
+   * @param List of Attractions to newly set to.
+   */
   public void setAttractions(List<Attraction> attractions) {
     this.attractions = attractions;
   }
@@ -90,7 +116,7 @@ public class PlanMyDayGraph {
 
     double transitory = Math.pow(Math.sin(totalLat / 2.0), 2.0)
         + (Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(totalLon / 2.0), 2.0));
-    double distance = (2.0 * EARTH_RADIUS * Math.asin(Math.sqrt(transitory)));
+    double distance = (2.0 * Constants.EARTH_RADIUS * Math.asin(Math.sqrt(transitory)));
     return distance;
   }
 }

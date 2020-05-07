@@ -2,6 +2,8 @@ package edu.brown.cs.student.api.graph;
 
 import java.util.Comparator;
 
+import edu.brown.cs.student.chat.gui.Constants;
+
 /**
  * A class to compare nodes with respect to Haversine distances.
  *
@@ -21,7 +23,6 @@ public class HaversineComparator<T extends GraphNode> implements Comparator<T> {
    */
   private int dim;
   private T target;
-  private final double EARTH_RADIUS = 6371.0;
 
   /**
    * The constructor for the haversine comparator class.
@@ -72,7 +73,7 @@ public class HaversineComparator<T extends GraphNode> implements Comparator<T> {
 
     double transitory = Math.pow(Math.sin(totalLat / 2.0), 2.0)
         + (Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(totalLon / 2.0), 2.0));
-    double distance = (2.0 * EARTH_RADIUS * Math.asin(Math.sqrt(transitory)));
+    double distance = (2.0 * Constants.EARTH_RADIUS * Math.asin(Math.sqrt(transitory)));
     return distance;
   }
 

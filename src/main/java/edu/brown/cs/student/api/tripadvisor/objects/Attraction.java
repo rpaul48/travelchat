@@ -17,7 +17,7 @@ public class Attraction implements Item {
   private String locationString; // field "location_string"
   private String photoUrl; // field "photo"-"images"-"small"-"url"
   private boolean isClosed; // field "is_closed"
-  private double lowest_price; // field: "lowest_price"
+  private double lowest_price; // field "lowest_price"
 
   /**
    * Default constructor, initializing all instance variables.

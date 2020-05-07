@@ -31,7 +31,7 @@ public class HotelResponse {
    *
    * @return hotel request.
    */
-  public HotelRequest gethotelRequest() {
+  public HotelRequest getHotelRequest() {
     return hotelRequest;
   }
 
