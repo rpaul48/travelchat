@@ -56,10 +56,10 @@ firebase.auth().onAuthStateChanged(function (user) {
         }
 
         // set the current date
-        today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        var yyyy = today.getFullYear();
+        var jsToday = new Date();
+        var dd = String(jsToday.getDate()).padStart(2, '0');
+        var mm = String(jsToday.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = jsToday.getFullYear();
 
         today = yyyy + '-' + mm + '-' + dd;
 
@@ -178,9 +178,9 @@ function updateBudget(logOrAdd) {
 
 // returns a schedule for the day
 function planMyDay() {
+    // checks whether location information has been inputted properly
     var loc;
     var curLoc = document.getElementById("pmd-cur-loc").checked;
-
     if (curLoc) {
         if (coordinates == null) {
             window.alert("Please allow your browser to access your location or input an address.");
@@ -198,19 +198,42 @@ function planMyDay() {
         }
     }
 
+    // checks whether valid date has been inputted
     var date = document.getElementById("date-to-plan").value;
+    if ((Date.parse(date) < Date.parse(today)) || date === "") {
+        window.alert("Please enter a valid date.");
+        return;
+    }
+
+    var maxDist = document.getElementById("max-distance").value;
+    if (maxDist <= 0) {
+        window.alert("Please enter a positive maximum distance.");
+        return;
+    }
+
     var distanceRank = document.getElementById("distance-rank").value;
     var priceRank = document.getElementById("price-rank").value;
-    var maxDist = document.getElementById("max-distance").value;
 
+
+    // retrieves the selected cuisine options
     var cuisines = [];
     $("input:checkbox[name=pmd-cuisine]:checked").each(function () {
         cuisines.push($(this).val());
     });
+    if (cuisines.length === 0) {
+        window.alert("Please select at least one cuisine option.");
+        return;
+    }
+
+    // retrieves the selected activities options
     var activities = [];
     $("input:checkbox[name=pmd-activity]:checked").each(function () {
         activities.push($(this).val());
     });
+    if (activities.length === 0) {
+        window.alert("Please select at least one activities option.");
+        return;
+    }
 
     // returns an ordered schedule of events which satisfy the query parameters
     $.ajax({
@@ -267,6 +290,10 @@ function browseRestaurants() {
     $("input:checkbox[name=browse-cuisine]:checked").each(function () {
         cuisines.push($(this).val());
     });
+    if (cuisines.length === 0) {
+        window.alert("Please select at least one cuisine option.");
+        return;
+    }
 
     // returns a list of restaurant options which match the query parameters
     $.ajax({
@@ -318,6 +345,10 @@ function browseActivities() {
     $("input:checkbox[name=browse-activity]:checked").each(function () {
         activities.push($(this).val());
     });
+    if (activities.length === 0) {
+        window.alert("Please select at least one activities option.");
+        return;
+    }
 
     // returns a list of activities options which match the query parameters
     $.ajax({
@@ -361,11 +392,28 @@ function browseLodging() {
 
     var type_sel = document.getElementById("hotel-type-sel");
     var type = type_sel.options[type_sel.selectedIndex].text;
+
     var checkin = document.getElementById("check-in").value;
+    if ((Date.parse(checkin) < Date.parse(today)) || checkin === "") {
+        window.alert("Please enter a valid check-in date.");
+        return;
+    }
     var checkout = document.getElementById("check-out").value;
+    if ((Date.parse(checkout) <= (Date.parse(checkin))) || (checkout === "")) {
+        window.alert("Please enter a valid check-out date later than your check-in date.");
+        return;
+    }
+
     var rating_sel = document.getElementById("hotel-rating-sel");
     var rating = rating_sel.options[rating_sel.selectedIndex].text;
     var num_rooms = document.getElementById("num-rooms").value;
+    if (num_rooms <= 0) {
+        window.alert("Please select a positive number of rooms.");
+        return;
+    } else if (!(num_rooms == parseInt(num_rooms, 10))) {
+        window.alert("Please select a whole number of rooms.");
+        return;
+    }
 
     // returns a list of lodging options which match the query parameters
     $.ajax({
@@ -377,7 +425,7 @@ function browseLodging() {
             "check-in": checkin,
             "check-out": checkout,
             "rating": rating,
-            "num-rooms": num_rooms
+            "num-rooms": parseInt(num_rooms, 10)
         },
         async: false,
         success: function (data) {
@@ -391,11 +439,48 @@ function browseLodging() {
 // returns search results for flights
 function browseFlights() {
     var departure_date = document.getElementById("departure-date").value;
+    if ((Date.parse(departure_date) < Date.parse(today)) || departure_date === "") {
+        window.alert("Please enter a valid departure date.");
+        return;
+    }
     var depart = document.getElementById("depart").value;
+    if (depart.length !== 3) {
+        window.alert("Please enter a three-letter departure airport code.");
+        return;
+    }
     var destination = document.getElementById("destination").value;
+    if (destination.length !== 3) {
+        window.alert("Please enter a three-letter destination airport code.");
+        return;
+    }
     var adults = document.getElementById("num-adults").value;
+    if (adults < 0) {
+        window.alert("Please enter a non-negative number of adult tickets.");
+        return;
+    } else if (!(adults == parseInt(adults, 10))) {
+        window.alert("Please select a whole number of adult tickets.");
+        return;
+    }
     var children = document.getElementById("num-children").value;
+    if (children < 0) {
+        window.alert("Please enter a non-negative number of child tickets.");
+        return;
+    } else if (!(children == parseInt(children, 10))) {
+        window.alert("Please select a whole number of child tickets.");
+        return;
+    }
     var seniors = document.getElementById("num-seniors").value;
+    if (seniors < 0) {
+        window.alert("Please enter a non-negative number of senior tickets.");
+        return;
+    } else if (!(adults == parseInt(adults, 10))) {
+        window.alert("Please select a whole number of senior tickets.");
+        return;
+    }
+    if ((adults + children + seniors) === 0) {
+        window.alert("You must order at least one ticket.");
+        return;
+    }
     var numStops_sel = document.getElementById("max-stops-sel");
     var numStops = numStops_sel.options[numStops_sel.selectedIndex].text;
     var flightClass_sel = document.getElementById("flight-class-sel");
@@ -468,3 +553,32 @@ function getLatAndLongFromAddress(address) {
     });
     return ret;
 }
+
+// converts UTC date to local date
+function convertUTCDateToLocalDate(date) {
+    var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);
+
+    var offset = date.getTimezoneOffset() / 60;
+    var hours = date.getHours();
+
+    newDate.setHours(hours - offset);
+
+    return newDate;
+}
+
+// converts a date into a yyyy-mm-dd string
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2)
+        month = '0' + month;
+    if (day.length < 2)
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
+
+
