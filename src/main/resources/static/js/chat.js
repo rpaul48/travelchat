@@ -444,13 +444,13 @@ function browseFlights() {
         return;
     }
     var depart = document.getElementById("depart").value;
-    if (depart.length !== 3) {
-        window.alert("Please enter a three-letter departure airport code.");
+    if (!(/^[a-zA-Z]+$/.test(depart))) {
+        window.alert("Please enter only letters in the departure airport code.");
         return;
     }
     var destination = document.getElementById("destination").value;
-    if (destination.length !== 3) {
-        window.alert("Please enter a three-letter destination airport code.");
+    if (!(/^[a-zA-Z]+$/.test(destination))) {
+        window.alert("Please enter only letters in the destination airport code.");
         return;
     }
     var adults = document.getElementById("num-adults").value;
@@ -493,8 +493,8 @@ function browseFlights() {
         type: "get",
         data: {
             "departure_date": departure_date,
-            "origin": depart,
-            "destination": destination,
+            "origin": depart.toUpperCase(),
+            "destination": destination.toUpperCase(),
             "adults": adults,
             "children": children,
             "seniors": seniors,
