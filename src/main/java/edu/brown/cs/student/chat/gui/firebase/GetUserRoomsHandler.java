@@ -14,6 +14,9 @@ import spark.Route;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Handles getting a user's rooms.
+ */
 public class GetUserRoomsHandler implements Route {
 
   @Override

@@ -10,6 +10,9 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+/**
+ * Handles removing a user from a given room.
+ */
 public class RemoveUserFromRoomHandler implements Route {
 
   @Override

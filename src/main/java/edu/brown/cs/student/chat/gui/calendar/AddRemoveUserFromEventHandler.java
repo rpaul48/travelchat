@@ -2,7 +2,6 @@ package edu.brown.cs.student.chat.gui.calendar;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import org.json.JSONObject;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
@@ -12,8 +11,6 @@ public class AddRemoveUserFromEventHandler implements Route {
 
   @Override
   public Object handle(Request request, Response response) {
-
-
     try {
       QueryParamsMap qm = request.queryMap();
       String chatID = qm.value("chatID");

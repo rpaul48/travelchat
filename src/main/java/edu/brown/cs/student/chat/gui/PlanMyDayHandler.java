@@ -112,7 +112,7 @@ public class PlanMyDayHandler implements Route {
    * Returns the query results of all Attractions.
    *
    * @param queryParamsMap - queryParamsMap that has user input
-   * @return List<Attraction> - list of all possible Attractions
+   * @return list of all possible Attractions
    * @throws UnirestException - thrown with query error
    */
   public List<Attraction> queryActivities(QueryParamsMap queryParamsMap) throws UnirestException {
@@ -220,7 +220,7 @@ public class PlanMyDayHandler implements Route {
    * Returns the query results of all Restaurants.
    *
    * @param queryParamsMap - queryParamsMap that has user input
-   * @return List<Restaurant> - list of all possible Restaurants
+   * @return list of all possible Restaurants
    * @throws UnirestException - thrown with query error
    */
   public List<Restaurant> queryRestaurants(QueryParamsMap queryParamsMap) throws UnirestException {

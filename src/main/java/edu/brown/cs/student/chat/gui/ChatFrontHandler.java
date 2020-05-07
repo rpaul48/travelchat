@@ -8,6 +8,9 @@ import spark.TemplateViewRoute;
 
 import java.util.Map;
 
+/**
+ * Handles serving Freemarker template to front-end for the chat.
+ */
 public class ChatFrontHandler implements TemplateViewRoute {
 
   @Override

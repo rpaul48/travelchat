@@ -8,6 +8,9 @@ import spark.TemplateViewRoute;
 
 import java.util.Map;
 
+/**
+ * Handles serving Freemarker template to front-end for the login page.
+ */
 public class LoginFrontHandler implements TemplateViewRoute {
 
   @Override

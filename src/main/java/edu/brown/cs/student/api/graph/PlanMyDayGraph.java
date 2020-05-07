@@ -82,7 +82,7 @@ public class PlanMyDayGraph {
   /**
    * Setter of List of Restaurants.
    *
-   * @param List of Restaurants to newly set to.
+   * @param restaurants List of Restaurants to newly set to.
    */
   public void setRestaurants(List<Restaurant> restaurants) {
     this.restaurants = restaurants;
@@ -91,7 +91,7 @@ public class PlanMyDayGraph {
   /**
    * Setter of List of Attractions.
    *
-   * @param List of Attractions to newly set to.
+   * @param attractions List of Attractions to newly set to.
    */
   public void setAttractions(List<Attraction> attractions) {
     this.attractions = attractions;
