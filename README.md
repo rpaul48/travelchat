@@ -1,6 +1,6 @@
 # cs0320 Term Project 2020
 
-**Team Members:** _Colton Rusch, Raj Paul, Suhye Park, Nathaniel Nguyen, Nathan Mugerwa
+**Team Members:** Colton Rusch, Raj Paul, Suhye Park, Nathaniel Nguyen, Nathan Mugerwa
 
 **Team Strengths and Weaknesses:** 
 * Colton:
@@ -103,19 +103,19 @@ Tim wants a 5 star hotel and Julia wants a 3 star hotel. The "consensus" prefere
    3. Order the list by this ranking, descending.
    4. Walk down the list, returning the first one whose cost is within the group budget.
 
-
-
-
-**Mentor TA:** _Put your mentor TA's name and email here once you're assigned one!_
+**Mentor TA:** Sophia Chen (schen96)
 
 ## Meetings
 _On your first meeting with your mentor TA, you should plan dates for at least the following meetings:_
 
-**Specs, Mockup, and Design Meeting:** _(Schedule for on or before March 13)_
+**Specs, Mockup, and Design Meeting:** 4/4
 
-**4-Way Checkpoint:** _(Schedule for on or before April 23)_
+**4-Way Checkpoint:** 4/19
 
-**Adversary Checkpoint:** _(Schedule for on or before April 29 once you are assigned an adversary TA)_
+**Adversary Checkpoint:** 4/29, with adversary TA Lily Mayo (lmayo)
 
 ## How to Build and Run
-_A necessary part of any README!_
+To build: \
+`mvn package` \
+To run the Spark server: \
+`./run` will start the server at `http://localhost:4567/login`
