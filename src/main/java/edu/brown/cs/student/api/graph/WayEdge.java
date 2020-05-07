@@ -17,7 +17,6 @@ public class WayEdge implements IEdge<GraphNode, WayEdge> {
    *
    * radius - a double representing the radius of the Earth
    */
-  private double distance;
   private GraphNode startNode;
   private GraphNode endNode;
   private final double EARTH_RADIUS = 6371.0;
@@ -31,8 +30,7 @@ public class WayEdge implements IEdge<GraphNode, WayEdge> {
    * @param endNode   - The GraphNode representing the node the Way edge
    *                  terminates at
    */
-  public WayEdge(double distance, GraphNode startNode, GraphNode endNode) {
-    this.distance = distance;
+  public WayEdge(GraphNode startNode, GraphNode endNode) {
     this.startNode = startNode;
     this.endNode = endNode;
   }
@@ -76,20 +74,12 @@ public class WayEdge implements IEdge<GraphNode, WayEdge> {
     return endNode;
   }
 
-  public double getDistance() {
-    return distance;
-  }
-
   public GraphNode getStartNode() {
     return startNode;
   }
 
   public GraphNode getEndNode() {
     return endNode;
-  }
-
-  public void setDistance(double distance) {
-    this.distance = distance;
   }
 
   public void setStartNode(GraphNode startNode) {
