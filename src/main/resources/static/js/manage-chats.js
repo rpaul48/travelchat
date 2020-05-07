@@ -1,3 +1,4 @@
+// creates a new chat
 function createChat() {
     // get a Firebase Database ref
     var chatRef = firebase.database().ref("chat");
@@ -46,32 +47,6 @@ function createChat() {
     })
 }
 
-function addChat() {
-    // get a Firebase Database ref
-    var chatRef = firebase.database().ref("chat");
-    // create a Firechat instance
-    var chat = new Firechat(chatRef);
-
-    // get current authenticated user, set the chat's user.
-    var currentUser = firebase.auth().currentUser;
-    // both userid and display name set to uid
-    if (currentUser.displayName != null) {
-        chat.setUser(currentUser.uid, currentUser.displayName);
-    } else if (currentUser.emailVerified != null) {
-        console.log("User displayName is null: using emailVerified instead.");
-        chat.setUser(currentUser.uid, currentUser.emailVerified);
-    } else {
-        console.log("User displayName and emailVerified are null: using uid instead.");
-        chat.setUser(currentUser.uid, currentUser.uid);
-    }
-
-    // enter the desired room
-    var groupId = document.getElementById("group-id-field").value;
-    chat.enterRoom(groupId);
-
-    window.location.pathname = "/chat/" + groupId;
-}
-
 function openCreateChat() {
     $("#create-chat-div").fadeIn();
 }
@@ -80,14 +55,7 @@ function closeCreateChat() {
     document.getElementById("create-chat-div").style.display = "none";
 }
 
-function openAddChat() {
-    $("#add-chat-div").fadeIn();
-}
-
-function closeAddChat() {
-    document.getElementById("add-chat-div").style.display = "none";
-}
-
+// displays the chats that the user has already created / been invited to
 function showUserChats() {
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
@@ -102,6 +70,7 @@ function showUserChats() {
                 chat.setUser(user.uid, user.uid);
             }
 
+            // gets the user's rooms from the Firebase database
             $.ajax({
                 url: "/getUserRooms",
                 type: "get",
@@ -120,6 +89,7 @@ function showUserChats() {
     })
 }
 
+// sends the user to a particular room
 function goToRoom(groupId) {
     window.location.pathname = "/chat/" + groupId;
 }

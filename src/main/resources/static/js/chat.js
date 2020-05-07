@@ -1,3 +1,4 @@
+// these variables will be updated as the user uses the site, and are global for easy reference throughout this .js file
 let chat;
 let roomId;
 let curUser;
@@ -77,6 +78,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     }
 });
 
+// removes the user from the chat room
 function leaveChat() {
     chat.leaveRoom(roomId);
 
@@ -93,6 +95,7 @@ function leaveChat() {
     window.location.href = "/manage-chats";
 }
 
+// updates the user's profile with the chosen display name
 function editProfile() {
     var name = document.getElementById("update-display-name-field").value;
 
@@ -103,6 +106,7 @@ function editProfile() {
     });
 }
 
+// invites a user to the chatroom
 function inviteUser() {
     var email = document.getElementById("invite-search").value;
     var groupName = $("#groupName").text();
@@ -128,6 +132,7 @@ function closePopup(id) {
     document.getElementById(id).style.display = "none";
 }
 
+// displays the user's budget after getting it from the Firebase database
 function displayBudget() {
     $.ajax({
         url: "/getUserBudgetInRoom",
@@ -142,6 +147,7 @@ function displayBudget() {
     });
 }
 
+// updates the users budget based on the input value and if they click "log" or "add"
 function updateBudget(logOrAdd) {
     var amount = document.getElementById("update-budget-field").value.replace(/[^0-9.]/g, '');
     if (amount != null && amount !== "") {
@@ -357,7 +363,7 @@ function updateCalendarLink() {
     calendarLinkEl.attr("href", "/calendar/" + roomId + "/" + firebase.auth().currentUser.uid);
 }
 
-
+// gets the latitude and longitude for a given address
 function getLatAndLongFromAddress(address) {
     var ret = "";
     $.ajax({url: "https://www.mapquestapi.com/geocoding/v1/address",

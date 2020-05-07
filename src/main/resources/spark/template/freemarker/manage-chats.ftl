@@ -19,13 +19,6 @@
         <button onclick="closeCreateChat()" class="large-black-button">Back</button>
     </div>
 
-    <div id="add-chat-div" class="popup-div">
-        <h2>Add Existing Chat</h2>
-        <input type="text" aria-label="Group Id" placeholder="Group Id" id="group-id-field"/>
-        <button onclick="addChat()" class="large-green-button">Add</button>
-        <button onclick="closeAddChat()" class="large-black-button">Back</button>
-    </div>
-
 
     <script src="/js/login.js"></script>
     <script src="/js/manage-chats.js"></script>
