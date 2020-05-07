@@ -176,6 +176,15 @@ function updateBudget(logOrAdd) {
     }
 }
 
+// if the user selects to use the curr location, remove text from address & lock the field
+$("#pmd-cur-loc").change(function() {
+    if ($(this).is(':checked')) {
+        $("#pmd-address").val("").prop("disabled", true);
+    } else {
+        $("#pmd-address").prop("disabled", false);
+    }
+});
+
 // returns a schedule for the day
 function planMyDay() {
     var loc;
@@ -231,6 +240,15 @@ function planMyDay() {
         }
     });
 }
+
+// if the user selects to use the curr location, remove text from address & lock the field
+$("#restaurant-cur-loc").change(function() {
+    if ($(this).is(':checked')) {
+        $("#restaurant-address").val("").prop("disabled", true);
+    } else {
+        $("#restaurant-address").prop("disabled", false);
+    }
+});
 
 // returns search results for restaurants
 function browseRestaurants() {
@@ -289,6 +307,15 @@ function browseRestaurants() {
     });
 }
 
+// if the user selects to use the curr location, remove text from address & lock the field
+$("#activities-cur-loc").change(function() {
+    if ($(this).is(':checked')) {
+        $("#activities-address").val("").prop("disabled", true);
+    } else {
+        $("#activities-address").prop("disabled", false);
+    }
+});
+
 // returns search results for activities
 function browseActivities() {
     var loc;
@@ -336,6 +363,15 @@ function browseActivities() {
         }
     });
 }
+
+// if the user selects to use the curr location, remove text from address & lock the field
+$("#lodging-cur-loc").change(function() {
+    if ($(this).is(':checked')) {
+        $("#lodging-address").val("").prop("disabled", true);
+    } else {
+        $("#lodging-address").prop("disabled", false);
+    }
+});
 
 // returns search results for lodging
 function browseLodging() {
