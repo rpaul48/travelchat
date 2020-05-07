@@ -41,16 +41,13 @@ public class UpdateUserBudgetInRoomHandler implements Route {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
         double currentBudget = Double.parseDouble(((String) dataSnapshot.getValue()));
-        System.out.println("UPDATE THINKS USER BUDGET IS " + currentBudget);
 
         if ("log".equals(type)) {
           budget[0] = String.valueOf((currentBudget - Double.parseDouble(amount)));
         } else if ("add".equals(type)) {
           budget[0] = String.valueOf((currentBudget + Double.parseDouble(amount)));
         }
-        System.out.println("SETTING BUDGET TO " + budget[0]);
         dataSnapshot.getRef().setValue(budget[0], (databaseError, databaseReference) -> {
-          System.out.println("done updating children");
           done[0] = true;
         });
       }

@@ -61,7 +61,6 @@ public class GetUserRoomsHandler implements Route {
       ex.printStackTrace();
       Thread.currentThread().interrupt();
     }
-    JSONObject ret = new JSONObject(jsonMap);
-    return ret;
+    return new JSONObject(jsonMap);
   }
 }

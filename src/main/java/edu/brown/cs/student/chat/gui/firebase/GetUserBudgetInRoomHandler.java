@@ -39,7 +39,6 @@ public class GetUserBudgetInRoomHandler implements Route {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
         budget[0] = (String) dataSnapshot.getValue();
-        System.out.println("GOT BUDGET AS " + budget[0]);
         done[0] = true;
       }
 
