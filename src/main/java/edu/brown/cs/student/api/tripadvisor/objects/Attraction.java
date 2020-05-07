@@ -17,6 +17,7 @@ public class Attraction implements Item {
   private String locationString; // field "location_string"
   private String photoUrl; // field "photo"-"images"-"small"-"url"
   private boolean isClosed; // field "is_closed"
+  private double lowest_price; // field: "lowest_price"
 
   /**
    * Default constructor, initializing all instance variables.
@@ -27,9 +28,18 @@ public class Attraction implements Item {
     longitude = Constants.INIT_NUM_VALUE;
     distance = Constants.INIT_NUM_VALUE;
     numReviews = Constants.INIT_NUM_VALUE;
+    lowest_price = Constants.INIT_NUM_VALUE;
     locationString = "";
     photoUrl = "";
     isClosed = false;
+  }
+
+  public double getLowest_price() {
+    return lowest_price;
+  }
+
+  public void setLowest_price(double lowest_price) {
+    this.lowest_price = lowest_price;
   }
 
   @Override
