@@ -2,6 +2,7 @@ package edu.brown.cs.student.chat.gui.calendar;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import org.json.JSONObject;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
@@ -26,13 +27,14 @@ import java.util.UUID;
 public class PostCalendarEventHandler implements Route {
 
   @Override
-  public String handle(Request request, Response response) {
+  public Object handle(Request request, Response response) {
 
 
     String uniqueEventID = UUID.randomUUID().toString();
     try {
       QueryParamsMap qm = request.queryMap();
       String chatID = qm.value("chatID");
+      String ownerID = qm.value("ownerID");
       String title = qm.value("title");
       String startTime = qm.value("start");
       String endTime = qm.value("end");
@@ -45,13 +47,15 @@ public class PostCalendarEventHandler implements Route {
       DatabaseReference roomRef = database.getReference("chat/room-metadata").child(chatID);
       DatabaseReference eventsRef = roomRef.child("events");
 
-      eventsRef.child(uniqueEventID).setValueAsync(
-              new CalendarEvent(uniqueEventID, title, startTime, endTime, location, price, description));
+      CalendarEvent event = new CalendarEvent(uniqueEventID, ownerID, title, startTime, endTime, location, price, description);
+      eventsRef.child(uniqueEventID).setValueAsync(event.getMapForJSON());
+      return new JSONObject(event.getMapForJSON());
+
     } catch (Exception ex) {
       System.err.println("ERROR: An error occurred posting calendar event. Printing stack trace:");
       ex.printStackTrace();
     }
 
-    return uniqueEventID;
+    return "";
   }
 }

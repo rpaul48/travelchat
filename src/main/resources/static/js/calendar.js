@@ -122,14 +122,12 @@ document.addEventListener('DOMContentLoaded', function() {
     $.get("/getCalendarEvents", { chatID: chatID }, function( data ) {
 
         for (const event of data) {
-            const eventObject = generateEventObject(
-                event.id, event.title, event.startTimeISO,
-                event.endTimeISO, event.location, event.price,
-                event.description);
-            calendar.addEvent(eventObject);
+            calendar.addEvent(event);
         }
 
     }, 'json');
+
+    addToEvent("3e071eeb-4004-43f3-b8fb-55fbcb4a9402");
 
 
     /**
@@ -150,15 +148,27 @@ document.addEventListener('DOMContentLoaded', function() {
             const location = eventLocationInputEl.val();
             const description = eventDescriptionInputEl.val();
             const price = eventPriceInputEl.val();
-            const eventObject = generateEventObject("placeholderID", title, startTime, endTime, location, price, description);
             // Add event to database
-            $.post("/postCalendarEvent", eventObject, function(data) {
-                eventObject.id = data;
-            }, 'json');
-            // Update the budget of the adding user
-            updateBudget(price, "log");
-            // Load event visually
-            calendar.addEvent(eventObject);
+            $.post("/postCalendarEvent",
+                {
+                    chatID: chatID,
+                    ownerID: userID,
+                    title: title ? title : "Untitled Event",
+                    start: startTime,
+                    end: endTime,
+                    location: location,
+                    price: price,
+                    description: description
+                },
+
+                function(event) {
+                    // Update the budget of the adding user
+                    updateBudget(price, "log");
+                    // Load event visually
+                    calendar.addEvent(event);
+                },
+                'json');
+
             modal.hide();
         }
 
@@ -166,33 +176,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return false;
 
     });
-
-    function generateEventObject(id, title, startTimeISO, endTimeISO, location, price, description) {
-
-        title = title ? title : "Untitled Event";
-
-        let alldayBoolean = false;
-        // if the difference in days is >= 2, display as an "all day" event to save calendar space
-        if ((moment(endTimeISO).date() - moment(startTimeISO).date()) > 1) {
-            alldayBoolean = true;
-            // append start time to title to be more informative
-            const startTime = moment(startTimeISO).format("hh:mm:ss a");
-            title += " @ " + startTime.substring(0, 5) + startTime.substring(9)
-        }
-
-        return {
-            id: id,
-            title: title,
-            start: startTimeISO,
-            end: endTimeISO,
-            location: location,
-            price: price,
-            description: description,
-            editable: false,
-            allDay: alldayBoolean,
-            chatID: chatID
-        };
-    }
 
     function updateBudget(price, type) {
 
@@ -207,18 +190,56 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             async: false,
             success: function () {
-
             }
         });
+    }
+
+    function addToEvent(eventID) {
+
+        console.log("AY");
+        $.post("/addRemoveUserFromEventHandler",
+            {
+                chatID: chatID,
+                userID: userID,
+                eventID: eventID,
+            },
+
+            function() {
+            console.log("YO");
+            },
+            'json');
+
 
     }
 
-    // function getUUID() {
-    //     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    //         var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-    //         return v.toString(16);
-    //     });
+
     //
+    // function generateEventObject(id, title, startTimeISO, endTimeISO, location, price, description) {
+    //
+    //     title = title ? title : "Untitled Event";
+    //
+    //     let alldayBoolean = false;
+    //     // if the difference in days is >= 2, display as an "all day" event to save calendar space
+    //     if ((moment(endTimeISO).date() - moment(startTimeISO).date()) > 1) {
+    //         alldayBoolean = true;
+    //         // append start time to title to be more informative
+    //         const startTime = moment(startTimeISO).format("hh:mm:ss a");
+    //         title += " @ " + startTime.substring(0, 5) + startTime.substring(9)
+    //     }
+    //
+    //     return {
+    //         id: id,
+    //         chatID: chatID,
+    //         ownerID: userID,
+    //         title: title,
+    //         start: startTimeISO,
+    //         end: endTimeISO,
+    //         location: location,
+    //         price: price,
+    //         description: description,
+    //         editable: false,
+    //         allDay: alldayBoolean
+    //     };
     // }
 
 
