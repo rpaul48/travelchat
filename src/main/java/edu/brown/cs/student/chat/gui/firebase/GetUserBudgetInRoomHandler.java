@@ -10,6 +10,9 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+/**
+ * Handles getting a user's budget in a particular room.
+ */
 public class GetUserBudgetInRoomHandler implements Route {
 
   @Override

@@ -10,6 +10,9 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+/**
+ * Handles updating a user's budget in a given room.
+ */
 public class UpdateUserBudgetInRoomHandler implements Route {
 
   @Override
