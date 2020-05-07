@@ -29,7 +29,7 @@ public class GetUserRoomsHandler implements Route {
       DatabaseReference ref = database.getReference("chat/users/" + uid + "/added-rooms");
 
       // attach a listener to read the data at our reference
-      ref.addValueEventListener(new ValueEventListener() {
+      ref.addListenerForSingleValueEvent(new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
           if (dataSnapshot.hasChildren()) {

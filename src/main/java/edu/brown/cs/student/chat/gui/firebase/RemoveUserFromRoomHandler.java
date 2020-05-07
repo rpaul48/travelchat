@@ -40,7 +40,7 @@ public class RemoveUserFromRoomHandler implements Route {
   }
 
   private void updateUserRemovedRooms(DatabaseReference userRef, String groupId) {
-    userRef.addValueEventListener(new ValueEventListener() {
+    userRef.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
         if (dataSnapshot.hasChild("added-rooms")) {
@@ -58,7 +58,7 @@ public class RemoveUserFromRoomHandler implements Route {
   }
 
   private void updateRoomRemovedRooms(DatabaseReference roomsRef, String roomId, String uid) {
-    roomsRef.addValueEventListener(new ValueEventListener() {
+    roomsRef.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
         DatabaseReference roomsRef = dataSnapshot.getRef();

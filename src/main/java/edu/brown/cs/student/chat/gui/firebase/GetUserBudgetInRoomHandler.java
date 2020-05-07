@@ -22,8 +22,9 @@ public class GetUserBudgetInRoomHandler implements Route {
     String uid = qm.value("auth");
 
     try {
-      DatabaseReference userRef = roomsRef.child(groupId).child("added-users/" + uid);
-      return getUserBudget(userRef);
+      DatabaseReference userBudgetRef = roomsRef.child(groupId).child(
+            "added-users/" + uid + "/budget/");
+      return getUserBudget(userBudgetRef);
     } catch (Exception ex) {
       System.err.println("ERROR: An exception occurred. Printing stack trace:");
       ex.printStackTrace();
@@ -31,16 +32,14 @@ public class GetUserBudgetInRoomHandler implements Route {
     return "0";
   }
 
-  private String getUserBudget(DatabaseReference userRef) {
+  private String getUserBudget(DatabaseReference userBudgetRef) {
     final boolean[] done = {false};
     final String[] budget = {"0"};
-    userRef.addValueEventListener(new ValueEventListener() {
+    userBudgetRef.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
-        if (dataSnapshot.hasChild("budget")) {
-          // if there is a budget already set, get it
-          budget[0] = (String) dataSnapshot.child("budget").getValue();
-        }
+        budget[0] = (String) dataSnapshot.getValue();
+        System.out.println("GOT BUDGET AS " + budget[0]);
         done[0] = true;
       }
 
