@@ -22,29 +22,37 @@ function createChat() {
 
     // get all emails of desired invitees
     var emails = document.getElementById("add-user-field").value;
+    var regex = /^([\w+-.%]+@[\w-.]+\.[A-Za-z]{2,4},?)+$/;
+    if (!regex.test(emails)) {
+        alert("Invitee emails are improperly formatted. Please enter emails only separated by commas.");
+        document.getElementById("add-user-field").focus();
+    } else {
+        // create a room, invite all invitees who have an account
+        chat.createRoom(groupName, "public", function (roomId) {
+            // for every invitee, make a POST request to our Spark server to get their UID
+            $.ajax({
+                url: "/createRoom",
+                type: "post",
+                // authenticated with the current user's UID
+                data: {
+                    "auth": currentUser.uid,
+                    "emails": emails,
+                    "groupId": roomId,
+                    "groupName": groupName
+                },
+                // MUST be a synchronous request
+                async: false,
+                success: function (data) {
+                    document.getElementById("room-id").innerHTML =
+                        "<br><b> " + groupName + " group ID: </b> " + roomId;
 
-    // create a room, invite all invitees who have an account
-    chat.createRoom(groupName, "public", function(roomId) {
-        // for every invitee, make a POST request to our Spark server to get their UID
-        $.ajax({
-            url: "/createRoom",
-            type: "post",
-            // authenticated with the current user's UID
-            data: {"auth": currentUser.uid,
-                "emails": emails,
-                "groupId": roomId,
-                "groupName": groupName},
-            // MUST be a synchronous request
-            async: false,
-            success: function (data) {
-                document.getElementById("room-id").innerHTML =
-                    "<br><b> " + groupName + " group ID: </b> " + roomId;
-
-                chat.enterRoom(roomId);
-                closeCreateChat();
-                window.location.href = "/chat/" + roomId;
-            }});
-    })
+                    chat.enterRoom(roomId);
+                    closeCreateChat();
+                    window.location.href = "/chat/" + roomId;
+                }
+            });
+        })
+    }
 }
 
 function openCreateChat() {
