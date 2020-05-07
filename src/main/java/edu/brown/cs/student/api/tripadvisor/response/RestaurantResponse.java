@@ -99,6 +99,10 @@ public class RestaurantResponse {
             restaurant.setPriceLevel(restaurantObj.getString("price_level"));
           }
 
+          if (!restaurantObj.isNull("price")) {
+            restaurant.setPriceRange(restaurantObj.getString("price"));
+          }
+
           if (!restaurantObj.isNull("ranking")) {
             restaurant.setRankingString(restaurantObj.getString("ranking"));
           }

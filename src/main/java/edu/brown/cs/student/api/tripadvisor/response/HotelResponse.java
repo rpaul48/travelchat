@@ -100,7 +100,7 @@ public class HotelResponse {
           }
 
           if (!hotelObj.isNull("price")) {
-            hotel.setPriceLevel(hotelObj.getString("price"));
+            hotel.setPriceRange(hotelObj.getString("price"));
           }
 
           if (!hotelObj.isNull("ranking")) {

@@ -22,7 +22,7 @@ public class HotelTest {
     assertEquals(hotel.isClosed(), false);
     assertEquals(hotel.getRating(), Constants.INIT_NUM_VALUE, 0.0001);
     assertEquals(hotel.getPriceLevel(), "");
-    assertEquals(hotel.getPrice(), "");
+    assertEquals(hotel.getPriceRange(), "");
     assertEquals(hotel.getRanking(), Constants.INIT_NUM_VALUE);
     assertEquals(hotel.getRankingString(), "");
     assertEquals(hotel.getHotelClass(), Constants.INIT_NUM_VALUE, 0.0001);
@@ -108,9 +108,9 @@ public class HotelTest {
   @Test
   public void testGetSetPrice() {
     Hotel hotel = new Hotel();
-    assertEquals(hotel.getPrice(), "");
-    hotel.setPrice("$129 - $475");
-    assertEquals(hotel.getPrice(), "$129 - $475");
+    assertEquals(hotel.getPriceRange(), "");
+    hotel.setPriceRange("$129 - $475");
+    assertEquals(hotel.getPriceRange(), "$129 - $475");
   }
 
   @Test
