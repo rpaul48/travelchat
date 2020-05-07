@@ -18,46 +18,52 @@ import spark.Route;
  */
 public class BrowseFlightsHandler implements Route {
   /**
-   * Returns an array of JSON objects, one for each flight. Each object will contain the booking URL, carrier, and
-   * price of the flight.
+   * Returns an array of JSON objects, one for each flight. Each object will contain
+   * the booking URL, carrier, and price of the flight.
    * @param request
    * @param response
    * @return An array of flights, as JSONs.
    */
   @Override
   public JSONArray handle(Request request, Response response) {
-    // Querier for flights
-    TripAdvisorQuerier querier = new TripAdvisorQuerier();
-    // Get parameters from front-end
-    QueryParamsMap qm = request.queryMap();
-    if (!paramsAreValid(qm)) {
-      System.out.println("ERROR: At least one invalid argument was passed as a flight parameter.");
-      return null;
+    try {
+      // Querier for flights
+      TripAdvisorQuerier querier = new TripAdvisorQuerier();
+      // Get parameters from front-end
+      QueryParamsMap qm = request.queryMap();
+      if (!paramsAreValid(qm)) {
+        System.err.println("ERROR: >=1 invalid argument was passed as a flight parameter.");
+        return null;
+      }
+
+      // Session params map
+      Map<String, Object> sessionParams = new HashMap<>();
+      sessionParams.put("d1", qm.value("destination"));
+      sessionParams.put("o1", qm.value("origin"));
+      sessionParams.put("dd1", qm.value("departure_date"));
+      sessionParams.put("currency", "USD");
+      sessionParams.put("ta", qm.value("adults"));
+      sessionParams.put("ts", qm.value("seniors"));
+      sessionParams.put("c", qm.value("flightClass"));
+
+      // Remove any null (i.e. absent) parameters
+      sessionParams.values().removeIf(Objects::isNull);
+
+      // Poll params map
+      Map<String, Object> pollParams = new HashMap<>();
+      pollParams.put("currency", "USD");
+      pollParams.put("so", "Sorted by Best Value");
+
+      // Create request object
+      FlightRequest flightRequest = new FlightRequest(sessionParams, pollParams);
+
+      // Get flights using querier
+      return querier.getFlights(flightRequest);
+    } catch (Exception ex) {
+      System.err.println("ERROR: An error occurred browsing flights. Printing stack trace:");
+      ex.printStackTrace();
     }
-
-    // Session params map
-    Map<String, Object> sessionParams = new HashMap<>();
-    sessionParams.put("d1", qm.value("destination"));
-    sessionParams.put("o1", qm.value("origin"));
-    sessionParams.put("dd1", qm.value("departure_date"));
-    sessionParams.put("currency", "USD");
-    sessionParams.put("ta", qm.value("adults"));
-    sessionParams.put("ts", qm.value("seniors"));
-    sessionParams.put("c", qm.value("flightClass"));
-
-    // Remove any null (i.e. absent) parameters
-    sessionParams.values().removeIf(Objects::isNull);
-
-    // Poll params map
-    Map<String, Object> pollParams = new HashMap<>();
-    pollParams.put("currency", "USD");
-    pollParams.put("so", "Sorted by Best Value");
-
-    // Create request object
-    FlightRequest flightRequest = new FlightRequest(sessionParams, pollParams);
-
-    // Get flights using querier
-    return querier.getFlights(flightRequest);
+    return new JSONArray();
   }
 
   /**

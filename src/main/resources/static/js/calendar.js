@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const pathSplit = window.location.pathname.split("/");
     const userID = pathSplit[pathSplit.length - 1];
     const chatID = pathSplit[pathSplit.length - 2];
+    const currentTimeZone = "EDT";
+    const tripTimeZone = "PST";
 
     let year = '2020';
     // convert to ISO. Create a function for this later!
@@ -16,42 +18,62 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Elements of the add event modal.
     const modal = $("#add-event-modal");
-    const modalExitButton = $("#modal-close")
-    const eventTitleEl = $("#event-title");
-    const eventLocationEl = $("#event-location");
-    const eventStartEl = $("#event-start-time");
-    const eventEndEl = $("#event-end-time");
-    const eventDescriptionEl = $("#event-description");
-    const eventPriceEl = $("#event-price");
+    const modalExitButton = $("#modal-close");
+    const eventTitleInputEl = $("#event-title-input");
+    const eventLocationInputEl = $("#event-location-input");
+    const eventStartInputEl = $("#event-start-time-input");
+    const eventEndInputEl = $("#event-end-time-input");
+    const eventPriceInputEl = $("#event-price-input");
+    const eventDescriptionInputEl = $("#event-description-input");
 
     // Set up the modal.
     modalExitButton.click(function() {
         modal.hide();
     });
-    eventStartEl.attr({
+    eventStartInputEl.attr({
         "min" : minTime,
         "max" : maxTime
     });
-    eventEndEl.attr({
+    eventEndInputEl.attr({
         "min" : minTime,
         "max" : maxTime
     });
     function resetModal() {
-        eventTitleEl.val("");
-        eventStartEl.val(startDate + 'T12:30');
-        eventEndEl.val(startDate + 'T13:30');
-        eventPriceEl.val(0.00);
+        eventTitleInputEl.val("");
+        eventStartInputEl.val(startDate + 'T12:30');
+        eventEndInputEl.val(startDate + 'T13:30');
+        eventPriceInputEl.val(0.00);
     }
 
 
     // Elements of the event info pop-up.
     const eventPopup = $("#event-popup");
     const eventPopupExitButton = $("#event-popup-close");
+    const eventTitleEl = $("#event-title");
+    const eventTimeEl = $("#event-time");
+    const eventLocationEl = $("#event-location");
+    const eventPriceEl = $("#event-price");
+    const eventDescriptionEl = $("#event-description");
+    let clickedEventEl;
 
     // Set up the pop-up.
     eventPopupExitButton.click(function() {
+        clickedEventEl.style.borderColor = "white";
         eventPopup.hide();
     });
+
+    function populateEventPopup(event) {
+        eventTitleEl.text(event.title);
+        eventTimeEl.text(getNeatTimeDetails(event.start, event.end));
+        eventLocationEl.text(event.extendedProps.location);
+        eventPriceEl.text("$ " + event.extendedProps.price);
+        eventDescriptionEl.text(event.extendedProps.description);
+
+    }
+
+    function getNeatTimeDetails(startISO, endISO) {
+        return moment(startISO).format("dddd, MMMM Do, h:mma") + "- " + moment(endISO).format("h:mma")
+    }
 
     /**
      * Set up calendar
@@ -88,8 +110,11 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         defaultDate: startDate,
         eventClick: function(info) {
+            clickedEventEl = info.el;
+            console.log(info.event);
+            clickedEventEl.style.borderColor = 'red';
+            populateEventPopup(info.event);
             eventPopup.fadeIn();
-            info.el.style.borderColor = 'red';
         }
     });
 
@@ -97,14 +122,12 @@ document.addEventListener('DOMContentLoaded', function() {
     $.get("/getCalendarEvents", { chatID: chatID }, function( data ) {
 
         for (const event of data) {
-            const eventObject = generateEventObject(
-                event.id, event.title, event.location,
-                event.startTimeISO, event.endTimeISO,
-                event.description, event.price);
-            calendar.addEvent(eventObject);
+            calendar.addEvent(event);
         }
 
     }, 'json');
+
+    addToEvent("3e071eeb-4004-43f3-b8fb-55fbcb4a9402");
 
 
     /**
@@ -113,25 +136,39 @@ document.addEventListener('DOMContentLoaded', function() {
     const addEventForm = $("#add-event-form");
     addEventForm.submit(function() {
 
-        const startTime = eventStartEl.val();
-        const endTime = eventEndEl.val();
+        const startTime = eventStartInputEl.val();
+        const endTime = eventEndInputEl.val();
 
 
         // Check validity of input
         if (moment(endTime).isBefore(startTime) || moment(endTime).isSame(startTime)){
             alert("Error: End time must be greater than start time.");
         } else {
-            const title = eventTitleEl.val();
-            const location = eventLocationEl.val();
-            const description = eventDescriptionEl.val();
-            const price = eventPriceEl.val();
-            const eventObject = generateEventObject(getUUID(), title, location, startTime, endTime, description, price);
+            const title = eventTitleInputEl.val();
+            const location = eventLocationInputEl.val();
+            const description = eventDescriptionInputEl.val();
+            const price = eventPriceInputEl.val();
             // Add event to database
-            $.post("/postCalendarEvent", eventObject, null, 'json');
-            // Update the budget of the adding user
-            updateBudget(price, "log");
-            // Load event visually
-            calendar.addEvent(eventObject);
+            $.post("/postCalendarEvent",
+                {
+                    chatID: chatID,
+                    ownerID: userID,
+                    title: title ? title : "Untitled Event",
+                    start: startTime,
+                    end: endTime,
+                    location: location,
+                    price: price,
+                    description: description
+                },
+
+                function(event) {
+                    // Update the budget of the adding user
+                    updateBudget(price, "log");
+                    // Load event visually
+                    calendar.addEvent(event);
+                },
+                'json');
+
             modal.hide();
         }
 
@@ -139,34 +176,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return false;
 
     });
-
-    function generateEventObject(id, title, location, startTimeISO, endTimeISO, description, price) {
-
-
-        title = title ? title : "Untitled Event";
-
-        let alldayBoolean = false;
-        // if the difference in days is >= 2, display as an "all day" event to save calendar space
-        if ((moment(endTimeISO).date() - moment(startTimeISO).date()) > 1) {
-            alldayBoolean = true;
-            // append start time to title to be more informative
-            const startTime = moment(startTimeISO).format("hh:mm:ss a");
-            title += " @ " + startTime.substring(0, 5) + startTime.substring(9)
-        }
-
-        return {
-            id: id,
-            title: title,
-            location: location,
-            start: startTimeISO,
-            end: endTimeISO,
-            description: description,
-            price: price,
-            editable: true,
-            allDay: alldayBoolean,
-            chatID: chatID
-        };
-    }
 
     function updateBudget(price, type) {
 
@@ -181,19 +190,57 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             async: false,
             success: function () {
-
             }
         });
+    }
+
+    function addToEvent(eventID) {
+
+        console.log("AY");
+        $.post("/addRemoveUserFromEventHandler",
+            {
+                chatID: chatID,
+                userID: userID,
+                eventID: eventID,
+            },
+
+            function() {
+            console.log("YO");
+            },
+            'json');
+
 
     }
 
-    function getUUID() {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        });
 
-    }
+    //
+    // function generateEventObject(id, title, startTimeISO, endTimeISO, location, price, description) {
+    //
+    //     title = title ? title : "Untitled Event";
+    //
+    //     let alldayBoolean = false;
+    //     // if the difference in days is >= 2, display as an "all day" event to save calendar space
+    //     if ((moment(endTimeISO).date() - moment(startTimeISO).date()) > 1) {
+    //         alldayBoolean = true;
+    //         // append start time to title to be more informative
+    //         const startTime = moment(startTimeISO).format("hh:mm:ss a");
+    //         title += " @ " + startTime.substring(0, 5) + startTime.substring(9)
+    //     }
+    //
+    //     return {
+    //         id: id,
+    //         chatID: chatID,
+    //         ownerID: userID,
+    //         title: title,
+    //         start: startTimeISO,
+    //         end: endTimeISO,
+    //         location: location,
+    //         price: price,
+    //         description: description,
+    //         editable: false,
+    //         allDay: alldayBoolean
+    //     };
+    // }
 
 
 });
