@@ -61,6 +61,7 @@
                 <label for="max-distance">Max distance willing to travel <input type="number" min="1" value="5" id="max-distance"> </label>
                 <label for="pmd-address"> miles from <input type="text" placeholder="input address"
                                                              class="address" id="pmd-address"></label>
+                <label><input type="checkbox" id="pmd-cur-loc"/>Use current location</label>
                 <br><br>
                 <label>Preferred cuisines: </label>
                 <div class="checkboxes">
@@ -110,6 +111,7 @@
                     <option value="4" selected="selected">10</option>
                 </select>
                 <label> miles from <input type="text" placeholder="input address" class="address" id="restaurant-address"></label>
+                <label><input type="checkbox" id="restaurant-cur-loc"/>Use current location</label>
                 <br>
 
                 <label>Preferred cuisines: </label>
@@ -170,6 +172,7 @@
                     <option value="4" selected="selected">10</option>
                 </select>
                 <label> miles from <input type="text" placeholder="input address" class="address" id="activities-address"></label>
+                <label><input type="checkbox" id="activities-cur-loc"/>Use current location</label>
                 <br>
                 <label>Type of activity: </label>
                 <div class="checkboxes">
@@ -206,6 +209,7 @@
                 <input aria-label="Check-out date" type="date" id="check-out"
                        value="2020-05-16" min="2020-01-01" class="date-class">
                 <label> Near: <input type="text" placeholder="input address" class="address" id="lodging-address"></label>
+                <label><input type="checkbox" id="lodging-cur-loc"/>Use current location</label>
                 <br>
                 <label for="hotel-type-sel">Type</label>
                 <select aria-label="Lodging Type" id="hotel-type-sel">

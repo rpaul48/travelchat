@@ -5,7 +5,7 @@ let curUser;
 let coordinates;
 let today;
 
-firebase.auth().onAuthStateChanged(function(user) {
+firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         // get a Firebase Database ref
         curUser = user;
@@ -43,14 +43,14 @@ firebase.auth().onAuthStateChanged(function(user) {
                     // user is not added to the room, redirect to manage-chats
                     window.location.href = "/manage-chats";
                 }
-            }});
+            }
+        });
 
         // set the current coordinates
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition);
-        } else {
-            coordinates = "Geolocation is not supported by this browser.";
         }
+
         function showPosition(position) {
             coordinates = position.coords.latitude.toString().concat(" ", position.coords.longitude.toString());
         }
@@ -86,8 +86,10 @@ function leaveChat() {
     $.ajax({
         url: "/removeUserFromRoom",
         type: "post",
-        data: {"auth": curUser.uid,
-            "roomId": roomId},
+        data: {
+            "auth": curUser.uid,
+            "roomId": roomId
+        },
         async: false,
     });
 
@@ -114,12 +116,14 @@ function inviteUser() {
     $.ajax({
         url: "/addUserToRoom",
         type: "post",
-        data: {"auth": firebase.auth().currentUser.uid,
+        data: {
+            "auth": firebase.auth().currentUser.uid,
             "email": email,
             "roomId": roomId,
-            "groupName": groupName},
+            "groupName": groupName
+        },
         async: false,
-        });
+    });
 }
 
 // displays the div with the input id
@@ -137,8 +141,10 @@ function displayBudget() {
     $.ajax({
         url: "/getUserBudgetInRoom",
         type: "post",
-        data: {"auth": firebase.auth().currentUser.uid,
-            "roomId": roomId},
+        data: {
+            "auth": firebase.auth().currentUser.uid,
+            "roomId": roomId
+        },
         async: false,
         success: function (data) {
             var yourBudget = document.getElementById("your-budget");
@@ -172,128 +178,160 @@ function updateBudget(logOrAdd) {
 
 // returns a schedule for the day
 function planMyDay() {
-        var date = document.getElementById("date-to-plan").value;
-        var maxDist = document.getElementById("max-distance").value;
-        var cuisines = [];
-        $("input:checkbox[name=pmd-cuisine]:checked").each(function(){
-            cuisines.push($(this).val());
-        });
-        var activities = [];
-        $("input:checkbox[name=pmd-activity]:checked").each(function(){
-            activities.push($(this).val());
-        });
-        var address = document.getElementById("pmd-address").value;
-        var loc = getLatAndLongFromAddress(address);
+    var loc;
+    var curLoc = document.getElementById("pmd-cur-loc").checked;
 
-        // returns an ordered schedule of events which satisfy the query parameters
-        $.ajax({
-            url: "/planMyDay",
-            type: "get",
-            data: {"location": loc,
-                "date": date,
-                "maxDist": maxDist,
-                "cuisineTypes": cuisines,
-                "activityTypes": activities},
-            async: false,
-            success: function (data) {
-                var recs = JSON.parse(data);
-            }});
+    if (curLoc) {
+        if (coordinates == null) {
+            window.alert("Please allow your browser to access your location or input an address.");
+            return;
+        } else {
+            loc = coordinates;
+        }
+    } else {
+        var address = document.getElementById("pmd-address").value;
+        if (!(address === "")) {
+            loc = getLatAndLongFromAddress(address);
+        } else {
+            window.alert("Please input an address or use your current location.");
+            return;
+        }
+    }
+
+    var date = document.getElementById("date-to-plan").value;
+    var maxDist = document.getElementById("max-distance").value;
+    var cuisines = [];
+    $("input:checkbox[name=pmd-cuisine]:checked").each(function () {
+        cuisines.push($(this).val());
+    });
+    var activities = [];
+    $("input:checkbox[name=pmd-activity]:checked").each(function () {
+        activities.push($(this).val());
+    });
+
+    console.log("sending");
+    // returns an ordered schedule of events which satisfy the query parameters
+    $.ajax({
+        url: "/planMyDay",
+        type: "get",
+        data: {
+            "location": loc,
+            "date": date,
+            "maxDist": maxDist,
+            "cuisineTypes": cuisines,
+            "activityTypes": activities
+        },
+        async: false,
+        success: function (data) {
+            console.log("received");
+            console.log(data);
+        }
+    });
 }
 
 // returns search results for restaurants
 function browseRestaurants() {
-        var miles_sel = document.getElementById("restaurant-miles-sel");
-        var miles = miles_sel.options[miles_sel.selectedIndex].text;
-        var price_sel = document.getElementById("restaurant-price-sel");
-        var price = price_sel.options[price_sel.selectedIndex].text;
-        var rating_sel = document.getElementById("restaurant-rating-sel");
-        var rating = rating_sel.options[rating_sel.selectedIndex].text;
-        var diet_sel = document.getElementById("diet-sel");
-        var diet = diet_sel.options[diet_sel.selectedIndex].text;
+    var miles_sel = document.getElementById("restaurant-miles-sel");
+    var miles = miles_sel.options[miles_sel.selectedIndex].text;
+    var price_sel = document.getElementById("restaurant-price-sel");
+    var price = price_sel.options[price_sel.selectedIndex].text;
+    var rating_sel = document.getElementById("restaurant-rating-sel");
+    var rating = rating_sel.options[rating_sel.selectedIndex].text;
+    var diet_sel = document.getElementById("diet-sel");
+    var diet = diet_sel.options[diet_sel.selectedIndex].text;
 
-        var cuisines = [];
-        $("input:checkbox[name=browse-cuisine]:checked").each(function(){
-            cuisines.push($(this).val());
-        });
+    var cuisines = [];
+    $("input:checkbox[name=browse-cuisine]:checked").each(function () {
+        cuisines.push($(this).val());
+    });
 
-        var address = document.getElementById("restaurant-address").value;
-        var loc = getLatAndLongFromAddress(address);
+    var address = document.getElementById("restaurant-address").value;
+    var loc = getLatAndLongFromAddress(address);
 
-        // returns a list of restaurant options which match the query parameters
-        $.ajax({
-            url: "/browseRestaurants",
-            type: "get",
-            data: {"miles": miles,
-                "location": loc,
-                "cuisines": cuisines.toString(),
-                "rating": rating,
-                "price": price,
-                "diet": diet},
-            async: false,
-            success: function (data) {
-                var result = JSON.parse(data);
-                var recs = Object.values(result)[0];
-                document.getElementById("restaurants-results").innerHTML = recs;
-            }});
+    // returns a list of restaurant options which match the query parameters
+    $.ajax({
+        url: "/browseRestaurants",
+        type: "get",
+        data: {
+            "miles": miles,
+            "location": loc,
+            "cuisines": cuisines.toString(),
+            "rating": rating,
+            "price": price,
+            "diet": diet
+        },
+        async: false,
+        success: function (data) {
+            var result = JSON.parse(data);
+            var recs = Object.values(result)[0];
+            document.getElementById("restaurants-results").innerHTML = recs;
+        }
+    });
 }
 
 // returns search results for activities
 function browseActivities() {
-        var miles_sel = document.getElementById("activities-miles-sel");
-        var miles = miles_sel.options[miles_sel.selectedIndex].text;
+    var miles_sel = document.getElementById("activities-miles-sel");
+    var miles = miles_sel.options[miles_sel.selectedIndex].text;
 
-        var activities = [];
-        $("input:checkbox[name=browse-activity]:checked").each(function(){
-            activities.push($(this).val());
-        });
+    var activities = [];
+    $("input:checkbox[name=browse-activity]:checked").each(function () {
+        activities.push($(this).val());
+    });
 
-        var address = document.getElementById("activities-address").value;
-        var loc = getLatAndLongFromAddress(address);
+    var address = document.getElementById("activities-address").value;
+    var loc = getLatAndLongFromAddress(address);
 
-        // returns a list of activities options which match the query parameters
-        $.ajax({
-            url: "/browseActivities",
-            type: "get",
-            data: {"location": loc,
-                "miles": miles,
-                "activityTypes": activities.toString()},
-            async: false,
-            success: function (data) {
-                var result = JSON.parse(data);
-                var recs = Object.values(result)[1];
-                document.getElementById("activities-results").innerHTML = recs;
-            }});
+    // returns a list of activities options which match the query parameters
+    $.ajax({
+        url: "/browseActivities",
+        type: "get",
+        data: {
+            "location": loc,
+            "miles": miles,
+            "activityTypes": activities.toString()
+        },
+        async: false,
+        success: function (data) {
+            var result = JSON.parse(data);
+            var recs = Object.values(result)[1];
+            document.getElementById("activities-results").innerHTML = recs;
+        }
+    });
 }
 
 // returns search results for lodging
 function browseLodging() {
-        var type_sel = document.getElementById("hotel-type-sel");
-        var type = type_sel.options[type_sel.selectedIndex].text;
-        var checkin = document.getElementById("check-in").value;
-        var checkout = document.getElementById("check-out").value;
-        var rating_sel = document.getElementById("hotel-rating-sel");
-        var rating = rating_sel.options[rating_sel.selectedIndex].text;
-        var num_rooms = document.getElementById("num-rooms").value;
+    var type_sel = document.getElementById("hotel-type-sel");
+    var type = type_sel.options[type_sel.selectedIndex].text;
+    var checkin = document.getElementById("check-in").value;
+    var checkout = document.getElementById("check-out").value;
+    var rating_sel = document.getElementById("hotel-rating-sel");
+    var rating = rating_sel.options[rating_sel.selectedIndex].text;
+    var num_rooms = document.getElementById("num-rooms").value;
 
-        var address = document.getElementById("lodging-address").value;
-        var loc = getLatAndLongFromAddress(address);
+    var address = document.getElementById("lodging-address").value;
+    var loc = getLatAndLongFromAddress(address);
 
-        // returns a list of lodging options which match the query parameters
-        $.ajax({
-            url: "/browseLodging",
-            type: "get",
-            data: {"location": loc,
-                "type": type,
-                "check-in": checkin,
-                "check-out": checkout,
-                "rating": rating,
-                "num-rooms": num_rooms},
-            async: false,
-            success: function (data) {
-                var result = JSON.parse(data);
-                var recs = Object.values(result)[1];
-                document.getElementById("lodging-results").innerHTML = recs;
-            }});
+    // returns a list of lodging options which match the query parameters
+    $.ajax({
+        url: "/browseLodging",
+        type: "get",
+        data: {
+            "location": loc,
+            "type": type,
+            "check-in": checkin,
+            "check-out": checkout,
+            "rating": rating,
+            "num-rooms": num_rooms
+        },
+        async: false,
+        success: function (data) {
+            var result = JSON.parse(data);
+            var recs = Object.values(result)[1];
+            document.getElementById("lodging-results").innerHTML = recs;
+        }
+    });
 }
 
 // returns search results for flights
@@ -317,7 +355,8 @@ function browseFlights() {
         $.ajax({
             url: "/browseFlights",
             type: "get",
-            data: {"location": coordinates,
+            data: {
+                "location": coordinates,
                 "departure_date": departure_date,
                 "origin": depart,
                 "destination": destination,
@@ -325,7 +364,8 @@ function browseFlights() {
                 "children": children,
                 "seniors": seniors,
                 "numStops": numStops,
-                "flightClass": flightClass},
+                "flightClass": flightClass
+            },
             async: false,
             success: function (data) {
                 var result = JSON.parse(data);
@@ -354,7 +394,8 @@ function browseFlights() {
                         document.getElementById("flights-results").innerHTML += html.join("");
                     }
                 }
-            }});
+            }
+        });
     }
 }
 
@@ -366,13 +407,15 @@ function updateCalendarLink() {
 // gets the latitude and longitude for a given address
 function getLatAndLongFromAddress(address) {
     var ret = "";
-    $.ajax({url: "https://www.mapquestapi.com/geocoding/v1/address",
+    $.ajax({
+        url: "https://www.mapquestapi.com/geocoding/v1/address",
         type: "get",
         data: {"key": "b7pNYRJpdr0LJw2A7pupccBhMGHHa0fE", "location": address},
         async: false,
-        success: function(data) {
-        var latLng = data.results[0].locations[0].latLng;
-        ret = String(latLng.lat) + " " + String(latLng.lng);
-    }});
+        success: function (data) {
+            var latLng = data.results[0].locations[0].latLng;
+            ret = String(latLng.lat) + " " + String(latLng.lng);
+        }
+    });
     return ret;
 }

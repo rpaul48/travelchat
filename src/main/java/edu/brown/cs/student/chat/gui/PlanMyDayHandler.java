@@ -35,7 +35,7 @@ public class PlanMyDayHandler implements Route {
     double lon;
     try {
       // of the form "[lat], [lon]"
-      String[] locationStrings = qm.value("location").split(",");
+      String[] locationStrings = qm.value("location").split(" ");
       lat = Double.parseDouble(locationStrings[0]);
       lon = Double.parseDouble(locationStrings[1]);
     } catch (NumberFormatException nfe) {
