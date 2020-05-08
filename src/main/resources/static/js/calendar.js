@@ -238,29 +238,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
-    // function checkIfUserInEvent(eventID) {
-    //
-    //     $.post("/getUsersFromEventHandler",
-    //         {
-    //             chatID: chatID,
-    //             eventID: eventID
-    //         },
-    //
-    //         function(data) {
-    //             if (userID in data) {
-    //                 console.log("AY");
-    //                 return true;
-    //             }
-    //         },
-    //         'json');
-    //
-    //
-    //
-    //     return false;
-    //
-    // }
-
-
     //
     // function generateEventObject(id, title, startTimeISO, endTimeISO, location, price, description) {
     //

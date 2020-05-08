@@ -122,7 +122,6 @@ public final class Main {
     Spark.post("/postCalendarEvent", new PostCalendarEventHandler());
     Spark.post("/addRemoveUserFromEventHandler", new AddRemoveUserFromEventHandler());
     Spark.get("/getSingleCalendarEvent", new GetSingleCalendarEventHandler());
-    Spark.post("/getUsersFromEventHandler", new GetUsersOfEventHandler());
 
   }
 
