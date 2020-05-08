@@ -72,6 +72,12 @@ firebase.auth().onAuthStateChanged(function (user) {
             dates[i].setAttribute("min", today);
         }
 
+        let endDate = new Date(today);
+        endDate.setDate(endDate.getDate() + 7);
+        const endDateFormatted = endDate.toISOString().substr(0,10);
+        document.getElementById("trip-end-date").setAttribute("value", endDateFormatted);
+
+
     } else {
         // user is not logged in, redirect to login
         window.location.href = "/login";
