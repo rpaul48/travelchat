@@ -21,6 +21,7 @@ public class CalendarEvent {
   /**
    * Constructs a calendar event.
    * @param id unique id of the event
+   * @param ownerID id of the event owner
    * @param title given title of the event
    * @param start start time of the event in ISO format
    * @param end end time of the event in ISO format
@@ -28,9 +29,8 @@ public class CalendarEvent {
    * @param price price to participate in the event
    * @param description description of the event
    */
-
   public CalendarEvent(String id, String ownerID, String title, String start, String end,
-                       String location,  String price, String description) {
+                       String location, String price, String description) {
 
     this.id = id;
     this.ownerID = ownerID;

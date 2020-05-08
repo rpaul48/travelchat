@@ -36,10 +36,7 @@ public class GraphNode implements IVertex<GraphNode, WayEdge> {
    * @param item     - data of the node of type Item
    * @param lat      - a double representing the latitude of the node
    * @param lon      - a double representing the longitude of the node
-   * @param waysList - a List of WayEdges, where the ways are outgoing edges from
-   *                 this node
-   * @param proxy    - a MapsProxy, which is used to load in data from the SQL
-   *                 file
+   * @param edgesList - a list of the node's edges
    */
   public GraphNode(Item item, double lat, double lon, List<WayEdge> edgesList) {
     this.item = item;
@@ -66,8 +63,8 @@ public class GraphNode implements IVertex<GraphNode, WayEdge> {
     return longitude;
   }
 
-  public void setEdges(List<WayEdge> edgesList) {
-    this.edgesList = edgesList;
+  public void setEdges(List<WayEdge> edges) {
+    this.edgesList = edges;
   }
 
   @Override

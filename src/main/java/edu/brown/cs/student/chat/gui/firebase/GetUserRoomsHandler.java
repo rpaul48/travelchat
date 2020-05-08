@@ -14,6 +14,9 @@ import spark.Route;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Handles getting a user's rooms.
+ */
 public class GetUserRoomsHandler implements Route {
 
   @Override
@@ -29,7 +32,7 @@ public class GetUserRoomsHandler implements Route {
       DatabaseReference ref = database.getReference("chat/users/" + uid + "/added-rooms");
 
       // attach a listener to read the data at our reference
-      ref.addValueEventListener(new ValueEventListener() {
+      ref.addListenerForSingleValueEvent(new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
           if (dataSnapshot.hasChildren()) {
@@ -61,7 +64,6 @@ public class GetUserRoomsHandler implements Route {
       ex.printStackTrace();
       Thread.currentThread().interrupt();
     }
-    JSONObject ret = new JSONObject(jsonMap);
-    return ret;
+    return new JSONObject(jsonMap);
   }
 }

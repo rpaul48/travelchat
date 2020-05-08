@@ -63,6 +63,20 @@
                                                              class="address" id="pmd-address"></label>
                 <label><input type="checkbox" id="pmd-cur-loc"/>Use current location</label>
                 <br><br>
+                <label for="distance-rank">Importance of minimizing travel distance</label>
+                <select aria-label="Importance of minimizing travel distance" id="distance-rank">
+                    <option value="0.5">not important</option>
+                    <option value="1.0" selected="selected">somewhat important</option>
+                    <option value="2.0">very important</option>
+                </select>
+                <br>
+                <label for="price-rank">Importance of minimizing cost</label>
+                <select aria-label="Importance of minimizing cost" id="price-rank">
+                    <option value="0.5">not important</option>
+                    <option value="1.0" selected="selected">somewhat important</option>
+                    <option value="2.0">very important</option>
+                </select>
+                <br><br>
                 <label>Preferred cuisines: </label>
                 <div class="checkboxes">
                     <label><input type="checkbox" name="pmd-cuisine" value="Any" checked>Any</label>
@@ -229,7 +243,7 @@
                     <option value="6" >5 star</option>
                 </select>
                 <label for="num-rooms">Number of rooms</label>
-                <input aria-label="Number of rooms" type="number" id="num-rooms" value="1">
+                <input aria-label="Number of rooms" type="number" id="num-rooms" value="1" min="0">
                 <button onclick="browseLodging()" type="button" class="small-green-button">Search</button>
             </form>
         </div>

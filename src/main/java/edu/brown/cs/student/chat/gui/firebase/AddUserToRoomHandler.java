@@ -16,6 +16,9 @@ import spark.Route;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Handles adding a user to a room.
+ */
 public class AddUserToRoomHandler implements Route {
 
   @Override
@@ -58,10 +61,12 @@ public class AddUserToRoomHandler implements Route {
   }
 
   private void updateUserAddedRooms(DatabaseReference userRef, String groupId, String groupName) {
-    userRef.addValueEventListener(new ValueEventListener() {
+    userRef.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
-        if (dataSnapshot.hasChild("added-rooms")) {
+        // if the user has an 'added-rooms' dir & is not already in this room, add it
+        if (dataSnapshot.hasChild("added-rooms")
+              && !dataSnapshot.child("added-rooms").hasChild(groupId)) {
           DatabaseReference userAddedRoomsRef = dataSnapshot.getRef().child("added-rooms");
           Map<String, Object> userUpdates = new HashMap<>();
           Map<String, Object> roomDetails = new HashMap<>();
@@ -70,7 +75,8 @@ public class AddUserToRoomHandler implements Route {
           userUpdates.put(groupId, roomDetails);
 
           userAddedRoomsRef.updateChildrenAsync(userUpdates);
-        } else {
+        } else if (!dataSnapshot.hasChild("added-rooms")) {
+          // if the user does not have an 'added-rooms' dir
           DatabaseReference userRef = dataSnapshot.getRef();
           Map<String, Object> userUpdates = new HashMap<>();
           Map<String, Object> roomDetails = new HashMap<>();
@@ -90,20 +96,22 @@ public class AddUserToRoomHandler implements Route {
   }
 
   private void updateRoomAddedRooms(DatabaseReference roomsRef, String roomId, String uid) {
-    roomsRef.addValueEventListener(new ValueEventListener() {
+    roomsRef.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
         DatabaseReference roomsRef = dataSnapshot.getRef();
         DatabaseReference roomRef = roomsRef.child(roomId);
 
+        // if the room does not already have this user, add them
+        if (!dataSnapshot.child(roomId).child("added-users").hasChild(uid)) {
+          Map<String, Object> roomUpdates = new HashMap<>();
+          Map<String, Object> roomDetails = new HashMap<>();
+          roomDetails.put("uid", uid);
+          roomDetails.put("budget", "0");
+          roomUpdates.put("added-users/" + uid, roomDetails);
 
-        Map<String, Object> roomUpdates = new HashMap<>();
-        Map<String, Object> roomDetails = new HashMap<>();
-        roomDetails.put("uid", uid);
-        roomDetails.put("budget", "0");
-        roomUpdates.put("added-users/" + uid, roomDetails);
-
-        roomRef.updateChildrenAsync(roomUpdates);
+          roomRef.updateChildrenAsync(roomUpdates);
+        }
       }
 
       @Override

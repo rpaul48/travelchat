@@ -86,7 +86,7 @@ li {
     text-align: left;
 }
 
-.checkboxes input[type="checkbox"]{
+input[type="checkbox"]{
     width: 10px;
     margin: 8px;
 }

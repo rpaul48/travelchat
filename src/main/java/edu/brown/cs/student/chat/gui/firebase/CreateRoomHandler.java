@@ -17,6 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Handles creating a room.
+ */
 public class CreateRoomHandler implements Route {
 
   @Override
@@ -62,7 +65,7 @@ public class CreateRoomHandler implements Route {
   }
 
   private void updateUserAddedRooms(DatabaseReference userRef, String groupId, String groupName) {
-    userRef.addValueEventListener(new ValueEventListener() {
+    userRef.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
         if (dataSnapshot.hasChild("added-rooms")) {
@@ -94,7 +97,7 @@ public class CreateRoomHandler implements Route {
   }
 
   private void createRoomAddedRooms(DatabaseReference roomsRef, String roomId, List<String> uids) {
-    roomsRef.addValueEventListener(new ValueEventListener() {
+    roomsRef.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
         DatabaseReference roomsRef = dataSnapshot.getRef();

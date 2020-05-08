@@ -10,9 +10,9 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-import java.util.HashMap;
-import java.util.Map;
-
+/**
+ * Handles updating a user's budget in a given room.
+ */
 public class UpdateUserBudgetInRoomHandler implements Route {
 
   @Override
@@ -27,8 +27,9 @@ public class UpdateUserBudgetInRoomHandler implements Route {
     String amount = qm.value("amount");
 
     try {
-      DatabaseReference userRef = roomsRef.child(groupId).child("added-users/" + uid);
-      return updateUserBudget(userRef, type, amount);
+      DatabaseReference userBudgetRef = roomsRef.child(groupId).child(
+            "added-users/" + uid + "/budget/");
+      return updateUserBudget(userBudgetRef, type, amount);
     } catch (Exception ex) {
       System.err.println("ERROR: An exception occurred. Printing stack trace:");
       ex.printStackTrace();
@@ -36,26 +37,22 @@ public class UpdateUserBudgetInRoomHandler implements Route {
     return "0";
   }
 
-  private String updateUserBudget(DatabaseReference userRef, String type, String amount) {
+  private String updateUserBudget(DatabaseReference userBudgetRef, String type, String amount) {
     final boolean[] done = {false};
-    final String[] budget = {"0"};
-    userRef.addValueEventListener(new ValueEventListener() {
+    final String[] budget = {null};
+    userBudgetRef.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
-        Map<String, Object> budgetUpdate = new HashMap<>();
-        double currentBudget = Double.parseDouble(
-              ((String) dataSnapshot.child("budget").getValue()));
+        double currentBudget = Double.parseDouble(((String) dataSnapshot.getValue()));
 
         if ("log".equals(type)) {
           budget[0] = String.valueOf((currentBudget - Double.parseDouble(amount)));
         } else if ("add".equals(type)) {
           budget[0] = String.valueOf((currentBudget + Double.parseDouble(amount)));
         }
-        budgetUpdate.put("budget", budget[0]);
-        dataSnapshot.getRef().updateChildrenAsync(budgetUpdate);
-        done[0] = true;
-        // need to remove the event listener or else the update will trigger an infinite loop
-        userRef.removeEventListener(this);
+        dataSnapshot.getRef().setValue(budget[0], (databaseError, databaseReference) -> {
+          done[0] = true;
+        });
       }
 
       @Override

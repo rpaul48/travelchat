@@ -25,8 +25,6 @@ public class WayEdge implements IEdge<GraphNode, WayEdge> {
   /**
    * This is the constructor for the WayEdge class.
    *
-   * @param way       - a Way, which represents the way associated with this
-   *                  WayEdge
    * @param startNode - a GraphNode, which represents the start node of this edge
    * @param endNode   - The GraphNode representing the node the Way edge
    *                  terminates at
