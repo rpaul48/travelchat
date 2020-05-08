@@ -77,6 +77,7 @@ firebase.auth().onAuthStateChanged(function (user) {
         const endDateFormatted = endDate.toISOString().substr(0,10);
         document.getElementById("trip-end-date").setAttribute("value", endDateFormatted);
 
+        $('#calendar-link').attr('href', (i, value) => value += "/" + $("#trip-start-date").val() +  "/" + endDateFormatted);
 
     } else {
         // user is not logged in, redirect to login

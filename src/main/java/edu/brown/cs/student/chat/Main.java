@@ -117,7 +117,7 @@ public final class Main {
     Spark.get("/planMyDay", new PlanMyDayHandler());
 
     // Calendar management
-    Spark.get("/calendar/:roomId/:userId", new CalendarFrontHandler(), freeMarker);
+    Spark.get("/calendar/:roomId/:userId/:startDate/:endDate", new CalendarFrontHandler(), freeMarker);
     Spark.get("/getCalendarEvents", new GetCalendarEventsHandler());
     Spark.post("/postCalendarEvent", new PostCalendarEventHandler());
     Spark.post("/addRemoveUserFromEvent", new AddRemoveUserFromEventHandler());

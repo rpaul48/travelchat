@@ -3,17 +3,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Calendar properties.
     const pathSplit = window.location.pathname.split("/");
-    const userID = pathSplit[pathSplit.length - 1];
-    const chatID = pathSplit[pathSplit.length - 2];
+    const userID = pathSplit[pathSplit.length - 3];
+    const chatID = pathSplit[pathSplit.length - 4];
     const currentTimeZone = "EDT";
     const tripTimeZone = "PST";
 
-    let year = '2020';
     // convert to ISO. Create a function for this later!
-    let startDate = year + '-' + '05-02';
-    let endDate = year + '-' + '05-12';
+    let startDate = pathSplit[pathSplit.length - 2];
+    let endDate = pathSplit[pathSplit.length - 1];
     let minTime = startDate + 'T00:00';
     let maxTime = endDate + 'T23:59';
+    console.log(minTime);
 
 
     // Elements of the add event modal.
