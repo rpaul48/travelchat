@@ -68,8 +68,8 @@ public class PlanMyDayHandler implements Route {
             // ALGORITHM
             List<ItemVertex> totalPath = new LinkedList<>(); // start -> rest1 -> ... -> last attraction or rest3 -> start
             totalPath.add(startLocVertex);
-            double distWeight = Double.parseDouble(".5"); // In handler, we will get from queryParamsMap
-            double priceWeight = Double.parseDouble("2"); // In handler, we will get from queryParamsMap
+            double distWeight = Double.parseDouble(qm.value("distanceRank"));
+            double priceWeight = Double.parseDouble(qm.value("priceRank"));
             Penalizer<ItemVertex> penalizer = new PlanMyDayPenalizer(distWeight, priceWeight); // A* penalty term
             ShortestPathFinder<ItemVertex, WayEdge> aStar = new AStar<>(penalizer); // A* searcher
             // Create the linked list we'll search over
@@ -84,7 +84,15 @@ public class PlanMyDayHandler implements Route {
                 ItemVertex target = pathLinkedList.get(i);
                 aStar.findShortestPath(source, target);
                 List<ItemVertex> path = aStar.getShortestPath();
-                path.forEach(v -> removeFromGraph(v, graphMap)); // Ensures we don't revisit the same attraction
+                // To ensures we don't revisit the same attraction, we remove all paths through its vertex
+                path.forEach(v -> removeFromGraph(v, graphMap)); // Remove from attraction vertices
+                for (ItemVertex pathVertex : path) {
+                    for (ItemVertex restVertex : restaurantAsNodes) { // Remove from restaurant vertices
+                        List<WayEdge> filteredEdges = restVertex.getEdges();
+                        filteredEdges.removeIf(edge -> edge.getEnd().equals(pathVertex));
+                        restVertex.setEdges(filteredEdges);
+                    }
+                }
                 totalPath.addAll(path);
             }
 
@@ -104,7 +112,7 @@ public class PlanMyDayHandler implements Route {
             }
             return pathArray;
         } catch (Exception e) {
-            System.err.println("ERROR: An error occurred browsing flights. Printing stack trace:");
+            System.err.println("ERROR: An error occurred while planning day.");
             e.printStackTrace();
         }
         return new JSONArray();
@@ -113,6 +121,7 @@ public class PlanMyDayHandler implements Route {
     /**
      * Removes a vertex from the graph. Specifically, we remove all incoming edges to a node.
      * This is necessary after we add nodes to the user's path, as we do not want to add the same activity twice.
+     *
      * @param toRemove The vertex (i.e. activity) to remove.
      * @param graphMap The graph (represented via a Map)
      */
@@ -121,8 +130,8 @@ public class PlanMyDayHandler implements Route {
             List<WayEdge> filteredEdges = v.getEdges();
             filteredEdges.removeIf(edge -> edge.getEnd().equals(toRemove));
             v.setEdges(filteredEdges);
-            }
         }
+    }
 
     /*
      * Picks a set number of Restaurants randomly from list.
