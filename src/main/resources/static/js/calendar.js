@@ -54,6 +54,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const eventLocationEl = $("#event-location");
     const eventPriceEl = $("#event-price");
     const eventDescriptionEl = $("#event-description");
+    const joinEventButtonEl = $("#join-event");
+    const removeEventButtonEl = $("#remove-event");
+    const leaveEventButtonEl = $("#leave-event");
     let clickedEventEl;
 
     // Set up the pop-up.
@@ -70,8 +73,17 @@ document.addEventListener('DOMContentLoaded', function() {
         eventDescriptionEl.text(event.extendedProps.description);
 
 
-        // addSelfToEvent("e83e0d37-2c52-4ea7-bece-5700d76686f7");
-        // console.log(checkIfUserInEvent("e83e0d37-2c52-4ea7-bece-5700d76686f7"));
+        //
+        // if (userID === event.extendedProps.ownerID) {
+        //     removeEventButtonEl.show();
+        //     joinEventButtonEl.hide();
+        //     leaveEventButtonEl.hide();
+        //
+        // } else {
+        //
+        // }
+        addRemoveSelfToEvent(event.id, "add");
+        // console.log(checkIfUserInEvent("d9f9a9db-f610-4a67-893b-166adb4e5438"));
         // console.log(userID === event.extendedProps.ownerID);
 
     }
@@ -116,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
         defaultDate: startDate,
         eventClick: function(info) {
             clickedEventEl = info.el;
-            console.log(info.event);
+            // console.log(info.event);
             clickedEventEl.style.borderColor = 'red';
             populateEventPopup(info.event);
             eventPopup.fadeIn();
@@ -128,7 +140,6 @@ document.addEventListener('DOMContentLoaded', function() {
     $.get("/getCalendarEvents", { chatID: chatID }, function( data ) {
 
         for (const event of data) {
-            console.log(event);
             calendar.addEvent(event);
         }
 
@@ -199,43 +210,55 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function addSelfToEvent(eventID) {
+    function addRemoveSelfToEvent(eventID, addRemove) {
 
         $.post("/addRemoveUserFromEventHandler",
             {
                 chatID: chatID,
                 userID: userID,
                 eventID: eventID,
+                addRemove: addRemove
             },
 
             function() {
+                reloadEvent(eventID);
             },
-            'json');
+            'text');
+
+    }
+
+    function reloadEvent(eventID) {
+
+        $.get("/getSingleCalendarEvent", { chatID: chatID, eventID: eventID}, function( data ) {
+            calendar.getEventById(eventID).remove();
+            calendar.addEvent(data);
+            // console.log(calendar.getEventById(eventID));
+        }, 'json');
 
     }
 
 
-    function checkIfUserInEvent(eventID) {
-
-        $.post("/getUsersFromEventHandler",
-            {
-                chatID: chatID,
-                eventID: eventID
-            },
-
-            function(data) {
-                if (userID in data) {
-                    console.log("AY");
-                    return true;
-                }
-            },
-            'json');
-
-
-
-        return false;
-
-    }
+    // function checkIfUserInEvent(eventID) {
+    //
+    //     $.post("/getUsersFromEventHandler",
+    //         {
+    //             chatID: chatID,
+    //             eventID: eventID
+    //         },
+    //
+    //         function(data) {
+    //             if (userID in data) {
+    //                 console.log("AY");
+    //                 return true;
+    //             }
+    //         },
+    //         'json');
+    //
+    //
+    //
+    //     return false;
+    //
+    // }
 
 
     //

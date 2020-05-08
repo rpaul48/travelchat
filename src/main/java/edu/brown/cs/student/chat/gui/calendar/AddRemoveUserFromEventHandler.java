@@ -20,7 +20,7 @@ public class AddRemoveUserFromEventHandler implements Route {
       final FirebaseDatabase database = FirebaseDatabase.getInstance();
       DatabaseReference roomRef = database.getReference("chat/room-metadata").child(chatID);
       DatabaseReference eventRef = roomRef.child("events").child(eventID);
-      eventRef.child("participants").push().setValueAsync(userID);
+      eventRef.child("participants").child(userID).setValueAsync("true");
 
     } catch (Exception ex) {
       System.err.println("ERROR: An error occurred posting calendar event. Printing stack trace:");

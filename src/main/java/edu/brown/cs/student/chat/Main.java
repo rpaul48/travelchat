@@ -18,11 +18,7 @@ import edu.brown.cs.student.chat.gui.ChatFrontHandler;
 import edu.brown.cs.student.chat.gui.LoginFrontHandler;
 import edu.brown.cs.student.chat.gui.ManageChatsFrontHandler;
 import edu.brown.cs.student.chat.gui.PlanMyDayHandler;
-import edu.brown.cs.student.chat.gui.calendar.AddRemoveUserFromEventHandler;
-import edu.brown.cs.student.chat.gui.calendar.CalendarFrontHandler;
-import edu.brown.cs.student.chat.gui.calendar.GetCalendarEventsHandler;
-import edu.brown.cs.student.chat.gui.calendar.GetUsersOfEventHandler;
-import edu.brown.cs.student.chat.gui.calendar.PostCalendarEventHandler;
+import edu.brown.cs.student.chat.gui.calendar.*;
 import edu.brown.cs.student.chat.gui.firebase.AddUserToRoomHandler;
 import edu.brown.cs.student.chat.gui.firebase.CreateRoomHandler;
 import edu.brown.cs.student.chat.gui.firebase.GetUserBudgetInRoomHandler;
@@ -125,6 +121,7 @@ public final class Main {
     Spark.get("/getCalendarEvents", new GetCalendarEventsHandler());
     Spark.post("/postCalendarEvent", new PostCalendarEventHandler());
     Spark.post("/addRemoveUserFromEventHandler", new AddRemoveUserFromEventHandler());
+    Spark.get("/getSingleCalendarEvent", new GetSingleCalendarEventHandler());
     Spark.post("/getUsersFromEventHandler", new GetUsersOfEventHandler());
 
   }
