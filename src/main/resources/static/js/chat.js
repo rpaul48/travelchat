@@ -278,7 +278,8 @@ function planMyDay() {
             document.getElementById("plan-my-day-results").innerHTML = "";
             if (result.length === 0) {
                 document.getElementById("plan-my-day-results").innerHTML =
-                    "Could not find sufficient items; please loosen input constraints";
+                    "<p>Could not find sufficient items to generate schedule. " +
+                    "Please loosen input constraints and try again.<p>";
             } else {
                 var i;
                 for (i = 0; i < result.length; i++) {
@@ -288,17 +289,21 @@ function planMyDay() {
                         (i + 1) + ". ",
                         result[i].name,
                         "<br>",
-                        "location: ",
-                        result[i].location_string);
+                        "Latitude: ",
+                        result[i].lat,
+                        "<br>",
+                        "Longitude: ",
+                        result[i].lon,
+                        "<br>",
+                        result[i].location_string,
+                        "<br>");
                     var photo = result[i].photo_url;
                     if (photo === "") {
                         html.push(
-                            "<br>",
                             "<hr>",
                             "</p>");
                     } else {
                         html.push(
-                            "<br>",
                             "<img src=\"" + result[i].photo_url + "\" width = \"300\" height=\"200\"><br>",
                             "<hr>",
                             "</p>");
@@ -529,12 +534,12 @@ function browseFlights() {
     }
     var depart = document.getElementById("depart").value;
     if (!(/^[a-zA-Z]+$/.test(depart))) {
-        window.alert("Please enter only letters in the departure airport code.");
+        window.alert("Please enter only three letters in the departure airport code.");
         return;
     }
     var destination = document.getElementById("destination").value;
     if (!(/^[a-zA-Z]+$/.test(destination))) {
-        window.alert("Please enter only letters in the destination airport code.");
+        window.alert("Please enter only three letters in the destination airport code.");
         return;
     }
     var adults = document.getElementById("num-adults").value;
@@ -590,7 +595,7 @@ function browseFlights() {
             var result = JSON.parse(data);
             document.getElementById("flights-results").innerHTML = "";
             if (result.length === 0) {
-                document.getElementById("flights-results").innerHTML = "No results found.";
+                document.getElementById("flights-results").innerHTML = "<p>No results found.<p>";
             } else {
                 var i;
                 for (i = 0; i < result.length; i++) {
