@@ -120,8 +120,9 @@ public final class Main {
     Spark.get("/calendar/:roomId/:userId", new CalendarFrontHandler(), freeMarker);
     Spark.get("/getCalendarEvents", new GetCalendarEventsHandler());
     Spark.post("/postCalendarEvent", new PostCalendarEventHandler());
-    Spark.post("/addRemoveUserFromEventHandler", new AddRemoveUserFromEventHandler());
+    Spark.post("/addRemoveUserFromEvent", new AddRemoveUserFromEventHandler());
     Spark.get("/getSingleCalendarEvent", new GetSingleCalendarEventHandler());
+    Spark.post("/removeCalendarEvent", new RemoveCalendarEventHandler());
 
   }
 

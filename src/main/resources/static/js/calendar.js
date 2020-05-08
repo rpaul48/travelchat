@@ -61,28 +61,57 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Set up the pop-up.
     eventPopupExitButton.click(function() {
-        clickedEventEl.style.borderColor = "white";
-        eventPopup.hide();
+       closeEventPopup();
     });
 
+    function closeEventPopup() {
+        clickedEventEl.style.borderColor = "white";
+        eventPopup.hide();
+    }
+
+
+
     function populateEventPopup(event) {
+
         eventTitleEl.text(event.title);
         eventTimeEl.text(getNeatTimeDetails(event.start, event.end));
-        eventLocationEl.text(event.extendedProps.location);
-        eventPriceEl.text("$ " + event.extendedProps.price);
-        eventDescriptionEl.text(event.extendedProps.description);
+        const eventExtendedProps = event.extendedProps;
+        eventLocationEl.text(eventExtendedProps.location);
+        eventPriceEl.text("$ " + eventExtendedProps.price);
+        eventDescriptionEl.text(eventExtendedProps.description);
 
 
-        //
-        // if (userID === event.extendedProps.ownerID) {
-        //     removeEventButtonEl.show();
-        //     joinEventButtonEl.hide();
-        //     leaveEventButtonEl.hide();
-        //
-        // } else {
-        //
-        // }
-        addRemoveSelfToEvent(event.id, "add");
+
+        if (userID === eventExtendedProps.ownerID) {
+            removeEventButtonEl.show();
+            joinEventButtonEl.hide();
+            leaveEventButtonEl.hide();
+            removeEventButtonEl.click(function () {
+                removeEventFromDatabase(event.id);
+                event.remove();
+                eventPopup.hide();
+            })
+
+        } else if (eventExtendedProps.participants && userID in eventExtendedProps.participants) {
+            removeEventButtonEl.hide();
+            joinEventButtonEl.hide();
+            leaveEventButtonEl.show();
+            leaveEventButtonEl.click(function () {
+                addRemoveSelfToEvent(event.id, "remove");
+                eventPopup.hide();
+            });
+        } else {
+            removeEventButtonEl.hide();
+            joinEventButtonEl.show();
+            leaveEventButtonEl.hide();
+            joinEventButtonEl.click(function () {
+                addRemoveSelfToEvent(event.id, "add");
+                eventPopup.hide();
+            });
+
+
+        }
+        // addRemoveSelfToEvent(event.id, "remove");
         // console.log(checkIfUserInEvent("d9f9a9db-f610-4a67-893b-166adb4e5438"));
         // console.log(userID === event.extendedProps.ownerID);
 
@@ -154,16 +183,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const startTime = eventStartInputEl.val();
         const endTime = eventEndInputEl.val();
-
+        const price = eventPriceInputEl.val();
 
         // Check validity of input
         if (moment(endTime).isBefore(startTime) || moment(endTime).isSame(startTime)){
             alert("Error: End time must be greater than start time.");
+        } else if (price === "") {
+            alert("Error: Price must be an number (i.e. 20.50");
         } else {
             const title = eventTitleInputEl.val();
             const location = eventLocationInputEl.val();
             const description = eventDescriptionInputEl.val();
-            const price = eventPriceInputEl.val();
             // Add event to database
             $.post("/postCalendarEvent",
                 {
@@ -212,7 +242,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function addRemoveSelfToEvent(eventID, addRemove) {
 
-        $.post("/addRemoveUserFromEventHandler",
+        $.post("/addRemoveUserFromEvent",
             {
                 chatID: chatID,
                 userID: userID,
@@ -222,6 +252,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
             function() {
                 reloadEvent(eventID);
+                const eventPrice = calendar.getEventById(eventID).extendedProps.price;
+                if (addRemove === "add") {
+                    updateBudget(eventPrice, 'log');
+                } else if (addRemove === "remove") {
+                    updateBudget(eventPrice, 'add');
+                } else {
+                    alert("addRemove must be \"add\" or \"remove\"");
+                }
             },
             'text');
 
@@ -230,12 +268,26 @@ document.addEventListener('DOMContentLoaded', function() {
     function reloadEvent(eventID) {
 
         $.get("/getSingleCalendarEvent", { chatID: chatID, eventID: eventID}, function( data ) {
-            calendar.getEventById(eventID).remove();
+            calendar.getEventById(eventID).remove()
             calendar.addEvent(data);
-            // console.log(calendar.getEventById(eventID));
         }, 'json');
+    }
+
+    function removeEventFromDatabase(eventID) {
+        $.post("/removeCalendarEvent",
+            {
+                chatID: chatID,
+                eventID: eventID
+            },
+
+            function() {
+            },
+            'text');
 
     }
+
+
+
 
 
     //
