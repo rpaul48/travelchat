@@ -26,16 +26,16 @@ public class PlanMyDayHandlerTest {
     @Test
     public void testFunctionality() throws UnirestException {
         TripAdvisorQuerier querier = new TripAdvisorQuerier();
-        double lat = 12.91285;
-        double lon = 100.87808;
-        double boundaryOffset = Constants.LAT_LON_BOUNDARY_OFFSET_2_MILES;
+        double lat = 38.9959461;
+        double lon = -77.0276231;
+        double boundaryOffset = Constants.LAT_LON_BOUNDARY_OFFSET_10_MILES;
         // Query restaurants params
         Map<String, Object> restaurantParams = new HashMap<>();
         restaurantParams.put("latitude", lat);
         restaurantParams.put("longitude", lon);
         restaurantParams.put("limit", "30");
         restaurantParams.put("currency", "USD");
-        restaurantParams.put("distance", "5");
+        restaurantParams.put("distance", "10");
 
         // Create request object and get list of restaurants
         RestaurantRequest restaurantRequest = new RestaurantRequest(restaurantParams);
@@ -46,7 +46,7 @@ public class PlanMyDayHandlerTest {
         attractionParams.put("lunit", "mi");
         attractionParams.put("currency", "USD");
         attractionParams.put("limit", "30");
-        attractionParams.put("distance", "2");
+        attractionParams.put("distance", "10");
         attractionParams.put("lang", "en_US");
         attractionParams.put("tr_latitude", lat + boundaryOffset);
         attractionParams.put("tr_longitude", lon + boundaryOffset);

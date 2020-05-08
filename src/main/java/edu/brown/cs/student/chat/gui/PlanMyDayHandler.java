@@ -110,7 +110,7 @@ public class PlanMyDayHandler implements Route {
                 // Put JSON into array
                 pathArray.put(json);
             }
-            if (pathArray.length() < 7) { // Couldn't create a large enough path.
+            if (pathArray.length() < 5) { // Couldn't create a large enough path.
                 return new JSONArray();
             }
             return pathArray;
