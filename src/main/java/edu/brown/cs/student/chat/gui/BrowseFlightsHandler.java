@@ -33,7 +33,7 @@ public class BrowseFlightsHandler implements Route {
       QueryParamsMap qm = request.queryMap();
       if (!paramsAreValid(qm)) {
         System.err.println("ERROR: >=1 invalid argument was passed as a flight parameter.");
-        return null;
+        return new JSONArray();
       }
 
       // Session params map
