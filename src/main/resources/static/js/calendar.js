@@ -80,39 +80,39 @@ document.addEventListener('DOMContentLoaded', function() {
         eventDescriptionEl.text(eventExtendedProps.description);
 
 
+        removeEventButtonEl.click(function () {
+            removeEventFromDatabase(event.id);
+            event.remove();
+            eventPopup.hide();
+        });
+
+        joinEventButtonEl.click(function () {
+            addRemoveSelfToEvent(event.id, "add");
+            eventPopup.hide();
+        });
+
+        leaveEventButtonEl.click(function () {
+            addRemoveSelfToEvent(event.id, "remove");
+            eventPopup.hide();
+        });
+
 
         if (userID === eventExtendedProps.ownerID) {
             removeEventButtonEl.show();
             joinEventButtonEl.hide();
             leaveEventButtonEl.hide();
-            removeEventButtonEl.click(function () {
-                removeEventFromDatabase(event.id);
-                event.remove();
-                eventPopup.hide();
-            })
 
         } else if (eventExtendedProps.participants && userID in eventExtendedProps.participants) {
             removeEventButtonEl.hide();
             joinEventButtonEl.hide();
             leaveEventButtonEl.show();
-            leaveEventButtonEl.click(function () {
-                addRemoveSelfToEvent(event.id, "remove");
-                eventPopup.hide();
-            });
         } else {
             removeEventButtonEl.hide();
             joinEventButtonEl.show();
             leaveEventButtonEl.hide();
-            joinEventButtonEl.click(function () {
-                addRemoveSelfToEvent(event.id, "add");
-                eventPopup.hide();
-            });
 
 
         }
-        // addRemoveSelfToEvent(event.id, "remove");
-        // console.log(checkIfUserInEvent("d9f9a9db-f610-4a67-893b-166adb4e5438"));
-        // console.log(userID === event.extendedProps.ownerID);
 
     }
 
@@ -166,6 +166,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 info.el.style.background = "grey";
                 info.el.style.border = "grey";
             }
+
+            // displayUserBudget();
         }
     });
 
@@ -256,15 +258,17 @@ document.addEventListener('DOMContentLoaded', function() {
             },
 
             function() {
-                reloadEvent(eventID);
                 const eventPrice = calendar.getEventById(eventID).extendedProps.price;
                 if (addRemove === "add") {
                     updateBudget(eventPrice, 'log');
+                    console.log("subtracting " + eventPrice);
                 } else if (addRemove === "remove") {
                     updateBudget(eventPrice, 'add');
+                    console.log("adding " + eventPrice);
                 } else {
                     alert("addRemove must be \"add\" or \"remove\"");
                 }
+                reloadEvent(eventID);
             },
             'text');
 
@@ -289,6 +293,26 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             'text');
 
+    }
+
+    function displayUserBudget() {
+        $.post( "/getUserBudgetInRoom",
+            {
+                roomId: chatID,
+                auth: userID
+            },
+
+            function(budget) {
+                const budgetString = "<h3 id='budget'> Budget: $" + budget + "</h3>";
+
+                if ($("#budget").length === 0) {
+                    $('.fc-button-group').before(budgetString);
+                } else {
+                    $("#budget").replaceWith(budgetString);
+                }
+
+            },
+            'text');
     }
 
 
