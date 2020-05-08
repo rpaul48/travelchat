@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
     let endDate = pathSplit[pathSplit.length - 1];
     let minTime = startDate + 'T00:00';
     let maxTime = endDate + 'T23:59';
-    console.log(minTime);
 
 
     // Elements of the add event modal.
@@ -161,6 +160,12 @@ document.addEventListener('DOMContentLoaded', function() {
             clickedEventEl.style.borderColor = 'red';
             populateEventPopup(info.event);
             eventPopup.fadeIn();
+        },
+        eventRender: function(info) {
+            if (!isUserInEvent(info.event)) {
+                info.el.style.background = "grey";
+                info.el.style.border = "grey";
+            }
         }
     });
 
@@ -287,6 +292,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
+    function isUserInEvent(eventObject) {
+
+        const props = eventObject.extendedProps;
+        if (userID === props.ownerID) {
+            return true;
+        }
+
+        return !!(props.participants && userID in props.participants);
+
+
+    }
 
 
 
