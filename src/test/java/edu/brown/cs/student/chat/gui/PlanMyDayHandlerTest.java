@@ -35,7 +35,7 @@ public class PlanMyDayHandlerTest {
         restaurantParams.put("longitude", lon);
         restaurantParams.put("limit", "30");
         restaurantParams.put("currency", "USD");
-        restaurantParams.put("distance", "2");
+        restaurantParams.put("distance", "5");
 
         // Create request object and get list of restaurants
         RestaurantRequest restaurantRequest = new RestaurantRequest(restaurantParams);
@@ -46,7 +46,7 @@ public class PlanMyDayHandlerTest {
         attractionParams.put("lunit", "mi");
         attractionParams.put("currency", "USD");
         attractionParams.put("limit", "30");
-        attractionParams.put("distance", "5");
+        attractionParams.put("distance", "2");
         attractionParams.put("lang", "en_US");
         attractionParams.put("tr_latitude", lat + boundaryOffset);
         attractionParams.put("tr_longitude", lon + boundaryOffset);
@@ -84,8 +84,8 @@ public class PlanMyDayHandlerTest {
         // ALGORITHM
         List<ItemVertex> totalPath = new LinkedList<>(); // start -> rest1 -> ... -> last attraction or rest3 -> start
         totalPath.add(startLocVertex);
-        double distWeight = Double.parseDouble(".5"); // In handler, we will get from queryParamsMap
-        double priceWeight = Double.parseDouble("2"); // In handler, we will get from queryParamsMap
+        double distWeight = Double.parseDouble("1.0"); // In handler, we will get from queryParamsMap
+        double priceWeight = Double.parseDouble("1.0"); // In handler, we will get from queryParamsMap
         Penalizer<ItemVertex> penalizer = new PlanMyDayPenalizer(distWeight, priceWeight); // A* penalty term
         ShortestPathFinder<ItemVertex, WayEdge> aStar = new AStar<>(penalizer); // A* searcher
         // Create the linked list we'll search over
@@ -101,9 +101,16 @@ public class PlanMyDayHandlerTest {
             aStar.findShortestPath(source, target);
             List<ItemVertex> path = aStar.getShortestPath();
             path.forEach(v -> removeFromGraph(v, graphMap)); // Ensures we don't revisit the same attraction
+            for (ItemVertex pathVertex : path) {
+                for (ItemVertex restVertex : restaurantAsNodes) { // Remove from restaurant vertices
+                    List<WayEdge> filteredEdges = restVertex.getEdges();
+                    filteredEdges.removeIf(edge -> edge.getEnd().equals(pathVertex));
+                    restVertex.setEdges(filteredEdges);
+                }
+            }
             totalPath.addAll(path);
         }
-
+        if (totalPath.size() < 7) totalPath = new LinkedList<>();
         totalPath.forEach(v -> System.out.println("--------------------\n" + v + "\n--------------------"));
         // The list of ItemVertices (restaurants and attractions) that we give to the user.
     }

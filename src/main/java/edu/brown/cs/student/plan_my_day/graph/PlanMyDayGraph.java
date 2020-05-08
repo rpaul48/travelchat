@@ -68,7 +68,6 @@ public class PlanMyDayGraph {
             // Place in graph
             map.put(attractionNode1, attractionNode1.getEdges());
         }
-
         return map;
     }
 
