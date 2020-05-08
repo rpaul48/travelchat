@@ -23,7 +23,7 @@ function createChat() {
     // get all emails of desired invitees
     var emails = document.getElementById("add-user-field").value;
     var regex = /^([\w+-.%]+@[\w-.]+\.[A-Za-z]{2,4},?)+$/;
-    if (!regex.test(emails)) {
+    if (emails.length !== 0 && !regex.test(emails)) {
         alert("Invitee emails are improperly formatted. Please enter emails only separated by commas.");
         document.getElementById("add-user-field").focus();
     } else {
