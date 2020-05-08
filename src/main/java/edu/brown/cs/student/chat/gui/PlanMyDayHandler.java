@@ -84,11 +84,12 @@ public class PlanMyDayHandler implements Route {
                 ItemVertex target = pathLinkedList.get(i);
                 aStar.findShortestPath(source, target);
                 List<ItemVertex> path = aStar.getShortestPath();
+                path.forEach(v -> removeFromGraph(v, graphMap)); // Ensures we don't revisit the same attraction
                 totalPath.addAll(path);
             }
 
             JSONArray pathArray = new JSONArray();
-            // First and last element are always start -- ignore.
+            // First and last element are always startingLocation -- ignore.
             for (ItemVertex itemVertex : totalPath.subList(1, totalPath.size() - 1)) {
                 // Get item
                 Item item = itemVertex.getItem();
@@ -109,10 +110,24 @@ public class PlanMyDayHandler implements Route {
         return new JSONArray();
     }
 
+    /**
+     * Removes a vertex from the graph. Specifically, we remove all incoming edges to a node.
+     * This is necessary after we add nodes to the user's path, as we do not want to add the same activity twice.
+     * @param toRemove The vertex (i.e. activity) to remove.
+     * @param graphMap The graph (represented via a Map)
+     */
+    private void removeFromGraph(ItemVertex toRemove, Map<ItemVertex, List<WayEdge>> graphMap) {
+        for (ItemVertex v : graphMap.keySet()) {
+            List<WayEdge> filteredEdges = v.getEdges();
+            filteredEdges.removeIf(edge -> edge.getEnd().equals(toRemove));
+            v.setEdges(filteredEdges);
+            }
+        }
+
     /*
      * Picks a set number of Restaurants randomly from list.
      */
-    public List<Restaurant> getRandomRestaurants(List<Restaurant> list, int totalItems) {
+    private List<Restaurant> getRandomRestaurants(List<Restaurant> list, int totalItems) {
         Random rand = new Random();
 
         List<Restaurant> newList = new ArrayList<>();
@@ -134,7 +149,7 @@ public class PlanMyDayHandler implements Route {
      * @return list of all possible Attractions
      * @throws UnirestException - thrown with query error
      */
-    public List<Attraction> queryActivities(QueryParamsMap queryParamsMap) throws UnirestException {
+    private List<Attraction> queryActivities(QueryParamsMap queryParamsMap) throws UnirestException {
         TripAdvisorQuerier querier = new TripAdvisorQuerier();
         String errorMsg = "";
         Map<String, Attraction> attractionsMap = new HashMap<>();
@@ -241,7 +256,7 @@ public class PlanMyDayHandler implements Route {
      * @return list of all possible Restaurants
      * @throws UnirestException - thrown with query error
      */
-    public List<Restaurant> queryRestaurants(QueryParamsMap queryParamsMap) throws UnirestException {
+    private List<Restaurant> queryRestaurants(QueryParamsMap queryParamsMap) throws UnirestException {
         TripAdvisorQuerier querier = new TripAdvisorQuerier();
 
         // max miles from location; either 1, 2, 5, or 10
@@ -306,7 +321,7 @@ public class PlanMyDayHandler implements Route {
      * @param params parameters
      * @return "" if all params are valid, error messages otherwise
      */
-    public String paramsAreValidAttractions(Map<String, Object> params) {
+    private String paramsAreValidAttractions(Map<String, Object> params) {
         // Latitude and longitude are required parameters. Query cannot be run without
         // them.
         if (!params.containsKey("tr_latitude") || !params.containsKey("tr_longitude")
@@ -334,7 +349,7 @@ public class PlanMyDayHandler implements Route {
      * @param params parameters
      * @return "" if all params are valid, error messages otherwise
      */
-    public String paramsAreValidRestaurants(Map<String, Object> params) {
+    private String paramsAreValidRestaurants(Map<String, Object> params) {
         // Latitude and longitude are required parameters. Query cannot be run without
         // them.
         if (!params.containsKey("latitude") || !params.containsKey("longitude")) {

@@ -105,11 +105,86 @@ public class PlanMyDayHandlerTest {
       ItemVertex target = pathLinkedList.get(i);
       aStar.findShortestPath(source, target);
       List<ItemVertex> path = aStar.getShortestPath();
+      path.forEach(v -> removeFromGraph(v, graphMap)); // Ensures we don't revisit the same attraction
       totalPath.addAll(path);
     }
 
     totalPath.forEach(v -> System.out.println("--------------------\n" + v + "\n--------------------"));
     // The list of ItemVertices (restaurants and attractions) that we give to the user.
+  }
+
+  @Test
+  public void testRemoveFromGraph() {
+    Set<ItemVertex> vertexSet = new HashSet<>();
+
+    Restaurant restaurant = new Restaurant();
+    restaurant.setName("RESTAURANT");
+    ItemVertex v1 = new ItemVertex(restaurant);
+
+    Attraction a1 = new Attraction();
+    a1.setName("a1");
+    ItemVertex v2 = new ItemVertex(a1);
+
+    Attraction a2 = new Attraction();
+    a2.setName("a2");
+    ItemVertex v3 = new ItemVertex(a2);
+
+    Attraction a3 = new Attraction();
+    a3.setName("a3");
+    ItemVertex v4 = new ItemVertex(a3);
+
+    Attraction a4 = new Attraction();
+    a4.setName("a4");
+    ItemVertex v5 = new ItemVertex(a4);
+
+    vertexSet.add(v1);
+    vertexSet.add(v2);
+    vertexSet.add(v3);
+    vertexSet.add(v4);
+    vertexSet.add(v5);
+
+    // These should be deleted
+    WayEdge v2v1 = new WayEdge(v2, v1);
+    WayEdge v3v1 = new WayEdge(v1, v1);
+    WayEdge v4v1 = new WayEdge(v4, v1);
+    // These should remain
+    WayEdge v1v2 = new WayEdge(v1, v2);
+    WayEdge v2v3 = new WayEdge(v1, v3);
+    WayEdge v4v2 = new WayEdge(v4, v2);
+    WayEdge v5v3 = new WayEdge(v5, v3);
+
+    // Add to edge sets
+    v2.addEdge(v2v1);
+    v3.addEdge(v3v1);
+    v4.addEdge(v4v1);
+    v1.addEdge(v1v2);
+    v2.addEdge(v2v3);
+    v4.addEdge(v4v2);
+    v5.addEdge(v5v3);
+
+    // Remove edges
+    for (ItemVertex v : vertexSet) {
+      List<WayEdge> edges = v.getEdges();
+      edges.removeIf(edge -> edge.getEnd().equals(v1));
+      v.setEdges(edges);
+    }
+    // Check total edge set, making sure none lead to v1 (i.e. none have end Item = Restaurant)
+    vertexSet.forEach(v -> v.getEdges()
+             .forEach(e -> System.out.println(e.getEnd().getItem().getClass())));
+  }
+
+  /**
+   * Removes a vertex from the graph. Specifically, we remove all incoming edges to a node.
+   * This is necessary after we add nodes to the user's path, as we do not want to add the same activity twice.
+   * @param toRemove The vertex (i.e. activity) to remove.
+   * @param graphMap The graph (represented via a Map)
+   */
+  private void removeFromGraph(ItemVertex toRemove, Map<ItemVertex, List<WayEdge>> graphMap) {
+    for (ItemVertex v : graphMap.keySet()) {
+      List<WayEdge> filteredEdges = v.getEdges();
+      filteredEdges.removeIf(edge -> edge.getEnd().equals(toRemove));
+      v.setEdges(filteredEdges);
+    }
   }
 
   /*
