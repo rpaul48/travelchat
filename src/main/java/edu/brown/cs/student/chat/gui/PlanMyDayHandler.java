@@ -136,8 +136,11 @@ public class PlanMyDayHandler implements Route {
         }
     }
 
-    /*
-     * Picks a set number of Restaurants randomly from list.
+    /**
+     * Picks k restaurants from a set of n restaurants.
+     * @param list
+     * @param totalItems
+     * @return
      */
     private List<Restaurant> getRandomRestaurants(List<Restaurant> list, int totalItems) {
         Random rand = new Random();
