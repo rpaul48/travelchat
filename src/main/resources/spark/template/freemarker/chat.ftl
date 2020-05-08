@@ -54,11 +54,18 @@
 
     <div id="plan-my-day-div" class="big-popup-div">
         <h2>Plan My Day</h2>
-        <div class="form-container">
+        <div class="form-container" id="plan-my-day-form-container">
             <form id="plan-my-day-form">
                 <label for="date-to-plan">Date: <input type="date" class="date-class" min="2020-01-01" id="date-to-plan"></label>
                 <br>
-                <label for="max-distance">Max distance willing to travel <input type="number" min="1" value="5" id="max-distance"> </label>
+                <label for="max-distance">Max distance willing to travel</label>
+                <select aria-label="Max distance willing to travel" id="max-distance">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">5</option>
+                    <option value="4" selected="selected">10</option>
+                </select>
+
                 <label for="pmd-address"> miles from <input type="text" placeholder="input address"
                                                              class="address" id="pmd-address"></label>
                 <label><input type="checkbox" id="pmd-cur-loc"/>Use current location</label>
@@ -110,7 +117,9 @@
                 <button onclick="planMyDay()" type="button" class="small-green-button" id="plan-my-day-button">Plan My Day</button>
             </form>
         </div>
-        <button onclick="closePopup('plan-my-day-div')" class="small-black-button">Back</button>
+        <div id="plan-my-day-results"></div>
+        <button onclick="closePopup('plan-my-day-div')" id="pmd-button" class="small-black-button">Close</button>
+        <button onclick="closeSchedule()" id="close-schedule-button" class="small-black-button">Back to form</button>
     </div>
 
     <div id="restaurants-div" class="big-popup-div">

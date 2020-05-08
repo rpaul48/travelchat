@@ -72,6 +72,13 @@ firebase.auth().onAuthStateChanged(function (user) {
             dates[i].setAttribute("min", today);
         }
 
+        let endDate = new Date(today);
+        endDate.setDate(endDate.getDate() + 7);
+        const endDateFormatted = endDate.toISOString().substr(0,10);
+        document.getElementById("trip-end-date").setAttribute("value", endDateFormatted);
+
+        $('#calendar-link').attr('href', (i, value) => value += "/" + $("#trip-start-date").val() +  "/" + endDateFormatted);
+
     } else {
         // user is not logged in, redirect to login
         window.location.href = "/login";
@@ -177,13 +184,21 @@ function updateBudget(logOrAdd) {
 }
 
 // if the user selects to use the curr location, remove text from address & lock the field
-$("#pmd-cur-loc").change(function() {
+$("#pmd-cur-loc").change(function () {
     if ($(this).is(':checked')) {
         $("#pmd-address").val("").prop("disabled", true);
     } else {
         $("#pmd-address").prop("disabled", false);
     }
 });
+
+// closes the schedule view
+function closeSchedule() {
+    document.getElementById("plan-my-day-results").style.display = "none";
+    document.getElementById("close-schedule-button").style.display = "none";
+    document.getElementById("pmd-button").style.display = "block";
+    document.getElementById("plan-my-day-form-container").style.display = "block";
+}
 
 // returns a schedule for the day
 function planMyDay() {
@@ -214,12 +229,8 @@ function planMyDay() {
         return;
     }
 
-    var maxDist = document.getElementById("max-distance").value;
-    if (maxDist <= 0) {
-        window.alert("Please enter a positive maximum distance.");
-        return;
-    }
-
+    var maxDist_sel = document.getElementById("max-distance");
+    var maxDist = maxDist_sel.options[maxDist_sel.selectedIndex].text;
     var distanceRank = document.getElementById("distance-rank").value;
     var priceRank = document.getElementById("price-rank").value;
 
@@ -244,6 +255,9 @@ function planMyDay() {
         return;
     }
 
+    document.getElementById("plan-my-day-form-container").style.display = "none";
+    document.getElementById("pmd-button").style.display = "none";
+
     // returns an ordered schedule of events which satisfy the query parameters
     $.ajax({
         url: "/planMyDay",
@@ -259,13 +273,53 @@ function planMyDay() {
         },
         async: false,
         success: function (data) {
-            console.log(data);
+            var result = JSON.parse(data);
+            console.log(result);
+
+            document.getElementById("plan-my-day-results").innerHTML = "";
+            if (result.length === 0) {
+                document.getElementById("plan-my-day-results").innerHTML =
+                    "<p>Could not find sufficient items to generate schedule. " +
+                    "Please loosen input constraints and try again.<p>";
+            } else {
+                var i;
+                for (i = 0; i < result.length; i++) {
+                    var html = [];
+                    html.push(
+                        "<p>",
+                        (i + 1) + ". ",
+                        result[i].name,
+                        "<br>",
+                        "Latitude: ",
+                        result[i].lat,
+                        "<br>",
+                        "Longitude: ",
+                        result[i].lon,
+                        "<br>",
+                        result[i].location_string,
+                        "<br>");
+                    var photo = result[i].photo_url;
+                    if (photo === "") {
+                        html.push(
+                            "<hr>",
+                            "</p>");
+                    } else {
+                        html.push(
+                            "<img src=\"" + result[i].photo_url + "\" width = \"300\" height=\"200\"><br>",
+                            "<hr>",
+                            "</p>");
+                    }
+                    document.getElementById("plan-my-day-results").innerHTML += html.join("");
+                }
+            }
+            document.getElementById("plan-my-day-results").style.display = "block";
+            document.getElementById("close-schedule-button").style.display = "block";
         }
     });
 }
 
 // if the user selects to use the curr location, remove text from address & lock the field
-$("#restaurant-cur-loc").change(function() {
+$("#restaurant-cur-loc").change(function () {
     if ($(this).is(':checked')) {
         $("#restaurant-address").val("").prop("disabled", true);
     } else {
@@ -335,7 +389,7 @@ function browseRestaurants() {
 }
 
 // if the user selects to use the curr location, remove text from address & lock the field
-$("#activities-cur-loc").change(function() {
+$("#activities-cur-loc").change(function () {
     if ($(this).is(':checked')) {
         $("#activities-address").val("").prop("disabled", true);
     } else {
@@ -396,7 +450,7 @@ function browseActivities() {
 }
 
 // if the user selects to use the curr location, remove text from address & lock the field
-$("#lodging-cur-loc").change(function() {
+$("#lodging-cur-loc").change(function () {
     if ($(this).is(':checked')) {
         $("#lodging-address").val("").prop("disabled", true);
     } else {
@@ -481,12 +535,12 @@ function browseFlights() {
     }
     var depart = document.getElementById("depart").value;
     if (!(/^[a-zA-Z]+$/.test(depart))) {
-        window.alert("Please enter only letters in the departure airport code.");
+        window.alert("Please enter only three letters in the departure airport code.");
         return;
     }
     var destination = document.getElementById("destination").value;
     if (!(/^[a-zA-Z]+$/.test(destination))) {
-        window.alert("Please enter only letters in the destination airport code.");
+        window.alert("Please enter only three letters in the destination airport code.");
         return;
     }
     var adults = document.getElementById("num-adults").value;
@@ -542,7 +596,7 @@ function browseFlights() {
             var result = JSON.parse(data);
             document.getElementById("flights-results").innerHTML = "";
             if (result.length === 0) {
-                document.getElementById("flights-results").innerHTML = "No results found.";
+                document.getElementById("flights-results").innerHTML = "<p>No results found.<p>";
             } else {
                 var i;
                 for (i = 0; i < result.length; i++) {
@@ -560,7 +614,7 @@ function browseFlights() {
                         result[i].booking_url,
                         ">here</a>",
                         "<hr>",
-                        "</p>",
+                        "</p>"
                     );
                     document.getElementById("flights-results").innerHTML += html.join("");
                 }
@@ -592,7 +646,7 @@ function getLatAndLongFromAddress(address) {
 
 // converts UTC date to local date
 function convertUTCDateToLocalDate(date) {
-    var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);
+    var newDate = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
 
     var offset = date.getTimezoneOffset() / 60;
     var hours = date.getHours();

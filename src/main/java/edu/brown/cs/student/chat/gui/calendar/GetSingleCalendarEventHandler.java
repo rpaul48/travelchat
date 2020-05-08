@@ -13,31 +13,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GetUsersOfEventHandler implements Route {
+public class GetSingleCalendarEventHandler implements Route {
 
   @Override
-  public Object handle(Request request, Response response) {
-
-
+  public JSONObject handle(Request request, Response response) {
     QueryParamsMap qm = request.queryMap();
     String chatID = qm.value("chatID");
     String eventID = qm.value("eventID");
 
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference roomRef = database.getReference("chat/room-metadata").child(chatID);
-    DatabaseReference participantsRef = roomRef.child("events").child(eventID).child("participants");
+    DatabaseReference eventRef = roomRef.child("events").child(eventID);
+
 
     final boolean[] done = {false};
-    Map<String, String> jsonMap= new HashMap<>();
+    final Map<String, Object>[] event = new Map[]{new HashMap<>()};
 
-    participantsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+    eventRef.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
         if (dataSnapshot.hasChildren()) {
-          Map<String, String> participants = (Map<String, String>) dataSnapshot.getValue();
-          for (String key : participants.keySet()) {
-            jsonMap.put(participants.get(key), "true");
-          }
+          event[0] = (Map<String, Object>) dataSnapshot.getValue();
         }
         done[0] = true;
       }
@@ -58,8 +54,6 @@ public class GetUsersOfEventHandler implements Route {
       Thread.currentThread().interrupt();
     }
 
-
-    return new JSONObject(jsonMap);
+    return new JSONObject(event[0]);
   }
-
 }
