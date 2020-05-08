@@ -6,19 +6,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import edu.brown.cs.student.api.tripadvisor.objects.Item;
+import edu.brown.cs.student.plan_my_day.distance.Penalizer;
+import edu.brown.cs.student.plan_my_day.distance.PlanMyDayPenalizer;
+import edu.brown.cs.student.plan_my_day.graph.ItemVertex;
+import edu.brown.cs.student.plan_my_day.graph.WayEdge;
+import edu.brown.cs.student.plan_my_day.shortest_path_finder.AStar;
+import edu.brown.cs.student.plan_my_day.shortest_path_finder.ShortestPathFinder;
 import org.json.JSONObject;
 
 import com.google.common.collect.ImmutableMap;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
-import edu.brown.cs.student.api.graph.GraphNode;
-import edu.brown.cs.student.api.graph.PlanMyDayGraph;
-import edu.brown.cs.student.api.graph.WayEdge;
+import edu.brown.cs.student.plan_my_day.graph.PlanMyDayGraph;
 import edu.brown.cs.student.api.tripadvisor.objects.Attraction;
 import edu.brown.cs.student.api.tripadvisor.objects.Restaurant;
 import edu.brown.cs.student.api.tripadvisor.querier.TripAdvisorQuerier;
 import edu.brown.cs.student.api.tripadvisor.request.AttractionRequest;
 import edu.brown.cs.student.api.tripadvisor.request.RestaurantRequest;
+import org.w3c.dom.Attr;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
@@ -49,9 +55,39 @@ public class PlanMyDayHandler implements Route {
 
     // Create Graph
     PlanMyDayGraph graph = new PlanMyDayGraph(randomRestaurants, allAttractions);
-    Map<GraphNode, List<WayEdge>> graphMap = graph.buildGraph();
+    Map<ItemVertex, List<WayEdge>> graphMap = graph.buildGraph();
+    List<ItemVertex> restaurantAsNodes = graph.getRestaurantsAsNodes();
+    // Create starting location node and create edges: starting_loc -> restaurant1 and restaurant3 -> starting_loc
+    double lat = 0; // Placeholder -- get from paramMap
+    double lon = 0; // Placeholder -- get from paramMap
+    Attraction startLoc = new Attraction(); // Dummy node used for
+    startLoc.setName("STARTING_LOCATION");
+    startLoc.setLatitude(0); // Placeholder -- get from queryParamsMap
+    startLoc.setLongitude(0); // Placeholder -- get from queryParamsMap
+    ItemVertex startLocVertex = new ItemVertex(startLoc);
+    WayEdge firstRestaurantEdge = new WayEdge(startLocVertex, restaurantAsNodes.get(0));
+    WayEdge lastRestauratEdge = new WayEdge(restaurantAsNodes.get(restaurantAsNodes.size() - 1), startLocVertex);
+    // Adding edge list of starting location to node/graph
+    startLocVertex.getEdges().add(firstRestaurantEdge);
+    graphMap.put(startLocVertex, startLocVertex.getEdges());
+    // Adding edge list of ending restaurant to starting location to node/graph
+    restaurantAsNodes.get(restaurantAsNodes.size() - 1).getEdges().add(lastRestauratEdge);
 
+    List<ItemVertex> totalPath = new ArrayList<>();
+    double distWeight = Double.parseDouble(qm.value("distanceRank"));
+    double priceWeight = Double.parseDouble(qm.value("priceRank"));
+    Penalizer<ItemVertex> penalizer = new PlanMyDayPenalizer(distWeight, priceWeight);
+    ShortestPathFinder<ItemVertex, WayEdge> aStar = new AStar<>(penalizer);
     /** (TODO) PlanMyDay Algorithm using graphMap here **/
+    for (int i = 1; i < restaurantAsNodes.size(); i++) {
+      ItemVertex source = restaurantAsNodes.get(i - 1);
+      ItemVertex target = restaurantAsNodes.get(i);
+      aStar.findShortestPath(source, target);
+      List<ItemVertex> path = aStar.getShortestPath();
+      totalPath.addAll(path);
+    }
+
+
     // Output of PlanMyDay Algorithm
     List<Restaurant> restaurantsInOrder = new ArrayList<>(); // CHANGE
     List<Attraction> attrsInOrder = new ArrayList<>(); // CHANGE

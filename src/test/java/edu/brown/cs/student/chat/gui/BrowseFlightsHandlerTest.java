@@ -24,31 +24,31 @@ public class BrowseFlightsHandlerTest {
      */
     @Test
     public void testHandling() throws UnirestException {
-//        TripAdvisorQuerier querier = new TripAdvisorQuerier();
-//        // Session params map
-//        Map<String, Object> sessionParams = new HashMap<>();
-//        sessionParams.put("d1", "JFK");
-//        sessionParams.put("o1", "LAX");
-//        sessionParams.put("dd1", "2020-06-08");
-//        sessionParams.put("currency", "USD");
-//        sessionParams.put("ta", "1");
-//        sessionParams.put("c", "0");
-//        sessionParams.put("null", null);
-//
-//        // Remove any null (i.e. absent) parameters
-//        sessionParams.values().removeIf(Objects::isNull);
-//
-//        // Poll params map
-//        Map<String, Object> pollParams = new HashMap<>();
-//        pollParams.put("currency", "USD");
-//        pollParams.put("so", "Sorted by Best Value");
-//
-//        // Create request object
-//        FlightRequest flightRequest = new FlightRequest(sessionParams, pollParams);
-//
-//        // Get flights using querier
-//        JSONArray flights = querier.getFlights(flightRequest);
-//        assertFalse(flights.toList().isEmpty());
+        TripAdvisorQuerier querier = new TripAdvisorQuerier();
+        // Session params map
+        Map<String, Object> sessionParams = new HashMap<>();
+        sessionParams.put("d1", "JFK");
+        sessionParams.put("o1", "LAX");
+        sessionParams.put("dd1", "2020-06-08");
+        sessionParams.put("currency", "USD");
+        sessionParams.put("ta", "1");
+        sessionParams.put("c", "0");
+        sessionParams.put("null", null);
+
+        // Remove any null (i.e. absent) parameters
+        sessionParams.values().removeIf(Objects::isNull);
+
+        // Poll params map
+        Map<String, Object> pollParams = new HashMap<>();
+        pollParams.put("currency", "USD");
+        pollParams.put("so", "Sorted by Best Value");
+
+        // Create request object
+        FlightRequest flightRequest = new FlightRequest(sessionParams, pollParams);
+
+        // Get flights using querier
+        JSONArray flights = querier.getFlights(flightRequest);
+        assertFalse(flights.toList().isEmpty());
     }
 
     /**
