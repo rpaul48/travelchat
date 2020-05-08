@@ -137,10 +137,15 @@ input[type="date"]{
 }
 
 #plan-my-day-results {
+    border-radius: 10px;
     outline: #5e5e5e solid 1px;
     margin: 10px;
     height: 80%;
     overflow-y: scroll;
+}
+
+.results-container p, #plan-my-day-results p {
+    margin: 10px;
 }
 
 #loading-div p {

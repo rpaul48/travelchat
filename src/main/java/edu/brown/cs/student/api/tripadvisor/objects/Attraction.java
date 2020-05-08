@@ -133,7 +133,7 @@ public class Attraction implements Item {
       return "";
     }
 
-    sb.append("<br>Name: ").append(name).append("<br>");
+    sb.append("<p>Name: ").append(name).append("<br>");
 
     if (!locationString.equals("")) {
       sb.append("Location: ").append(locationString).append("<br>");
@@ -169,7 +169,7 @@ public class Attraction implements Item {
       sb.append("<br><img src=\"" + photoUrl + "\" width = \"300\" height=\"200\">");
     }
 
-    sb.append("<br><br>");
+    sb.append("<br><p>");
 
     return sb.toString();
   }
