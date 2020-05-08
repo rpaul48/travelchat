@@ -177,13 +177,21 @@ function updateBudget(logOrAdd) {
 }
 
 // if the user selects to use the curr location, remove text from address & lock the field
-$("#pmd-cur-loc").change(function() {
+$("#pmd-cur-loc").change(function () {
     if ($(this).is(':checked')) {
         $("#pmd-address").val("").prop("disabled", true);
     } else {
         $("#pmd-address").prop("disabled", false);
     }
 });
+
+// closes the schedule view
+function closeSchedule() {
+    document.getElementById("plan-my-day-results").style.display = "none";
+    document.getElementById("close-schedule-button").style.display = "none";
+    document.getElementById("pmd-button").style.display = "block";
+    document.getElementById("plan-my-day-form-container").style.display = "block";
+}
 
 // returns a schedule for the day
 function planMyDay() {
@@ -214,12 +222,8 @@ function planMyDay() {
         return;
     }
 
-    var maxDist = document.getElementById("max-distance").value;
-    if (maxDist <= 0) {
-        window.alert("Please enter a positive maximum distance.");
-        return;
-    }
-
+    var maxDist_sel = document.getElementById("max-distance");
+    var maxDist = maxDist_sel.options[maxDist_sel.selectedIndex].text;
     var distanceRank = document.getElementById("distance-rank").value;
     var priceRank = document.getElementById("price-rank").value;
 
@@ -244,6 +248,9 @@ function planMyDay() {
         return;
     }
 
+    document.getElementById("plan-my-day-form-container").style.display = "none";
+    document.getElementById("pmd-button").style.display = "none";
+
     // returns an ordered schedule of events which satisfy the query parameters
     $.ajax({
         url: "/planMyDay",
@@ -259,13 +266,48 @@ function planMyDay() {
         },
         async: false,
         success: function (data) {
-            console.log(data);
+            var result = JSON.parse(data);
+            console.log(result);
+
+            document.getElementById("plan-my-day-results").innerHTML = "";
+            if (result.length === 0) {
+                document.getElementById("plan-my-day-results").innerHTML =
+                    "Could not find sufficient items; please loosen input constraints";
+            } else {
+                var i;
+                for (i = 0; i < result.length; i++) {
+                    var html = [];
+                    html.push(
+                        "<p>",
+                        (i + 1) + ". ",
+                        result[i].name,
+                        "<br>",
+                        "location: ",
+                        result[i].location_string);
+                    var photo = result[i].photo_url;
+                    if (photo === "") {
+                        html.push(
+                            "<br>",
+                            "<hr>",
+                            "</p>");
+                    } else {
+                        html.push(
+                            "<br>",
+                            "<img src=\"" + result[i].photo_url + "\" width = \"300\" height=\"200\"><br>",
+                            "<hr>",
+                            "</p>");
+                    }
+                    document.getElementById("plan-my-day-results").innerHTML += html.join("");
+                }
+            }
+            document.getElementById("plan-my-day-results").style.display = "block";
+            document.getElementById("close-schedule-button").style.display = "block";
         }
     });
 }
 
 // if the user selects to use the curr location, remove text from address & lock the field
-$("#restaurant-cur-loc").change(function() {
+$("#restaurant-cur-loc").change(function () {
     if ($(this).is(':checked')) {
         $("#restaurant-address").val("").prop("disabled", true);
     } else {
@@ -335,7 +377,7 @@ function browseRestaurants() {
 }
 
 // if the user selects to use the curr location, remove text from address & lock the field
-$("#activities-cur-loc").change(function() {
+$("#activities-cur-loc").change(function () {
     if ($(this).is(':checked')) {
         $("#activities-address").val("").prop("disabled", true);
     } else {
@@ -396,7 +438,7 @@ function browseActivities() {
 }
 
 // if the user selects to use the curr location, remove text from address & lock the field
-$("#lodging-cur-loc").change(function() {
+$("#lodging-cur-loc").change(function () {
     if ($(this).is(':checked')) {
         $("#lodging-address").val("").prop("disabled", true);
     } else {
@@ -560,7 +602,7 @@ function browseFlights() {
                         result[i].booking_url,
                         ">here</a>",
                         "<hr>",
-                        "</p>",
+                        "</p>"
                     );
                     document.getElementById("flights-results").innerHTML += html.join("");
                 }
@@ -592,7 +634,7 @@ function getLatAndLongFromAddress(address) {
 
 // converts UTC date to local date
 function convertUTCDateToLocalDate(date) {
-    var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);
+    var newDate = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
 
     var offset = date.getTimezoneOffset() / 60;
     var hours = date.getHours();

@@ -132,8 +132,19 @@ input[type="date"]{
     margin-top: 40px;
 }
 
-#plan-my-day-button {
-    margin-top: 30px;
+#plan-my-day-results, #close-schedule-button {
+    display: none;
+}
+
+#plan-my-day-results {
+    outline: #5e5e5e solid 1px;
+    margin: 10px;
+    height: 80%;
+    overflow-y: scroll;
+}
+
+#loading-div p {
+    text-align: center;
 }
 
 

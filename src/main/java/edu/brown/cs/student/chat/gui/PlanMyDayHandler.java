@@ -144,7 +144,7 @@ public class PlanMyDayHandler implements Route {
         double lon = Double.parseDouble(locationStrings[1]);
 
         double boundaryOffset = 0.0;
-        int maxDist = Integer.parseInt(queryParamsMap.value("miles"));
+        int maxDist = Integer.parseInt(queryParamsMap.value("maxDist"));
         if (maxDist == 1) {
             boundaryOffset = Constants.LAT_LON_BOUNDARY_OFFSET_1_MILES;
         } else if (maxDist == 2) {
@@ -245,7 +245,7 @@ public class PlanMyDayHandler implements Route {
         TripAdvisorQuerier querier = new TripAdvisorQuerier();
 
         // max miles from location; either 1, 2, 5, or 10
-        String miles = queryParamsMap.value("miles");
+        String miles = queryParamsMap.value("maxDist");
 
         // of the form "[lat] [lon]"
         String[] locationStrings = queryParamsMap.value("location").split(" ");
@@ -258,7 +258,7 @@ public class PlanMyDayHandler implements Route {
          * italian, indian, japanese, mexican, seafood, thai
          *
          */
-        String[] cuisinesArr = queryParamsMap.value("cuisines").toLowerCase().split(",");
+        String[] cuisinesArr = queryParamsMap.value("cuisineTypes").toLowerCase().split(",");
         String cuisines = "";
         if (cuisinesArr.length != 0) {
             for (int i = 0; i < cuisinesArr.length; i++) {
