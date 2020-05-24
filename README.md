@@ -1,121 +1,35 @@
-# cs0320 Term Project 2020
+# TravelChat: CSCI 0320 Term Project 2020
+https://travelchatapp.herokuapp.com/login
 
-**Team Members:** Colton Rusch, Raj Paul, Suhye Park, Nathaniel Nguyen, Nathan Mugerwa
+#### Team Members
+- **Front-end:** Nathaniel Nguyen, Raj Paul, Colton Rusch
+- **Back-end:** Nathan Mugerwa, Suhye Park
 
-**Team Strengths and Weaknesses:** 
-* Colton:
-  * Strengths:
-    * Testing
-    * Style
-    * Algorithms
-    * Hardworking
-  * Weaknesses:
-    * Getting started
-    * Finishing
-    
-* Raj:
-  * Strengths:
-    * Testing (especially system tests)
-    * Recursion
-    * Javadocs comments
-    * Adding fields to classes
-    * Making interfaces
-  * Weaknesses:
-    * Generics
-    * GUI
-    * inline commenting
-    
-* Suhye:
-  * Strengths:
-    * Building structures
-    * Error checking
-  * Weaknesses:
-    * GUI
-    * Generics
-    
-* Nathaniel:
-  * Strengths:
-    * Refactoring + reorganizing
-    * Error checking
-  * Weaknesses:
-    * Front-end
-    * Pacing
-    
-* Nathan:
-  * Strengths
-    * Machine learning
-    * Class-Level Design
-  * Weaknesses
-    * Front-End
-    * How to best utilize generics
+## The Concept
+Traveling with groups can be a mess. From coordinating schedules to managing spending to sorting through attractions, planning a trip with multiple people in the picture is no small task. TravelChat is a web-based application designed to streamline this process. Through this platform, users can chat with their groups, keep track of spending, manage calendars, use intelligently-generated daily schedules, and so much more!
 
-    
-**Project Idea(s):** _Fill this in with three unique ideas! (Due by March 2)_
-### Idea 1
-_Resubmission approved_
+## Features
+- **Secure authentication**: With Firebase Authentication, users can log in to their account to gain secure access to their chats and personal information.
+- **Chat**: Users can easily create and participate in multiple groups. Our chat feature is hosted through the Firebase Firechat API.
+- **Beautiful, accessible design**: Our interface is modern, intuitive, and accessible. We used the WAVE Web Accessibility Evaluation Tool while developing and simulated the user end-to-end user experience using only keyboard navigation.
+- **Budgeting**: Users can keep track of their spending and update it as they please from the main chat interface.
+- **Calendars**: Users can create, customize, and share events through our calendar feature.
+- **PlanMyDay**: We use the A* Search Algorithm to design a day-long schedule from user preferences. This feature takes in several user inputs and produces an ordered sequence of three restaurants and two activities, using distance and cost as variably-weighted heuristics.
+- **Browse Menus**: Users can search for restaurants, activities, lodging, and flights from the chat interface with just a few clicks! These menus contain several options for users to filter search results, which are queried from the TripAdvisor API.
 
-### Idea 1 (RESUBMITTAL)
-Welcome to TravelGuide. When traveling with a group, it can be hard to keep track of everything you need, and everything you need to keep in mind. We’d like to create an all-inclusive, streamlined process for traveling that accommodates group travel on a budget. In summary, we’re envisioning a group chat especially designed for travel which takes into account group budget and calendar availability, and makes food, lodging, and transportation recommendations accordingly.
-
-* Key Features
-  * Data Scraping
-    * Transportation and Housing
-      * Flights
-      * Uber/Lyft/Rentals
-      * Hotel/Airbnb
-    * Activities
-      * Various activities based on the destination, user preferences
-    * If we have time: take into account ratings of restaurants, locations, specific foods/activities
-      * Google review API?
-    * Challenges:
-      * Lots of repeated data
-      * Real-time changes can cause issues
-   * Schedule Matching
-     * Imports data from each user’s Google Calendar. User can manually input as well
-     * No one can see any other person’s exact calendar, but they can see what blocks of time are occupied for them, and an entire group availability calendar is generated and easily visible
-     * Challenges: 
-       * There may not be a perfect match, how do we accommodate this
-   * Chat
-     * Main interface users will be interacting with
-     * Each member in the chat has a profile, which includes that user’s preferences/restrictions, budget, availability, etc.
-     * If we have time: photo sharing, polls, animated custom emoticons
-   * Budget
-     * Give users option between a group budget which everyone splits evenly, or allows each user to put in their own individual contribution
-   * Suggestions:
-     * Central algorithm, see below for explanation.
-
-
------------------------------------------------
-1. Each user gives their individual budget
-2. We then plan the trip around a group budget = sum of individual budgets.
-3. The main algorithm is a preference matching algorithm:
-   * Each user submits a list of preferences for a set of travel considerations:	
-     * Travel quality (first class or coach, uber X or luxe, ...)
-     * Hotel quality (5-star, ...)
-     * The algorithm then maximizes travel quality while minimizing cost.
-   * Each user must also submit activity preferences. 
-     * Again, we try to reach the "consensus" preference while minimizing price
-
-Example:
-Tim wants a 5 star hotel and Julia wants a 3 star hotel. The "consensus" preference is a 4 star hotel. We search for the "best" 4-star hotel that stays within their price. i.e:
-   1. Query all 4 star hotels in region of travel from some API
-   2. Remove all hotels with less than 100 reviews, rank the rest by their avg review rating (i.e. 4.3 stars/5)
-   3. Order the list by this ranking, descending.
-   4. Walk down the list, returning the first one whose cost is within the group budget.
-
-**Mentor TA:** Sophia Chen (schen96)
-
-## Meetings
-_On your first meeting with your mentor TA, you should plan dates for at least the following meetings:_
-
-**Specs, Mockup, and Design Meeting:** 4/4
-
-**4-Way Checkpoint:** 4/19
-
-**Adversary Checkpoint:** 4/29, with adversary TA Lily Mayo (lmayo)
+## Technologies Used
+- Figma
+- Firebase
+- Heroku
+- HTML/CSS
+- Java
+- Javascript
+- Python
+- Spark
 
 ## How to Build and Run
 To build: \
-`mvn package` \
+run `mvn package` from root directory.
+
 To run the Spark server: \
 `./run` will start the server at `http://localhost:4567/login`
